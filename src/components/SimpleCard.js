@@ -1,10 +1,10 @@
-import React, { useState,useEffect,useRef }  from 'react';
+import React, { useState,useEffect }  from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Icon from "@material-ui/core/Icon";
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import Box from '@material-ui/core/Box';
+// import CardHeader from '@material-ui/core/CardHeader';
+// import Box from '@material-ui/core/Box';
 //  import smartfm from '../../src/assets/img/smartfm.png';
 import CardContent from '@material-ui/core/CardContent';
 import ReactExport from "react-export-excel";
@@ -13,7 +13,6 @@ import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 // import Typography from '@material-ui/core/Typography';
@@ -26,12 +25,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import AppBar from '@material-ui/core/AppBar'; 
 import Grid from "@material-ui/core/Grid";
-import App from '../../src/App.css'
+import '../../src/App.css'
 // import {Grid item} from "@material-ui/core/Grid item";
 // import {Grid container} from "@material-ui/core/Grid container";
 import CanvasJSReact from '../assets/canvasjs.react';
 import { makeStyles } from '@material-ui/core/styles';
-import Smartfm from '../assets/img/smartfm.png';
+// import Smartfm from '../assets/img/smartfm.png';
 import Nanosoft from '../assets/img/nanosoft .png';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -97,9 +96,9 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: 'none',
   },
   tableroot:{
-    ['@media (max-width:950px)'] :{
-      height: '60vh',
-    },
+    // ['@media (max-width:950px)'] :{
+    //   height: '60vh',
+    // },
     height: '40vh',
     boxShadow: 'none',
   },
@@ -169,12 +168,12 @@ function SimpleCard(props) {
   const [chartchange,setchartchange] = useState(true);
   const [Headval,setHeadval] = useState('DR');
   const [Colorline,setColorline] = useState('#F86C6B');
-  const [ContChart,setContChart] = useState([]);
-  const [ContChartDR,setContChartDR] = useState([]);
-  const [ContChartCR,setContChartCR] = useState([]);
-  const [ContChartNR,setContChartNR] = useState([]);
-  const [ContChartOTH,setContChartOTH] = useState([]);
-  const [ContChartOD,setContChartOD] = useState([]);
+  // const [ContChart,setContChart] = useState([]);
+  // const [ContChartDR,setContChartDR] = useState([]);
+  // const [ContChartCR,setContChartCR] = useState([]);
+  // const [ContChartNR,setContChartNR] = useState([]);
+  // const [ContChartOTH,setContChartOTH] = useState([]);
+  // const [ContChartOD,setContChartOD] = useState([]);
 
   const [ContChartLive,setContChartLive] = useState([]);
   const [ContChartAMC,setContChartAMC] = useState([]);
@@ -240,12 +239,12 @@ function SimpleCard(props) {
   const [ETACharttoday,setETACharttoday] = useState([]);
   const [ETAChartnext,setETAChartnext] = useState([]);
   const [EmpWise,setEmpWise] = useState([]);
-  const [ConSummry,setConSummry] = useState([]);
-  const [ConStawise,setConStawise] = useState([]);
-  const [ConOD,setConOD] = useState([]);
-  const [EmpContractDR,setEmpContractDR] = useState([]);
-  const [EmpContractCR,setEmpContractCR] = useState([]);
-  const [EmpContractNR,setEmpContractNR] = useState([]);
+  // const [ConSummry,setConSummry] = useState([]);
+  // const [ConStawise,setConStawise] = useState([]);
+  // const [ConOD,setConOD] = useState([]);
+  // const [EmpContractDR,setEmpContractDR] = useState([]);
+  // const [EmpContractCR,setEmpContractCR] = useState([]);
+  // const [EmpContractNR,setEmpContractNR] = useState([]);
   const [CriticalPriority,setCriticalPriority] = useState([]);
   const [HighPriority,setHighPriority] = useState([]);
   const [MediumPriority,setMediumPriority] = useState([]);
@@ -278,7 +277,7 @@ function SimpleCard(props) {
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const [selectedDate2, setSelectedDate2] = React.useState(new Date());
-  const [selectedMonth, setSelectedMonth] = React.useState(new Date());
+  // const [selectedMonth, setSelectedMonth] = React.useState(new Date());
   const [filteropen,setfilteropen] = useState(false);
   const [slideType,setslideType] = useState('');
   const [exportItem,setexportItem] = useState([]);
@@ -301,9 +300,9 @@ function SimpleCard(props) {
     setSelectedDate2(date);
   };
 
-  const handleMonthChange = (date) => {
-    setSelectedMonth(date);
-  };
+  // const handleMonthChange = (date) => {
+  //   setSelectedMonth(date);
+  // };
 
   const btnoptions = ['All', 'V2', 'V3','B2C','Multicom','V4', 'Spare Square', 'Smart Billing', 'SmartFM Xceed'];
   const Ovropt = ['ContractWise', 'OverAll'];
@@ -408,8 +407,7 @@ function SimpleCard(props) {
         data: [
       {
           indexLabel: "{y}",
-          indexLabelPlacement: "outside",
-          indexLabelFontColor:'red',
+          indexLabelPlacement: "outside", 
           indexLabelFontSize:9,
           indexLabelFontWeight:800,  
           type: "column",
@@ -424,8 +422,7 @@ function SimpleCard(props) {
         },
         {
         indexLabel: "{y}",
-        indexLabelPlacement: "outside",
-        indexLabelFontColor:'red',
+        indexLabelPlacement: "outside", 
         indexLabelFontSize:9,
         indexLabelFontWeight:800,  
           type: "column",	
@@ -438,8 +435,7 @@ function SimpleCard(props) {
         },
         {
           indexLabel: "{y}",
-          indexLabelPlacement: "outside",
-          indexLabelFontColor:'red',
+          indexLabelPlacement: "outside", 
           indexLabelFontSize:9,
           indexLabelFontWeight:800,  
           type: "column",	
@@ -450,8 +446,7 @@ function SimpleCard(props) {
         },
         {
           indexLabel: "{y}",
-          indexLabelPlacement: "outside",
-          indexLabelFontColor:'red',
+          indexLabelPlacement: "outside", 
           indexLabelFontSize:9,
           indexLabelFontWeight:800,  
           type: "column",	
@@ -476,7 +471,7 @@ function SimpleCard(props) {
   const ETAModal = (e) =>{
     var id = e.dataPoint.data;
     setFormtitle(e.dataPoint.label);
-    if(ETAtype == 'today'){
+    if(ETAtype === 'today'){
       OverlaySlide(9,id,0,e.dataPoint.label +" - ("+ e.dataPoint.y+")"); 
     }else{
       OverlaySlide(10,id,0,e.dataPoint.label +" - ("+ e.dataPoint.y+")"); 
@@ -503,8 +498,7 @@ function SimpleCard(props) {
       {
           type: "spline",
           indexLabel: "{y}",
-          indexLabelPlacement: "outside",
-          indexLabelFontColor:'red',
+          indexLabelPlacement: "outside", 
           toolTipContent: " <span style='\"'color: #4C9CA0;'\"'>Name</span> : {text}</br>Total : {y}",
           indexLabelFontSize:12,
           indexLabelFontWeight:800, 
@@ -597,6 +591,7 @@ useEffect(( ) => {
     }
       getData();
    } // 1 
+   // eslint-disable-next-line
 },[Countdata]) // 3 count incr/decr
 
 useEffect(( ) => {
@@ -605,12 +600,13 @@ useEffect(( ) => {
  }
   getData();
    // 1 
+   // eslint-disable-next-line
 },[ConTypeFil])
 
    
 function Conchange(type){
   for(let i=0;i<6;i++){
-    var addcls = document.getElementsByClassName('borderradius')[i];
+    let addcls = document.getElementsByClassName('borderradius')[i];
     addcls.classList.remove('activereq')
   }
   
@@ -620,7 +616,7 @@ function Conchange(type){
   }, 100); 
 
   setHeadval(type)
-  if(type == 'CR'){
+  if(type === 'CR'){
     if(OvrallIndex === 0){
       setContChartLive(ContChartLiveCR)
       setContChartAMC(ContChartAMCCR)
@@ -637,10 +633,10 @@ function Conchange(type){
     setEmpChartIMP(EmpChartIMPCR)
     setEmpChartOther(EmpChartOtherCR)
     setColorline('#4DBD74')
-    var addcls = document.getElementsByClassName('borderradius')[3];
+    let addcls = document.getElementsByClassName('borderradius')[3];
     addcls.classList.add('activereq')
   }
-  if(type == 'DR'){
+  if(type === 'DR'){
     if(OvrallIndex === 0){
       setContChartLive(ContChartLiveDR)
       setContChartAMC(ContChartAMCDR)
@@ -657,10 +653,10 @@ function Conchange(type){
     setEmpChartIMP(EmpChartIMPDR)
     setEmpChartOther(EmpChartOtherDR)
     setColorline('#F86C6B')
-    var addcls = document.getElementsByClassName('borderradius')[1];
+    let addcls = document.getElementsByClassName('borderradius')[1];
     addcls.classList.add('activereq')
   }
-  if(type == 'NR'){
+  if(type === 'NR'){
     if(OvrallIndex === 0){
       setContChartLive(ContChartLiveNR)
       setContChartAMC(ContChartAMCNR)
@@ -677,9 +673,9 @@ function Conchange(type){
     setEmpChartIMP(EmpChartIMPNR)
     setEmpChartOther(EmpChartOtherNR)
     setColorline('#4DBD74')
-    var addcls = document.getElementsByClassName('borderradius')[4];
+    let addcls = document.getElementsByClassName('borderradius')[4];
     addcls.classList.add('activereq')
-  }if(type == 'OTH'){
+  }if(type === 'OTH'){
     if(OvrallIndex === 0){
       setContChartLive(ContChartLiveOTH)
       setContChartAMC(ContChartAMCOTH)
@@ -696,15 +692,15 @@ function Conchange(type){
     setEmpChartIMP(EmpChartIMPOTH)
     setEmpChartOther(EmpChartOtherOTH)
     setColorline('#FFC23D')
-    var addcls = document.getElementsByClassName('borderradius')[5];
+    let addcls = document.getElementsByClassName('borderradius')[5];
     addcls.classList.add('activereq')
-  }if(type == 'OVD'){
-    setContChart(ContChartOD)
+  }if(type === 'OVD'){
+    // setContChart(ContChartOD)
     setColorline('#FFC23D')
-    var addcls = document.getElementsByClassName('borderradius')[6];
+    let addcls = document.getElementsByClassName('borderradius')[6];
     addcls.classList.add('activereq')
   }
-  if(type == 'Total'){
+  if(type === 'Total'){
     const url = 'https://smartfm.in/NSEIPLSERVICE/DashboardService/VwAPINSEIPLALL/';
     const params = {
       "data":
@@ -764,6 +760,7 @@ function Conchange(type){
           'y':Number(val.Other),
           'data': val.ContractIDPK
         })
+        return null;
       })
       setContChartLive(ConLiveTotal)
       setContChartAMC(ConAMCTotal)
@@ -810,6 +807,7 @@ function Conchange(type){
           'y':Number(val.Other),
           'data': val.EmployeeIDPK
         })
+        return null;
       })
       setEmpChartLive(EmpLiveTotal)
       setEmpChartAMC(EmpAMCTotal)
@@ -818,7 +816,7 @@ function Conchange(type){
     })
 
 
-    var addcls = document.getElementsByClassName('borderradius')[0];
+    let addcls = document.getElementsByClassName('borderradius')[0];
     addcls.classList.add('activereq')
 
   }
@@ -842,7 +840,7 @@ function MonthChange(type){
         "ProType_int": ConTypeFil,
         "EmpID_int": null,
         "ConID_int": null,
-        "month_int": selectedMonth.getMonth()+1,
+        "month_int": null,
         "year_int": 2021,
         "FromDate_date": selectedDate.getFullYear()+"-"+mon+"-"+ selectedDate.getDate(),
         "Todate_date": null
@@ -866,7 +864,7 @@ function MonthChange(type){
     if(type === 'Monthly'){
       let Fmon = selectedDate.getMonth()+1; 
       let Tmon = selectedDate2.getMonth()+1; 
-      setFiltertitle("MonthWise - "+Headval+"("+selectedMonth.toLocaleString('default', { month: 'short' })+")")
+      setFiltertitle("MonthWise - "+Headval+"()")
       var qrytype = '';
       if(Headval === 'DR'){
         qrytype = 11;
@@ -920,6 +918,7 @@ function MonthChange(type){
             "y" : Number(val.ClosedCnt),
             "text": val.WoDate,
           })
+          return null;
         })  
         console.log(monthTot,"Total")
         setchartMonthTot(monthTot)
@@ -939,7 +938,7 @@ function MonthChange(type){
         "ProType_int": ConTypeFil,
         "EmpID_int": null,
         "ConID_int": null,
-        "month_int": selectedMonth.getMonth()+1,
+        "month_int": null,
         "year_int": null,
         "FromDate_date": selectedDate.getFullYear()+"-"+mon+"-"+ selectedDate.getDate(),
         "Todate_date": null
@@ -990,7 +989,7 @@ const getData = ( ) => {
   .then((res)=>res.json())
   .then((data)=>{ 
     const result = data.Output.data;
-    const arr = [];
+    // const arr = [];
     let summary = [];
     let empWise = [];
     let contractWise  = [];
@@ -998,12 +997,12 @@ const getData = ( ) => {
     let highPriority = [];
     let mediumPriority = [];
     let lowPriority = [];
-    var DR = [];
-    var CR = [];
-    var NR = [];
-    let Constasum = [];
-    let Constatuswise = [];
-    let ConOverdue = [];
+    // var DR = [];
+    // var CR = [];
+    // var NR = [];
+    // let Constasum = [];
+    // let Constatuswise = [];
+    // let ConOverdue = [];
     let ConLiveDR = [];
     let ConAMCDR = [];
     let ConIMPDR = [];
@@ -1112,7 +1111,7 @@ const getData = ( ) => {
             'text':val.Descriptions,
             'data': val.WorkOrderID
           }) 
-          if(Headval == 'DR'){
+          if(Headval === 'DR'){
             setContChartLive(ConLiveDR);
             setContChartLiveDR(ConLiveDR);
             setContChartAMC(ConAMCDR);
@@ -1149,7 +1148,7 @@ const getData = ( ) => {
           'text':val.Descriptions,
           'data': val.WorkOrderID
         }) 
-        if(Headval == 'CR'){
+        if(Headval === 'CR'){
             setContChartLive(ConLiveCR);
             setContChartAMC(ConAMCCR);
             setContChartIMP(ConIMPCR);
@@ -1185,7 +1184,7 @@ const getData = ( ) => {
           'text':val.Descriptions,
           'data': val.WorkOrderID
         }) 
-        if(Headval == 'NR'){
+        if(Headval === 'NR'){
           setContChartLive(ConLiveNR);
           setContChartAMC(ConAMCNR);
           setContChartIMP(ConIMPNR);
@@ -1221,7 +1220,7 @@ const getData = ( ) => {
           'text':val.Descriptions,
           'data': val.WorkOrderID
         }) 
-        if(Headval == 'OTH'){
+        if(Headval === 'OTH'){
           setContChartLive(ConLiveOTH);
           setContChartAMC(ConAMCOTH);
           setContChartIMP(ConIMPOTH);
@@ -1253,7 +1252,7 @@ const getData = ( ) => {
           'y':Number(val.Other),
           'data': val.WorkOrderID
         }) 
-        if(Headval == 'DR'){
+        if(Headval === 'DR'){
           
           setEmpChartLive(EmpLiveDR);
           setEmpChartLiveDR(EmpLiveDR);
@@ -1286,7 +1285,7 @@ const getData = ( ) => {
           'y':Number(val.Other),
           'data': val.WorkOrderID
         }) 
-        if(Headval == 'CR'){
+        if(Headval === 'CR'){
           setEmpChartLive(EmpLiveCR);
           setEmpChartAMC(EmpAMCCR);
           setEmpChartIMP(EmpIMPCR);
@@ -1318,7 +1317,7 @@ const getData = ( ) => {
           'y':Number(val.Other),
           'data': val.WorkOrderID
         }) 
-        if(Headval == 'NR'){
+        if(Headval === 'NR'){
           setEmpChartLive(EmpLiveNR);
           setEmpChartAMC(EmpAMCNR);
           setEmpChartIMP(EmpIMPNR);
@@ -1350,7 +1349,7 @@ const getData = ( ) => {
           'y':Number(val.Other),
           'data': val.WorkOrderID
         }) 
-        if(Headval == 'OTH'){
+        if(Headval === 'OTH'){
           setEmpChartLive(EmpLiveOTH);
           setEmpChartAMC(EmpAMCOTH);
           setEmpChartIMP(EmpIMPOTH);
@@ -1503,7 +1502,7 @@ const getData = ( ) => {
             'y':Number(val.OVD),
             'data': val.WorkOrderID
           })
-          setContChartOD(ConOVD);
+          // setContChartOD(ConOVD);
         }
       }
       else if(val.Header === '12') {
@@ -1615,10 +1614,7 @@ const getData = ( ) => {
         setETAChartnext(ETAnext);
 
       }
-
-
-
-
+      return null;
     })
     // setEmpContractDR(DR);
     // setEmpContractCR(CR);
@@ -1665,6 +1661,7 @@ const getData = ( ) => {
       res.map((value) => {
         exportarry.push([value.ComplaintNo,value.ComplainedDate,value.ETADate,value.ETATime,value.AgeingInDays,value.ContractName,
           value.ComplaintNatureName,value.RequestDetailsDesc,value.PriorityName,value.TechName,value.bdmempname,value.StageName]); 
+        return null;  
       });
       setexportItem(exportarry);
       setSlidedata(res);
@@ -1712,13 +1709,13 @@ return (
             <AppBar className={classes.appbar} style={{padding:'4px' }}>
               <Grid container>
                 <Grid item xs={3} sm={2} md={2} style={{ textAlign:'left' }}>
-                  <img src={Nanosoft} className='logo1'></img>
+                  <img alt="logo1" src={Nanosoft} className='logo1'></img>
                 </Grid>
                 <Grid item xs={6} sm={8} md={8} style={{textAlign:'center'}}>
                   <span className="Apphead">NanoSoft Tracker Board</span> 
                 </Grid>
                 <Grid item xs={3} sm={2} md={2} style={{textAlign:'end'}}>
-                  <img src={'static/media/smartfm.870d7335.png'} className='logo2'></img>
+                  <img alt="logo2" src={'static/media/smartfm.870d7335.png'} className='logo2'></img>
                 </Grid>
               </Grid> 
             </AppBar>

@@ -2,7 +2,7 @@ import CanvasJSReact from '../assets/canvasjs.react';
 var React = require('react');
 var Component = React.Component;
 
-var CanvasJS = CanvasJSReact.CanvasJS;
+// var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
@@ -28,17 +28,17 @@ class ColumnChart extends Component {
     var name = e.dataSeries.name;
 
     var type = '';
-    if(this.props.Headprop == 'DR'){
+    if(this.props.Headprop === 'DR'){
     type = 1;
-    }if(this.props.Headprop == 'CR'){
+    }if(this.props.Headprop === 'CR'){
     type = 2;
-    }if(this.props.Headprop == 'NR'){
+    }if(this.props.Headprop === 'NR'){
     type = 3;
-    }if(this.props.Headprop == 'OTH'){
+    }if(this.props.Headprop === 'OTH'){
     type = 4;
-    }if(this.props.Headprop == 'OVD'){
+    }if(this.props.Headprop === 'OVD'){
     type = 11;
-    }if(this.props.Headprop == 'Total'){
+    }if(this.props.Headprop === 'Total'){
       type = 14;
     }
 
@@ -76,13 +76,13 @@ class ColumnChart extends Component {
                           var space = " ";
                           var label = "<span>Contract Name :<span><strong>" + e.entries[0].dataPoint.text + "</strong><br/>";
                           for (var i = 0; i < e.entries.length; i++) { 
-                              if(i== 3){
+                              if(i=== 3){
                                   content += "<span style='color: #39C0AB;'>" + e.entries[i].dataSeries.name + " :</span>"+ space + "<strong>" + e.entries[i].dataPoint.y + "</strong>";
                                   content += "<br/>";    
-                              }else if(i== 0){
+                              }else if(i=== 0){
                                   content += "<span style='color: #6D78AD;'>" + e.entries[i].dataSeries.name + ": </span>"+ space + "<strong>" + e.entries[i].dataPoint.y + "</strong>";
                                   content += "<br/>";
-                              }else if(i== 1){
+                              }else if(i=== 1){
                                   content += "<span style='color: #C0504E;'>" + e.entries[i].dataSeries.name + ": </span>"+ space + "<strong>" + e.entries[i].dataPoint.y + "</strong>";
                                   content += "<br/>";
                               }else{
@@ -121,8 +121,7 @@ class ColumnChart extends Component {
                             else
                               return e.dataPoint.y;
                           },
-                          indexLabelPlacement: "outside",
-                          indexLabelFontColor:'red',
+                          indexLabelPlacement: "outside", 
                           indexLabelFontSize:12,
                           indexLabelFontWeight:800, 
                           indexLabelFontColor: "#5A5757",
@@ -141,8 +140,7 @@ class ColumnChart extends Component {
                             else
                               return e.dataPoint.y;
                           },
-                          indexLabelPlacement: "outside",
-                          indexLabelFontColor:'red',
+                          indexLabelPlacement: "outside", 
                           indexLabelFontSize:12,
                           indexLabelFontWeight:800,
                           showInLegend: true,
@@ -161,8 +159,7 @@ class ColumnChart extends Component {
                             else
                               return e.dataPoint.y;
                           },
-                          indexLabelPlacement: "outside",
-                          indexLabelFontColor:'red',
+                          indexLabelPlacement: "outside", 
                           indexLabelFontSize:12,
                           indexLabelFontWeight:800, 
                           showInLegend: true,
@@ -181,8 +178,7 @@ class ColumnChart extends Component {
                             else
                               return e.dataPoint.y;
                           },
-                          indexLabelPlacement: "outside",
-                          indexLabelFontColor:'red',
+                          indexLabelPlacement: "outside", 
                           indexLabelFontSize:12,
                           indexLabelFontWeight:800, 
                           showInLegend: true,

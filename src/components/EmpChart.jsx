@@ -2,7 +2,7 @@ import CanvasJSReact from '../assets/canvasjs.react';
 var React = require('react');
 var Component = React.Component;
 
-var CanvasJS = CanvasJSReact.CanvasJS;
+// var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
@@ -27,15 +27,15 @@ class ColumnChart extends Component {
     var id = e.dataPoint.data;
     var name = e.dataSeries.name;
         var type = '';
-        if(this.props.Headprop == 'DR'){
+        if(this.props.Headprop === 'DR'){
         type = 5;
-        }if(this.props.Headprop == 'CR'){
+        }if(this.props.Headprop === 'CR'){
         type = 6;
-        }if(this.props.Headprop == 'NR'){
+        }if(this.props.Headprop === 'NR'){
         type = 7;
-        }if(this.props.Headprop == 'OTH'){
+        }if(this.props.Headprop === 'OTH'){
         type = 8;
-        }if(this.props.Headprop == 'Total'){
+        }if(this.props.Headprop === 'Total'){
           type = 15;
         }
 
@@ -96,8 +96,7 @@ class ColumnChart extends Component {
                             else
                               return e.dataPoint.y;
                           },
-                          indexLabelPlacement: "outside",
-                          indexLabelFontColor:'red',
+                          indexLabelPlacement: "outside", 
                           indexLabelFontSize:12,
                           indexLabelFontWeight:800, 
                           indexLabelFontColor: "#5A5757",
@@ -116,8 +115,7 @@ class ColumnChart extends Component {
                             else
                               return e.dataPoint.y;
                           },
-                          indexLabelPlacement: "outside",
-                          indexLabelFontColor:'red',
+                          indexLabelPlacement: "outside", 
                           indexLabelFontSize:12,
                           indexLabelFontWeight:800, 
                           showInLegend: true,
@@ -136,8 +134,7 @@ class ColumnChart extends Component {
                             else
                               return e.dataPoint.y;
                           },
-                          indexLabelPlacement: "outside",
-                          indexLabelFontColor:'red',
+                          indexLabelPlacement: "outside", 
                           indexLabelFontSize:12,
                           indexLabelFontWeight:800, 
                           showInLegend: true,
@@ -156,8 +153,7 @@ class ColumnChart extends Component {
                             else
                               return e.dataPoint.y;
                           },
-                          indexLabelPlacement: "outside",
-                          indexLabelFontColor:'red',
+                          indexLabelPlacement: "outside", 
                           indexLabelFontSize:12,
                           indexLabelFontWeight:800, 
                           showInLegend: true,

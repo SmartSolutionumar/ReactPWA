@@ -2,7 +2,7 @@ import CanvasJSReact from '../assets/canvasjs.react';
 var React = require('react');
 var Component = React.Component;
 
-var CanvasJS = CanvasJSReact.CanvasJS;
+// var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
@@ -26,9 +26,9 @@ class ColumnChart extends Component {
 	openModal = (e) =>{
     var id = e.dataPoint.WorkOrderID;
         var type = '';
-        if(this.props.EmptypeETA == 'todayETA'){
+        if(this.props.EmptypeETA === 'todayETA'){
         type = 12;
-        }if(this.props.EmptypeETA == 'todaywork'){
+        }if(this.props.EmptypeETA === 'todaywork'){
         type = 13;
         }
 
@@ -76,7 +76,6 @@ class ColumnChart extends Component {
                               return e.dataPoint.y;
                           },
                           indexLabelPlacement: "outside",
-                          indexLabelFontColor:'red',
                           indexLabelFontSize:12,
                           indexLabelFontWeight:800,
                           toolTipContent: " {label}<br/><span style='\"'color: #4C9CA0;'\"'>Total</span> : {y}",

@@ -1,8 +1,7 @@
 import CanvasJSReact from '../assets/canvasjs.react';
 var React = require('react');
 var Component = React.Component;
-
-var CanvasJS = CanvasJSReact.CanvasJS;
+ 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
@@ -27,13 +26,13 @@ class ColumnChart extends Component {
     var date = e.dataPoint.text;
     var dtformat = date.split("-");
         var type = '';
-        if(this.props.type == 'DR'){
+        if(this.props.type === 'DR'){
         type = 16;
-        }if(this.props.type == 'CR'){
+        }if(this.props.type === 'CR'){
         type = 17;
-        }if(this.props.type == 'NR'){
+        }if(this.props.type === 'NR'){
           type = 18;
-        }if(this.props.type == 'OTH'){
+        }if(this.props.type === 'OTH'){
           type = 19;
         }
 
@@ -60,13 +59,13 @@ class ColumnChart extends Component {
                           var space = " ";
                           var label = "<span>Date :<span><strong>" + e.entries[0].dataPoint.text + "</strong><br/>";
                           for (var i = 0; i < e.entries.length; i++) { 
-                              if(i== 3){
+                              if(i=== 3){
                                   content += "<span style='color: #39C0AB;'>" + e.entries[i].dataSeries.name + " :</span>"+ space + "<strong>" + e.entries[i].dataPoint.y + "</strong>";
                                   content += "<br/>";    
-                              }else if(i== 0){
+                              }else if(i=== 0){
                                   content += "<span style='color: #6D78AD;'>" + e.entries[i].dataSeries.name + ": </span>"+ space + "<strong>" + e.entries[i].dataPoint.y + "</strong>";
                                   content += "<br/>";
-                              }else if(i== 1){
+                              }else if(i=== 1){
                                   content += "<span style='color: #C0504E;'>" + e.entries[i].dataSeries.name + ": </span>"+ space + "<strong>" + e.entries[i].dataPoint.y + "</strong>";
                                   content += "<br/>";
                               }else{
@@ -105,8 +104,7 @@ class ColumnChart extends Component {
                             else
                               return e.dataPoint.y;
                           },
-                          indexLabelPlacement: "outside",
-                          indexLabelFontColor:'red',
+                          indexLabelPlacement: "outside", 
                           indexLabelFontSize:12,
                           indexLabelFontWeight:800,
                           // toolTipContent: " {label}<br/><span style='\"'color: #4C9CA0;'\"'>Total</span> : {y}",
@@ -125,8 +123,7 @@ class ColumnChart extends Component {
                             else
                               return e.dataPoint.y;
                           },
-                          indexLabelPlacement: "inside",
-                          indexLabelFontColor:'red',
+                          indexLabelPlacement: "inside", 
                           indexLabelFontSize:12,
                           indexLabelFontWeight:800,
                           // toolTipContent: " {label}<br/><span style='\"'color: #4C9CA0;'\"'>Total</span> : {y}",
@@ -146,8 +143,7 @@ class ColumnChart extends Component {
                             else
                               return e.dataPoint.y;
                           },
-                          indexLabelPlacement: "inside",
-                          indexLabelFontColor:'red',
+                          indexLabelPlacement: "inside", 
                           indexLabelFontSize:12,
                           indexLabelFontWeight:800,
                           indexLabelFontColor: "#5A5757",
