@@ -1,6 +1,6 @@
 {
-  "name": "Nano Tracker",
-  "short_name": "NanoTracker",
+  "name": "React-Tel-Picker",
+  "short_name": "Simmy",
   "theme_color": "#000000",
   "background_color": "#000000",
   "display": "standalone",
@@ -9,12 +9,12 @@
   "icons": [
   
     {
-      "src": "SmartFMMain.png",
+      "src": "images/icons/icon-192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "SmartFMMain.png",
+      "src": "images/icons/icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
