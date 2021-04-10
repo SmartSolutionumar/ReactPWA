@@ -1,5 +1,5 @@
 {
-  "name": "first",
+  "name": "telpicker",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,19 +8,16 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/pickers": "^3.3.10",
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.8.1",
-    "antd": "^4.13.1",
-    "apexcharts": "^3.25.0",
-    "date-fns": "^2.19.0",
-    "react": "^17.0.1",
-    "react-apexcharts": "^1.3.7",
-    "react-dom": "^17.0.1",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "antd": "^4.15.0",
+    "date-fns": "^2.20.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.14.0",
     "react-export-excel": "^0.5.3",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.0"
+    "react-scripts": "3.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -29,10 +26,7 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
