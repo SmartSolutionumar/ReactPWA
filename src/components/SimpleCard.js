@@ -102,6 +102,7 @@ const useStyles = makeStyles((theme) => ({
     height: '40vh',
     boxShadow: 'none',
   },
+ 
 }));
  
 const styles = {
@@ -195,6 +196,14 @@ function SimpleCard(props) {
   const [ContChartAMCOTH,setContChartAMCOTH] = useState([]);
   const [ContChartIMPOTH,setContChartIMPOTH] = useState([]);
   const [ContChartOtherOTH,setContChartOtherOTH] = useState([]);
+  const [ContChartLiveSNA,setContChartLiveSNA] = useState([]);
+  const [ContChartAMCSNA,setContChartAMCSNA] = useState([]);
+  const [ContChartIMPSNA,setContChartIMPSNA] = useState([]);
+  const [ContChartOtherSNA,setContChartOtherSNA] = useState([]);
+  const [ContChartLiveNoEta,setContChartLiveNoEta] = useState([]);
+  const [ContChartAMCNoEta,setContChartAMCNoEta] = useState([]);
+  const [ContChartIMPNoEta,setContChartIMPNoEta] = useState([]);
+  const [ContChartOtherNoEta,setContChartOtherNoEta] = useState([]);
 
   const [AllconChartLiveDR,setAllconChartLiveDR] = useState([]);
   const [AllconChartAMCDR,setAllconChartAMCDR] = useState([]);
@@ -272,7 +281,7 @@ function SimpleCard(props) {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const [Ovropen, setOvrOpen] = React.useState(false);
-  const OvrallRef = React.useRef(null);
+  const OvrallRef = React.useRef(null); 
   const [OvrallIndex, setOvrallIndex] = React.useState(0);
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
@@ -605,7 +614,7 @@ useEffect(( ) => {
 
    
 function Conchange(type){
-  for(let i=0;i<6;i++){
+  for(let i=0;i<11;i++){
     let addcls = document.getElementsByClassName('borderradius')[i];
     addcls.classList.remove('activereq')
   }
@@ -820,6 +829,36 @@ function Conchange(type){
     addcls.classList.add('activereq')
 
   }
+  if(type === 'SNA'){
+    if(OvrallIndex === 0){
+      setContChartLive(ContChartLiveSNA)
+      setContChartAMC(ContChartAMCSNA)
+      setContChartIMP(ContChartIMPSNA)
+      setContChartOther(ContChartOtherSNA)
+    }else{
+      setContChartLive(AllconChartLiveDR)
+      setContChartAMC(AllconChartAMCDR)
+      setContChartIMP(AllconChartIMPDR)
+      setContChartOther(AllconChartOtherDR)
+    }
+    let addcls = document.getElementsByClassName('borderradius')[9];
+    addcls.classList.add('activereq')
+  }
+  if(type === 'NOETA'){
+    if(OvrallIndex === 0){
+      setContChartLive(ContChartLiveNoEta)
+      setContChartAMC(ContChartAMCNoEta)
+      setContChartIMP(ContChartIMPNoEta)
+      setContChartOther(ContChartOtherNoEta)
+    }else{
+      setContChartLive(AllconChartLiveDR)
+      setContChartAMC(AllconChartAMCDR)
+      setContChartIMP(AllconChartIMPDR)
+      setContChartOther(AllconChartOtherDR)
+    }
+    let addcls = document.getElementsByClassName('borderradius')[10];
+    addcls.classList.add('activereq')
+  }
 }
 
 function MonthChange(type){
@@ -1019,6 +1058,14 @@ const getData = ( ) => {
     let ConAMCOTH = [];
     let ConIMPOTH = [];
     let ConOtherOTH = [];
+    let ConLiveSNA = [];
+    let ConAMCSNA = [];
+    let ConIMPSNA = [];
+    let ConOtherSNA = [];
+    let ConLiveNoEta = [];
+    let ConAMCNoEta = [];
+    let ConIMPNoEta = [];
+    let ConOtherNoEta = [];
     let EmpLiveDR = [];
     let EmpAMCDR = [];
     let EmpIMPDR = [];
@@ -1513,7 +1560,7 @@ const getData = ( ) => {
                       setETACharttoday(Todayeta)
                       setETAToday(Todayeta);
 
-     }
+      }
       else if(val.Header === '3') {
         
             if(val.Descriptions === 'P1 - CRITICAL') {
@@ -1614,6 +1661,82 @@ const getData = ( ) => {
         setETAChartnext(ETAnext);
 
       }
+      else if(val.Header === '32') {
+        
+        ConLiveSNA.push({
+          'label':val.Descriptions1,
+          'y':Number(val.LIVE),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })
+        ConAMCSNA.push({
+          'label':val.Descriptions1,
+          'y':Number(val.AMC),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })
+        ConIMPSNA.push({
+          'label':val.Descriptions1,
+          'y':Number(val.IMP),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })
+        ConOtherSNA.push({
+          'label':val.Descriptions1,
+          'y':Number(val.Other),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        }) 
+        if(Headval === 'SNA'){
+          setContChartLive(ConLiveSNA);
+          setContChartAMC(ConAMCSNA);
+          setContChartIMP(ConIMPSNA);
+          setContChartOther(ConOtherSNA);
+        }
+        setContChartLiveSNA(ConLiveSNA);
+        setContChartAMCSNA(ConAMCSNA);
+        setContChartIMPSNA(ConIMPSNA);
+        setContChartOtherSNA(ConOtherSNA);
+      
+      }else if(val.Header === '33') {
+        
+        ConLiveNoEta.push({
+          'label':val.Descriptions1,
+          'y':Number(val.LIVE),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })
+        ConAMCNoEta.push({
+          'label':val.Descriptions1,
+          'y':Number(val.AMC),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })
+        ConIMPNoEta.push({
+          'label':val.Descriptions1,
+          'y':Number(val.IMP),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })
+        ConOtherNoEta.push({
+          'label':val.Descriptions1,
+          'y':Number(val.Other),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        }) 
+        if(Headval === 'NOETA'){
+          setContChartLive(ConLiveNoEta);
+          setContChartAMC(ConAMCNoEta);
+          setContChartIMP(ConIMPNoEta);
+          setContChartOther(ConOtherNoEta);
+        }
+        setContChartLiveNoEta(ConLiveNoEta);
+        setContChartAMCNoEta(ConAMCNoEta);
+        setContChartIMPNoEta(ConIMPNoEta);
+        setContChartOtherNoEta(ConOtherNoEta);
+      
+      }
+      
       return null;
     })
     // setEmpContractDR(DR);
@@ -1694,6 +1817,32 @@ const getData = ( ) => {
   
  }
 
+function scrollTotop (){ 
+  document.documentElement.scrollTop = 0;
+}
+
+useEffect(() => {
+  const onScroll = e => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+  const scrolled = winScroll / height;
+  // console.log("scrolled",scrolled,"body",document.documentElement.scrollTop,height);
+      
+      if(scrolled > 0){
+        document.getElementById("scrolltop").style.display = "block";
+        
+      }else{
+        document.getElementById("scrolltop").style.display = "none";
+      }
+     
+  };
+  window.addEventListener("scroll", onScroll);
+
+  return () => window.removeEventListener("scroll", onScroll);
+}, []);
+
 return (
 
 <div>
@@ -1703,7 +1852,8 @@ return (
  
   {/* <!-----------------------Initial Design -------------------------------------------------------- */}
   {loading ? <Spinner/>  :  
-  <Grid container justify="center"style={{  background: '#ebeef1',minHeight:'100vh',minWidth:'100%',padding: '5px'}}>
+  
+  <Grid container justify="center"style={{  background: '#ebeef1',minHeight:'100vh',minWidth:'100%',padding: '5px'}} >
           
           <Grid item xs={12} sm={12} md={12}>
             <AppBar className={classes.appbar} style={{padding:'4px' }}>
@@ -1715,15 +1865,14 @@ return (
                   <span className="Apphead">NanoSoft Tracker Board</span> 
                 </Grid>
                 <Grid item xs={3} sm={2} md={2} style={{textAlign:'end'}}>
-                  <img alt="logo2" src={'static/media/smartfm.870d7335.png'} className='logo2'></img>
+                  <img alt="logo2" src={'static/media/smartfm.38ea370b.png'} className='logo2'></img>
                 </Grid>
               </Grid> 
             </AppBar>
           </Grid>
             
-        
-          <Grid item xs={12} sm={12} md={12} className="marginTop">
-            <Grid container> 
+          <Grid item xs={12} sm={12} md={12} className="marginTop" >
+            <Grid container > 
               <Grid item xs={12} sm={12} md={12} className="Gridpad">
 
                 <Card className="cardshadow">
@@ -1953,8 +2102,7 @@ return (
                                   <Grid item xs={6} sm={6} md={4} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
                                     <p  className="Headlabel">SNA</p>
 
-                                      <h3 
-                                      className="Headval">
+                                      <h3 className="Headval" onClick={()=>{Conchange('SNA')}}>
 
                                         {val.val.SNA}
                                       
@@ -1963,8 +2111,7 @@ return (
                                   <Grid item xs={6} sm={6} md={4} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
                                     <p  className="Headlabel">NOETA</p>
 
-                                      <h3 
-                                      className="Headval">
+                                      <h3 className="Headval" onClick={()=>{Conchange('NOETA')}}>
 
                                         {val.val.NOETA}
                                       
@@ -2559,7 +2706,7 @@ return (
           </Grid>
 
   </Grid>
-            
+  
   }
 
   <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{
@@ -2704,6 +2851,10 @@ return (
           </TableContainer>
           }
       </div>
+  </div>
+  
+  <div>
+    <button id="scrolltop" title="Back to Top" onClick={scrollTotop}><Icon>arrow_upward</Icon></button>
   </div>
 
 </div>

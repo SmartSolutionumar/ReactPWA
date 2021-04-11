@@ -87,7 +87,7 @@ class ColumnChart extends Component {
                         },
                         data: [
                       {
-                          type: "area",
+                          type: "column",
                           name: "Live",
                           indexLabel: "{y}",
                           indexLabelFormatter: function(e) {
@@ -106,7 +106,7 @@ class ColumnChart extends Component {
                           cursor:'pointer'
                         },
                         {
-                          type: "area",
+                          type: "spline",
                           name: "AMC",
                           indexLabel: "{y}",
                           indexLabelFormatter: function(e) {
@@ -144,7 +144,7 @@ class ColumnChart extends Component {
                           cursor:'pointer'
                         },
                         {
-                          type: "area",
+                          type: "spline",
                           name: "Other",
                           indexLabel: "{y}",
                           indexLabelFormatter: function(e) {

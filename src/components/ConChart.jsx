@@ -40,6 +40,10 @@ class ColumnChart extends Component {
     type = 11;
     }if(this.props.Headprop === 'Total'){
       type = 14;
+    }if(this.props.Headprop === 'SNA'){
+      type = 20;
+    }if(this.props.Headprop === 'NOETA'){
+      type = 21;
     }
 
     var contype = '';
