@@ -24,6 +24,15 @@
   display: flex;
   justify-content: center;
   align-items: center; 
+  padding: 10px;
+}
+@media (max-width: 950px){
+  .searchdiv{
+    padding: 3px;
+  }
+}
+.chartmonthly{
+  border-bottom: 1px solid #ccc;
 }
 .btnpad{
   padding: 5px
@@ -84,9 +93,10 @@
   padding-left: 10% !important;
   text-align: left !important;
   margin: 0 !important;
-  color: #768192!important;
+  /* color: #768192!important; */
   font-size: 14px;
 }
+
 p.Headlabel::first-letter{
   /* color: #1BACC2 !important; */
   font-size: 150%;
@@ -101,7 +111,9 @@ p.Headlabel::first-letter{
     line-height: 1.2;
     cursor: pointer;
 }
-
+.HeadvalDR{
+  color: #fff;
+}
 .borderbottom{
   border-bottom: 1px solid #e3e4e9;
 }
@@ -144,7 +156,10 @@ p.Headlabel::first-letter{
   background: #eee;
 }
 .activereq > p{
-  color: #444 !important;
+  /* color: #444 !important; */
+}
+.HeadlabelDR{
+  color: #fff !important;
 }
 
 .marginTop{
@@ -253,6 +268,12 @@ p.Headlabel::first-letter{
   .logo2{
     width: 10vw;
   }
+}
+
+.progresslabel{
+    padding: 0% 1%;
+    font-size: 13px;
+    font-weight: 500;
 }
 
 #Tableslide{

@@ -25,19 +25,35 @@ class ColumnChart extends Component {
 	openModal = (e) =>{
     var data = e.dataSeries.name; 
     var Curdate = e.dataPoint.date;
+    var ConID = e.dataPoint.conid; 
     var dtformat = Curdate.split("-");
+    var dtfrom = '';
         var type = '';
-        if(data === 'DR'){
-        type = 28;
-        }if(data === 'CR'){
-        type = 29;
-        }if(data === 'NR'){
-          type = 30;
-        }if(data === 'Other'){
-          type = 31;
+        if (this.props.charttype === 'Day progress'){
+          type = 34;
+          dtfrom = dtformat[2]+"-"+dtformat[1]+"-"+dtformat[0];
+          data = e.dataPoint.date;
         }
+        if (this.props.charttype === 'Contract progress'){
+          type = 35;
+          dtfrom = this.props.datefrom;
+          data = e.dataPoint.date;
+        }
+        if (this.props.charttype === 'Employee'){
+          dtfrom = dtformat[2]+"-"+dtformat[1]+"-"+dtformat[0];
+          if(data === 'DR'){
+            type = 28;
+            }if(data === 'CR'){
+            type = 29;
+            }if(data === 'NR'){
+              type = 30;
+            }if(data === 'Other'){
+              type = 31;
+          }
+        }
+          
 
-        this.props.openModal(type,0,this.props.Emplyid,data ,'',dtformat[2]+"-"+dtformat[1]+"-"+dtformat[0],null); 
+        this.props.openModal(type,ConID,this.props.Emplyid,data ,'',dtfrom,this.props.dateto); 
 		
 	}
 

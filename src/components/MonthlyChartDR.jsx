@@ -49,9 +49,18 @@ class ColumnChart extends Component {
 
 
                 const options = {
-                    height: 250,
+                    height: 180,
                     // colorSet: "ConShades",
+                    backgroundColor: '#e3e4e9',
                     zoomEnabled: true,
+                    subtitles:[{
+                        text: "DR",
+                        horizontalAlign: "center",
+                        verticalAlign: "top",
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        fontFamily: "Roboto,Helvetica Neue,sans-serif"
+                }],
                     toolTip: {
                       shared: true,
                       contentFormatter: function (e) { 
@@ -173,7 +182,7 @@ class ColumnChart extends Component {
 
 
 		return (
-		<div className="chartbuild">
+		<div className="chartmonthly" style={{background:'#e3e4e9'}}>
 				{(() => {
 					if (value) {
 					return (
@@ -188,7 +197,12 @@ class ColumnChart extends Component {
 						/>
 					)
 					}
-				})()}
+                })()}
+                <div style={{textAlign:'center'}}>
+                    <span className="progresslabel">Total : {(value.length > 0) && value[0].total}</span>
+                    <span className="progresslabel">Open : {(value2.length > 0) && value2[0].open}</span>
+                    <span className="progresslabel">Close : {(value3.length > 0) && value3[0].close}</span>
+                </div>
 
 			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
 		</div>

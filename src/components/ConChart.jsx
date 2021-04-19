@@ -47,6 +47,9 @@ class ColumnChart extends Component {
     }if(this.props.Headprop === 'MR'){
       type = 27;
     }
+    if(this.props.Headprop === 'FR'){
+      type = 32;
+    }
 
     var contype = '';
     if(name === 'Implementation'){
