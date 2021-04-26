@@ -212,6 +212,11 @@ function SimpleCard(props) {
   const [ContChartAMCFR,setContChartAMCFR] = useState([]);
   const [ContChartIMPFR,setContChartIMPFR] = useState([]);
   const [ContChartOtherFR,setContChartOtherFR] = useState([]);
+  const [ContChartLiveRR,setContChartLiveRR] = useState([]);
+  const [ContChartAMCRR,setContChartAMCRR] = useState([]);
+  const [ContChartIMPRR,setContChartIMPRR] = useState([]);
+  const [ContChartOtherRR,setContChartOtherRR] = useState([]);
+
   const [ContChartLiveSNA,setContChartLiveSNA] = useState([]);
   const [ContChartAMCSNA,setContChartAMCSNA] = useState([]);
   const [ContChartIMPSNA,setContChartIMPSNA] = useState([]);
@@ -321,8 +326,8 @@ function SimpleCard(props) {
   const [selectedDate2, setSelectedDate2] = React.useState(new Date());
   const Frommon = selectedDate.getMonth()+1; 
   const Tomon = selectedDate2.getMonth()+1; 
-  var Fromdate = selectedDate.getFullYear()+"-"+Frommon+"-"+ selectedDate.getDate();
-  var Todate = selectedDate2.getFullYear()+"-"+Tomon+"-"+ selectedDate2.getDate();
+  var Fromdate = selectedDate.getDate()+"-"+Frommon+"-"+selectedDate.getFullYear() ;
+  var Todate = selectedDate2.getDate()+"-"+Tomon+"-"+selectedDate2.getFullYear() ;
   // const [selectedMonth, setSelectedMonth] = React.useState(new Date());
   const [filteropen,setfilteropen] = useState(false);
   const [slideType,setslideType] = useState('');
@@ -353,7 +358,7 @@ function SimpleCard(props) {
     getOptionLabel: (option) => option.ContractName,
   };
 
-  let columnIndex =  ["ComplaintNo","Date","ETA Date","ETA Time","Ageing","ContractName","Nature of Complaint","Description","Priority","ANAName","EXEName","StageName"];
+  let columnIndex =  ["ComplaintNo","Date","ETA Date","ETA Time","Ageing","ContractName","RegisteredBy","Description","Priority","ANAName","EXEName","StageName"];
   
   const exportData = [
     {
@@ -949,36 +954,6 @@ function Conchange(type){
     addcls.classList.add('activereq')
   
   }
-  if(type === 'MR'){
-    if(OvrallIndex === 0){
-      setContChartLive(ContChartLiveMR)
-      setContChartAMC(ContChartAMCMR)
-      setContChartIMP(ContChartIMPMR)
-      setContChartOther(ContChartOtherMR)
-    }else{
-      setContChartLive(AllconChartLiveDR)
-      setContChartAMC(AllconChartAMCDR)
-      setContChartIMP(AllconChartIMPDR)
-      setContChartOther(AllconChartOtherDR)
-    }
-    let addcls = document.getElementsByClassName('borderradius')[5];
-    addcls.classList.add('activereq')
-  }
-  if(type === 'FR'){
-    if(OvrallIndex === 0){
-      setContChartLive(ContChartLiveFR)
-      setContChartAMC(ContChartAMCFR)
-      setContChartIMP(ContChartIMPFR)
-      setContChartOther(ContChartOtherFR)
-    }else{
-      setContChartLive(AllconChartLiveDR)
-      setContChartAMC(AllconChartAMCDR)
-      setContChartIMP(AllconChartIMPDR)
-      setContChartOther(AllconChartOtherDR)
-    }
-    let addcls = document.getElementsByClassName('borderradius')[6];
-    addcls.classList.add('activereq')
-  }
   if(type === 'OTH'){
     if(OvrallIndex === 0){
       setContChartLive(ContChartLiveOTH)
@@ -996,12 +971,58 @@ function Conchange(type){
     setEmpChartIMP(EmpChartIMPOTH)
     setEmpChartOther(EmpChartOtherOTH)
     setColorline('#FFC23D')
+    let addcls = document.getElementsByClassName('borderradius')[5];
+    addcls.classList.add('activereq')
+  }
+  if(type === 'MR'){
+    if(OvrallIndex === 0){
+      setContChartLive(ContChartLiveMR)
+      setContChartAMC(ContChartAMCMR)
+      setContChartIMP(ContChartIMPMR)
+      setContChartOther(ContChartOtherMR)
+    }else{
+      setContChartLive(AllconChartLiveDR)
+      setContChartAMC(AllconChartAMCDR)
+      setContChartIMP(AllconChartIMPDR)
+      setContChartOther(AllconChartOtherDR)
+    }
+    let addcls = document.getElementsByClassName('borderradius')[6];
+    addcls.classList.add('activereq')
+  }
+  if(type === 'FR'){
+    if(OvrallIndex === 0){
+      setContChartLive(ContChartLiveFR)
+      setContChartAMC(ContChartAMCFR)
+      setContChartIMP(ContChartIMPFR)
+      setContChartOther(ContChartOtherFR)
+    }else{
+      setContChartLive(AllconChartLiveDR)
+      setContChartAMC(AllconChartAMCDR)
+      setContChartIMP(AllconChartIMPDR)
+      setContChartOther(AllconChartOtherDR)
+    }
     let addcls = document.getElementsByClassName('borderradius')[7];
     addcls.classList.add('activereq')
-  }if(type === 'OVD'){
+  }
+  if(type === 'RR'){
+    if(OvrallIndex === 0){
+      setContChartLive(ContChartLiveRR)
+      setContChartAMC(ContChartAMCRR)
+      setContChartIMP(ContChartIMPRR)
+      setContChartOther(ContChartOtherRR)
+    }else{
+      setContChartLive(AllconChartLiveDR)
+      setContChartAMC(AllconChartAMCDR)
+      setContChartIMP(AllconChartIMPDR)
+      setContChartOther(AllconChartOtherDR)
+    }
+    let addcls = document.getElementsByClassName('borderradius')[8];
+    addcls.classList.add('activereq')
+  }
+  if(type === 'OVD'){
     // setContChart(ContChartOD)
     setColorline('#FFC23D')
-    let addcls = document.getElementsByClassName('borderradius')[8];
+    let addcls = document.getElementsByClassName('borderradius')[9];
     addcls.classList.add('activereq')
   }
   
@@ -1018,7 +1039,7 @@ function Conchange(type){
       setContChartIMP(AllconChartIMPDR)
       setContChartOther(AllconChartOtherDR)
     }
-    let addcls = document.getElementsByClassName('borderradius')[11];
+    let addcls = document.getElementsByClassName('borderradius')[12];
     addcls.classList.add('activereq')
   }
   if(type === 'NOETA'){
@@ -1033,7 +1054,7 @@ function Conchange(type){
       setContChartIMP(AllconChartIMPDR)
       setContChartOther(AllconChartOtherDR)
     }
-    let addcls = document.getElementsByClassName('borderradius')[12];
+    let addcls = document.getElementsByClassName('borderradius')[13];
     addcls.classList.add('activereq')
   }
   
@@ -1084,7 +1105,7 @@ function MonthChange(type,empname){
       let Fmon = selectedDate.getMonth()+1; 
       let Tmon = selectedDate2.getMonth()+1; 
       
-      setFiltertitle("MonthWise - "+Headval+"("+selectedDate.getFullYear()+"-"+Fmon+"-"+ selectedDate.getDate()+" -"+selectedDate2.getFullYear()+"-"+Tmon+"-"+ selectedDate2.getDate()+" )")
+      setFiltertitle("MonthWise - "+Headval+"( "+selectedDate.getFullYear()+"-"+Fmon+"-"+ selectedDate.getDate()+" -"+selectedDate2.getFullYear()+"-"+Tmon+"-"+ selectedDate2.getDate()+" )")
       var qrytype = '';
       if(Headval === 'DR'){
         qrytype = 11;
@@ -1602,7 +1623,7 @@ function MonthChange(type,empname){
       
       let Fmon = selectedDate.getMonth()+1; 
       let Tmon = selectedDate2.getMonth()+1; 
-      setFiltertitle("Day wise Progress ("+Fromdate+" - "+Todate+")")
+      setFiltertitle("Day wise Progress ( "+Fromdate+" - "+Todate+" )")
       
       const params = {
         "data":
@@ -1700,11 +1721,11 @@ function MonthChange(type,empname){
          
         })
     }
-    if(type === 'Contract progress'){
+    if(type === 'Contract closed'){
       
       let Fmon = selectedDate.getMonth()+1; 
       let Tmon = selectedDate2.getMonth()+1; 
-      setFiltertitle("Contract wise Progress ("+Fromdate+" - "+Todate+")")
+      setFiltertitle("Contract wise Closed ( "+Fromdate+" - "+Todate+" )")
       
       const params = {
         "data":
@@ -1769,6 +1790,148 @@ function MonthChange(type,empname){
         setEmpUpTaskNR(TaskEmpNR);
         setEmpUpTaskOTH(TaskEmpOTH);
       })
+
+      // Totals
+      const params2 = {
+        "data":
+        {
+        "QryType_int": 27,
+        "ProType_int": ConTypeFil,
+        "EmpID_int": EmpID,
+        "ConID_int": null,
+        "month_int": null,
+        "year_int": null,
+        "FromDate_date": selectedDate.getFullYear()+"-"+Fmon+"-"+ selectedDate.getDate(),
+        "Todate_date": selectedDate2.getFullYear()+"-"+Tmon+"-"+ selectedDate2.getDate(),
+        }
+        }
+
+        fetch(url,{
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            
+          },
+          body: JSON.stringify(params2)
+        })
+        .then((res)=>res.json())
+        .then((data)=>{  
+          let res = data.Output.data;
+         console.log("Total",res)
+         setTotproCR(res[0].CR);
+         setTotproDR(res[0].DR);
+         setTotproNR(res[0].NR);
+         setTotproOther(res[0].Other);
+  
+         
+        })
+    }
+    if(type === 'Contract raised'){
+      
+      let Fmon = selectedDate.getMonth()+1; 
+      let Tmon = selectedDate2.getMonth()+1; 
+      setFiltertitle("Contract wise Raised ( "+Fromdate+" - "+Todate+" )")
+      
+      const params = {
+        "data":
+        {
+        "QryType_int": 29,
+        "ProType_int": ConTypeFil,
+        "EmpID_int": EmpID,
+        "ConID_int": null,
+        "month_int": null,
+        "year_int": null,
+        "FromDate_date": selectedDate.getFullYear()+"-"+Fmon+"-"+ selectedDate.getDate(),
+        "Todate_date": selectedDate2.getFullYear()+"-"+Tmon+"-"+ selectedDate2.getDate(),
+        }
+        }
+
+      fetch(url,{
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          
+        },
+        body: JSON.stringify(params)
+      })
+      .then((res)=>res.json())
+      .then((data)=>{  
+        let res = data.Output.data;
+        let TaskEmpDR = [];
+        let TaskEmpCR = [];
+        let TaskEmpNR = [];
+        let TaskEmpOTH = [];
+
+        res.map((val) => {
+          TaskEmpDR.push({
+            "y": Number(val.DR),
+            "label": val.ContractCode,
+            "date": val.ContractName,
+            "conid": val.ContractIDPK
+          });
+          TaskEmpCR.push({
+            "y": Number(val.CR),
+            "label": val.ContractCode,
+            "date": val.ContractName,
+            "conid": val.ContractIDPK
+          });
+          TaskEmpNR.push({
+            "y": Number(val.NR),
+            "label": val.ContractCode,
+            "date": val.ContractName,
+            "conid": val.ContractIDPK
+          });
+          TaskEmpOTH.push({
+            "y": Number(val.Others),
+            "label": val.ContractCode,
+            "date": val.ContractName,
+            "conid": val.ContractIDPK
+          });
+          return null;
+        }) 
+        setEmpUpTaskDR(TaskEmpDR);
+        setEmpUpTaskCR(TaskEmpCR);
+        setEmpUpTaskNR(TaskEmpNR);
+        setEmpUpTaskOTH(TaskEmpOTH);
+      })
+
+      // Totals
+      const params2 = {
+        "data":
+        {
+        "QryType_int": 30,
+        "ProType_int": ConTypeFil,
+        "EmpID_int": EmpID,
+        "ConID_int": null,
+        "month_int": null,
+        "year_int": null,
+        "FromDate_date": selectedDate.getFullYear()+"-"+Fmon+"-"+ selectedDate.getDate(),
+        "Todate_date": selectedDate2.getFullYear()+"-"+Tmon+"-"+ selectedDate2.getDate(),
+        }
+        }
+
+        fetch(url,{
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            
+          },
+          body: JSON.stringify(params2)
+        })
+        .then((res)=>res.json())
+        .then((data)=>{  
+          let res = data.Output.data;
+         console.log("Total",res)
+         setTotproCR(res[0].CR);
+         setTotproDR(res[0].DR);
+         setTotproNR(res[0].NR);
+         setTotproOther(res[0].Other);
+  
+         
+        })
     }
     
     
@@ -1838,6 +2001,10 @@ const getData = ( ) => {
     let ConAMCFR = [];
     let ConIMPFR = [];
     let ConOtherFR = [];
+    let ConLiveRR = [];
+    let ConAMCRR = [];
+    let ConIMPRR = [];
+    let ConOtherRR = [];
     let ConLiveSNA = [];
     let ConAMCSNA = [];
     let ConIMPSNA = [];
@@ -2624,6 +2791,43 @@ const getData = ( ) => {
         setContChartIMPFR(ConIMPFR);
         setContChartOtherFR(ConOtherFR);
       
+      }else if(val.Header === '37') {
+        
+        ConLiveRR.push({
+          'label':val.Descriptions1,
+          'y':Number(val.LIVE),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })
+        ConAMCRR.push({
+          'label':val.Descriptions1,
+          'y':Number(val.AMC),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })
+        ConIMPRR.push({
+          'label':val.Descriptions1,
+          'y':Number(val.IMP),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })
+        ConOtherRR.push({
+          'label':val.Descriptions1,
+          'y':Number(val.Other),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        }) 
+        if(Headval === 'RR'){
+          setContChartLive(ConLiveRR);
+          setContChartAMC(ConAMCRR);
+          setContChartIMP(ConIMPRR);
+          setContChartOther(ConOtherRR);
+        }
+        setContChartLiveRR(ConLiveRR);
+        setContChartAMCRR(ConAMCRR);
+        setContChartIMPRR(ConIMPRR);
+        setContChartOtherRR(ConOtherRR);
+      
       }
       
       return null;
@@ -2681,7 +2885,7 @@ const getData = ( ) => {
       }else{
         res.map((value) => {
           exportarry.push([value.ComplaintNo,value.ComplainedDate,value.ETADate,value.ETATime,value.AgeingInDays,value.ContractName,
-            value.ComplainerName,value.ComplaintNatureName,value.RequestDetailsDesc,value.PriorityName,value.TechName,value.bdmempname,value.StageName]); 
+            value.ComplainerName,value.RequestDetailsDesc,value.PriorityName,value.TechName,value.bdmempname,value.StageName]); 
           return null;  
         });
       }      
@@ -2881,7 +3085,7 @@ return (
                                   />
                                 </MuiPickersUtilsProvider>
                               </Grid>
-                              <Grid item xs={6} sm={6} md={2} style={{padding: '3px 10px'}}>
+                              <Grid item xs={8} sm={8} md={2} style={{padding: '3px 10px'}}>
                                 <Autocomplete
                                   style={{width:'100%'}}
                                   size="small"
@@ -2900,7 +3104,10 @@ return (
                                   renderInput={(params) => <TextField {...params} label="Select Employee" margin="normal" fullWidth/>}
                                 />
                               </Grid>
-                              <Grid item xs={6} sm={6} md={6} style={{padding: '3px 10px'}}>
+                              <Grid item xs={4} sm={4} md={2} className="searchdiv">
+                                <button className="btnCss btnpad" onClick={()=>{OverlaySlide(38,null,EmpID,'Open Employee List')}}>Open Employee</button>
+                              </Grid>
+                              <Grid item xs={8} sm={8} md={2} style={{padding: '3px 10px'}}>
                                 <Autocomplete
                                   style={{width:'100%'}}
                                   size="small"
@@ -2918,6 +3125,10 @@ return (
                                   }}
                                   renderInput={(params) => <TextField {...params} label="Select Contract" margin="normal" fullWidth/>}
                                 />
+                                
+                              </Grid>
+                              <Grid item xs={4} sm={4} md={2} className="searchdiv">
+                                <button className="btnCss btnpad" onClick={()=>{OverlaySlide(37,ContractID,null,'Open Contract List')}}>Open Contract</button>
                               </Grid>
                               {/*<Grid item xs={6} sm={4} md={2} style={{ paddingLeft: '1%',borderLeft: '1px solid #ccc'}}>
                                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -2954,16 +3165,19 @@ return (
                               <Grid item xs={6} sm={3} md={2} className="searchdiv">
                                 <button className="btnCss btnpad" onClick={()=>{MonthChange('Day progress')}}>Day Wise Progress</button>
                               </Grid>
-                              <Grid item xs={6} sm={6} md={2} className="searchdiv">
-                                <button className="btnCss btnpad" onClick={()=>{MonthChange('Contract progress')}}>Contract Wise Progress</button>
+                              <Grid item xs={6} sm={4} md={2} className="searchdiv">
+                                <button className="btnCss btnpad" onClick={()=>{MonthChange('Contract closed')}}>Contract Wise Closed</button>
                               </Grid>
-                              <Grid item xs={6} sm={3} md={1} className="searchdiv">
+                              <Grid item xs={6} sm={4} md={2} className="searchdiv">
+                                <button className="btnCss btnpad" onClick={()=>{MonthChange('Contract raised')}}>Contract Wise Raised</button>
+                              </Grid>
+                              <Grid item xs={3} sm={2} md={1} className="searchdiv">
                                 <button className="btnCss btnpad" onClick={()=>{MonthChange('Employee')}}>Upcoming</button>
                               </Grid>
                               {/* <Grid item xs={4} sm={4} md={1} className="searchdiv">
                                 <button className="btnCss btnpad" onClick={()=>{MonthChange('AllEmployee')}}>Upcoming All</button>
                               </Grid> */}
-                              <Grid item xs={6} sm={3} md={1} className="searchdiv">
+                              <Grid item xs={3} sm={2} md={1} className="searchdiv">
                                 <button className="btnCss btnpad" onClick={()=>{
                                   let Fmon = selectedDate.getMonth()+1; 
                                   let Tmon = selectedDate2.getMonth()+1; 
@@ -2971,6 +3185,7 @@ return (
                                   OverlaySlide(23,null,EmpID,'Log Sheet',null,selectedDate.getFullYear()+"-"+Fmon+"-"+ selectedDate.getDate(),selectedDate2.getFullYear()+"-"+Tmon+"-"+ selectedDate2.getDate())
                                   }}>LogSheet</button>
                               </Grid>
+                              
 
                             </Grid>
                         </div>
@@ -2996,7 +3211,7 @@ return (
 
                                     <h3 className="Headval" onClick={()=>{Conchange('DR')}}>
 
-                                    {val.val.DR}
+                                    {val.val.DR} / {val.val.DRE}
                                     </h3>
                                 </Grid>
 
@@ -3027,6 +3242,22 @@ return (
                                   </h3>
                                 </Grid>
 
+                                <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #ffc107'}}>
+                                  <p  className="Headlabel">GR</p>
+
+                                  <h3   className="Headval" onClick={()=>{Conchange('OTH')}}>
+
+                                      {val.val.oths}
+                                    
+                                  </h3>
+                                </Grid>
+
+                              </Grid>
+                            </Grid>  
+                            
+                            <Grid item xs={12} sm={12} md={5}>
+                              <Grid container style={{width:'100%',margin:'0'}}>
+
                                 <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #4dbd74'}}>
                                   <p  className="Headlabel " style={{'color':'#4dbd74'}}>MR</p>
 
@@ -3037,13 +3268,6 @@ return (
                                     </h3>
                                 </Grid>
 
-
-                              </Grid>
-                            </Grid>  
-                            
-                            <Grid item xs={12} sm={12} md={5}>
-                              <Grid container style={{width:'100%',margin:'0'}}>
-
                                 <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #4dbd74'}}>
                                     <p  className="Headlabel " style={{'color':'#4dbd74'}} >FR</p>
 
@@ -3052,15 +3276,16 @@ return (
                                         {val.val.FR}
                                       
                                       </h3>
-                                  </Grid>
-                                <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #ffc107'}}>
-                                  <p  className="Headlabel">GR</p>
+                                </Grid>
 
-                                  <h3   className="Headval" onClick={()=>{Conchange('OTH')}}>
+                                <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #4dbd74'}}>
+                                    <p  className="Headlabel " style={{'color':'#4dbd74'}} >RR</p>
 
-                                      {val.val.oths}
-                                    
-                                  </h3>
+                                      <h3 className="Headval" onClick={()=>{Conchange('RR')}}>
+
+                                        {val.val.RR}
+                                      
+                                      </h3>
                                 </Grid>
                                 
                                 <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #ffc107'}}>
@@ -3092,7 +3317,14 @@ return (
                                       
                                       </h3>
                                   </Grid>
-                                  <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
+                                  
+                              </Grid>  
+                            </Grid>
+
+                            <Grid item xs={12} sm={12} md={2}>
+                              <Grid container style={{width:'100%',margin:'0'}}>
+                                  
+                                  <Grid item xs={6} sm={6} md={4} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
                                     <p  className="Headlabel">SNA</p>
 
                                       <h3 className="Headval  " onClick={()=>{Conchange('SNA')}}>
@@ -3102,14 +3334,7 @@ return (
                                       </h3>
                                   </Grid>
                                   
-                                
-                              </Grid>  
-                            </Grid>
-
-                            <Grid item xs={12} sm={12} md={2}>
-                              <Grid container style={{width:'100%',margin:'0'}}>
-                                  
-                                  <Grid item xs={6} sm={6} md={6} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
+                                  <Grid item xs={6} sm={6} md={4} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
                                     <p  className="Headlabel">NOETA</p>
 
                                       <h3 className="Headval" onClick={()=>{Conchange('NOETA')}}>
@@ -3119,7 +3344,7 @@ return (
                                       </h3>
                                   </Grid>
                                   
-                                  <Grid item xs={6} sm={6} md={6} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
+                                  <Grid item xs={6} sm={6} md={4} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
                                     <p  className="Headlabel">HOLD</p>
 
                                       <h3 className="Headval" onClick={()=>{MonthChange('HOLD')}}>
@@ -3208,7 +3433,7 @@ return (
                   
                 </Card>
               </Grid>
-              {(Headval !== 'SNA' && Headval !== 'NOETA' && Headval !== 'MR' && Headval !== 'FR') &&
+              {(Headval !== 'SNA' && Headval !== 'NOETA' && Headval !== 'MR' && Headval !== 'FR' && Headval !== 'RR') &&
               <Grid item xs={12} sm={12} md={12} className="Gridpad">
                     <Card className="cardshadow">
                         
@@ -3861,20 +4086,22 @@ return (
             </Table>
           </TableContainer>
           }
-          {(slideType === 'Monthly') &&
-            (Headval === 'Total') ? 
-              <>
-                <MonthlyChartDR value = {chartMonthTotDR} value2={chartMonthOpnDR} value3={chartMonthClsDR} type={'DR'} openModal={OverlaySlide}/>
-                <MonthlyChartCR value = {chartMonthTotCR} value2={chartMonthOpnCR} value3={chartMonthClsCR} type={'CR'} openModal={OverlaySlide}/>
-                <MonthlyChartNR value = {chartMonthTotNR} value2={chartMonthOpnNR} value3={chartMonthClsNR} type={'NR'} openModal={OverlaySlide}/>
-                <MonthlyChartOTH value = {chartMonthTotOTH} value2={chartMonthOpnOTH} value3={chartMonthClsOTH} type={'OTH'} openModal={OverlaySlide}/>
-              </>
+          {(slideType === 'Monthly') ?
+              (Headval === 'Total') ? 
+                <>
+                  <MonthlyChartDR value = {chartMonthTotDR} value2={chartMonthOpnDR} value3={chartMonthClsDR} type={'DR'} openModal={OverlaySlide}/>
+                  <MonthlyChartCR value = {chartMonthTotCR} value2={chartMonthOpnCR} value3={chartMonthClsCR} type={'CR'} openModal={OverlaySlide}/>
+                  <MonthlyChartNR value = {chartMonthTotNR} value2={chartMonthOpnNR} value3={chartMonthClsNR} type={'NR'} openModal={OverlaySlide}/>
+                  <MonthlyChartOTH value = {chartMonthTotOTH} value2={chartMonthOpnOTH} value3={chartMonthClsOTH} type={'OTH'} openModal={OverlaySlide}/>
+                </>
+                :
+                <MonthlyChart value = {chartMonthTot} value2={chartMonthOpn} value3={chartMonthCls} type={Headval} openModal={OverlaySlide}/>
               :
-              <MonthlyChart value = {chartMonthTot} value2={chartMonthOpn} value3={chartMonthCls} type={Headval} openModal={OverlaySlide}/>
+                null
           }
-          {(slideType === 'Employee' && slideType === 'Day progress' && slideType === 'Contract progress') &&
+          {(slideType === 'Employee' || slideType === 'Day progress' || slideType === 'Contract closed' || slideType === 'Contract raised') &&
               <>
-              {(slideType !== 'Day progress' && slideType !== 'Contract progress') &&
+              {(slideType !== 'Day progress' && slideType !== 'Contract closed' && slideType !== 'Contract raised') &&
              
               <Autocomplete
                 style={{width:'100%'}}
@@ -3894,7 +4121,7 @@ return (
                 renderInput={(params) => <TextField {...params} label="Select Employee" margin="normal" fullWidth/>}
               /> }
               <EmpTaskchart value = {EmpUpTaskDR} value2={EmpUpTaskCR} value3={EmpUpTaskNR} value4={EmpUpTaskOTH} Emplyid={EmpID} charttype={slideType} datefrom={Fromdate} dateto={Todate} openModal={OverlaySlide}/>
-              {(slideType === 'Day progress' || slideType === 'Contract progress') &&
+              {(slideType === 'Day progress' || slideType === 'Contract closed' || slideType === 'Contract raised') &&
               <div style={{textAlign:'center'}}>
                 <span className="progresslabel">CR : {TotproCR}</span>
                 <span className="progresslabel">DR : {TotproDR}</span>

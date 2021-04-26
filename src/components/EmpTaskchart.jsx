@@ -34,9 +34,10 @@ class ColumnChart extends Component {
           dtfrom = dtformat[2]+"-"+dtformat[1]+"-"+dtformat[0];
           data = e.dataPoint.date;
         }
-        if (this.props.charttype === 'Contract progress'){
+        if (this.props.charttype === 'Contract closed'){
           type = 35;
-          dtfrom = this.props.datefrom;
+          var splitdt = this.props.datefrom.split("-"); 
+          dtfrom = splitdt[2]+"-"+splitdt[1]+"-"+splitdt[0];
           data = e.dataPoint.date;
         }
         if (this.props.charttype === 'Employee'){
@@ -209,7 +210,7 @@ class ColumnChart extends Component {
 
 
 		return (
-		<div className="chartbuild">
+		<div className="chartprogress">
 				{(() => {
 					if (value) {
 					return (

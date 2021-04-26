@@ -155,9 +155,7 @@ p.Headlabel::first-letter{
 .activereq{
   background: #eee;
 }
-.activereq > p{
-  /* color: #444 !important; */
-}
+
 .HeadlabelDR{
   color: #fff !important;
 }
@@ -334,7 +332,7 @@ p.Headlabel::first-letter{
     width: 10%;
   }
   .formslide{
-    width: 90%;
+    width: 80%;
   }
 }
 

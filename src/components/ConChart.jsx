@@ -50,6 +50,9 @@ class ColumnChart extends Component {
     if(this.props.Headprop === 'FR'){
       type = 32;
     }
+    if(this.props.Headprop === 'RR'){
+      type = 36;
+    }
 
     var contype = '';
     if(name === 'Implementation'){

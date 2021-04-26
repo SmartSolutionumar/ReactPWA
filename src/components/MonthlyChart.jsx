@@ -173,7 +173,7 @@ class ColumnChart extends Component {
 
 
 		return (
-		<div className="chartbuild">
+		<div className="chartmonthall">
 				{(() => {
 					if (value) {
 					return (
