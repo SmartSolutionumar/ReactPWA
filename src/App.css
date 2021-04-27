@@ -393,3 +393,97 @@ p.Headlabel::first-letter{
 html {
   scroll-behavior: smooth;
 }
+
+
+/* LOgin CSS */
+
+.logincss{
+  background: linear-gradient(60deg, rgb(9, 98, 118), rgb(151, 228, 212)) center center / cover no-repeat;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.TextWeight500{
+  color: #337ab7;
+    margin: 15px 0px 0px;
+    font-size: 13px;
+    font-weight: 600;
+    user-select: none;
+}
+
+.TextWeight400{
+  color: #000;
+    font-size: 13px;
+    font-weight: 500;
+    user-select: none;
+}
+
+.headerImgSize{
+  width: 200px;
+    height: 50px;
+    margin: 12px;
+}
+
+.formroot{
+  padding: 0 10%;
+    text-align: center;
+}
+
+.btnCsslogin{
+  margin: 5%;
+    padding: 3%;
+  background: #93DA44;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 5px;
+  border: 1px solid #93DA44; 
+  cursor: pointer;
+}
+
+.usercss{ 
+  padding: 2px 3%;
+    font-size: 15px;
+    font-weight: 600; 
+    display: inline-block;
+}
+
+.btnsubmit{ 
+  padding: 3px 10px;
+  background: #337AB7;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 5px;
+  border: 1px solid #337AB7; 
+  cursor: pointer;
+  margin-left: 1%;
+}
+
+.selectcss{
+  width: 100%;
+  border-radius: 3px;
+}
+
+.labelcompln{
+  font-size: 12px;
+}
+
+.red1{
+  color:red
+}
+
+.selcontain{
+  padding: 2%;
+}
+
+.multidate > div > input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  background: transparent;
+}
+
+.multidate{
+  padding: 4%;
+}

@@ -11,11 +11,14 @@ import ReactExport from "react-export-excel";
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import 'date-fns';
+import MultipleDatePicker from 'react-multiple-datepicker';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import Select from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input'; 
 // import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -27,11 +30,12 @@ import TableRow from '@material-ui/core/TableRow';
 import AppBar from '@material-ui/core/AppBar'; 
 import Grid from "@material-ui/core/Grid";
 import '../../src/App.css';
+import {config} from '../../src/config.js';
 // import {Grid item} from "@material-ui/core/Grid item";
 // import {Grid container} from "@material-ui/core/Grid container";
 import CanvasJSReact from '../assets/canvasjs.react';
 import { makeStyles } from '@material-ui/core/styles';
-import Smartfm from '../assets/img/smartfm.png';
+// import Smartfm from '../assets/img/smartfm.png';
 import Nanosoft from '../assets/img/nanosoft .png';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -41,7 +45,7 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
+import MenuList from '@material-ui/core/MenuList'; 
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import ConChart from './ConChart';
@@ -167,6 +171,8 @@ values : {
 };
 
 function SimpleCard(props) {
+  var UserID = localStorage.getItem('userid');
+
   const classuse = useStyles();
   const { classes } = props;
   const [loading,setLoading] = useState(false);
@@ -288,6 +294,7 @@ function SimpleCard(props) {
   const [Slidedata,setSlidedata] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [Message,setMessage] = useState('');
+  const [msgColor,setmsgColor] = useState('');
   const [ConTypeFil,setConTypeFil] = useState(0);
   const [EmpWorkhrs,setEmpWorkhrs] = useState([]);
   const [EmpEtt,setEmpEtt] = useState([]);
@@ -346,7 +353,26 @@ function SimpleCard(props) {
   const [TotproDR, setTotproDR] = React.useState('');
   const [TotproNR, setTotproNR] = React.useState('');
   const [TotproOther, setTotproOther] = React.useState('');
+
+  const [WOtypeID,setWOtypeID] = React.useState(0);
+  const [natureval,setnatureval] = React.useState('');
+  const [ContID,setContID] = React.useState(''); 
+  const [LocID,setLocID] = React.useState('');
+  const [priorID,setpriorID] = React.useState('');
+  const [DivID,setDivID] = React.useState('');
+  const [Descval,setDescval] = React.useState('');
+  const[Localtime,setLocaltime] = React.useState('');
+
+  const [personName, setPersonName] = React.useState([]);
+  const [multiEmp, setmultiEmp] = React.useState('');
+  const [ProDate, setProDate] = React.useState('');
   
+
+  const handleChange = (event) => {
+    console.log(event.target.value.toString(),"Epl")
+    setPersonName(event.target.value);
+    setmultiEmp(event.target.value.toString())
+  };
 
   const defaultProps = {
     options: Empoption,
@@ -685,6 +711,9 @@ useEffect(( ) => {
 
 useEffect(( ) => {
   Emplist();
+  var time = new Date();
+  var n = time.getHours() + ":" + time.getMinutes();
+  setLocaltime(n);
   // eslint-disable-next-line
  },[]);
  
@@ -1463,6 +1492,7 @@ function MonthChange(type,empname){
         document.getElementById("filterslide").style.width = "0vw";
         setOpen(true);
         setMessage('Please select Employee!');
+        setmsgColor('warning');
         return false;
       }
       let Fmon = selectedDate.getMonth()+1; 
@@ -1545,6 +1575,7 @@ function MonthChange(type,empname){
         document.getElementById("filterslide").style.width = "0vw";
         setOpen(true);
         setMessage('Please select Employee!');
+        setmsgColor('warning');
         return false;
       }
       let Fmon = selectedDate.getMonth()+1; 
@@ -1932,6 +1963,11 @@ function MonthChange(type,empname){
   
          
         })
+    }
+
+    if(type === 'Complaint'){
+      setFiltertitle("Register a Complaint")
+      contractlist();
     }
     
     
@@ -2895,6 +2931,7 @@ const getData = ( ) => {
     }else{
       setOpen(true);
       setMessage('No Record Found!');
+      setmsgColor('warning');
     }
     
   }); 
@@ -2956,10 +2993,205 @@ function autorefresh(){
   }
   
 }
- 
-var logofm = Smartfm;
 
-logofm = 'static/media/smartfm.38ea370b.png';
+function LogOutBtn(){ 
+  localStorage.setItem('authBill', true); 
+  localStorage.clear(); 
+  props.history.push('/login');
+}
+
+// Complaint Function
+// useEffect(()=>{
+//   contractlist();
+//   // eslint-disable-next-line
+// },[]);
+
+
+function contractlist(e){
+    
+    const url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=101&UserID="+UserID;
+           
+        fetch(url)
+        .then(res=>res.json())
+        .then(res=>{    
+            console.log(res,"Conta")
+            var Contview = res;
+            let select = document.getElementById("contractval");
+              let length = select.options.length;
+              for (let i = length-1; i >= 0; i--) {
+                  select.options[i] = null;
+              } 
+            if(e){
+              let select = document.getElementById("contractval");
+              let length = select.options.length;
+              for (let i = length-1; i >= 0; i--) {
+                  select.options[i] = null;
+              } 
+              res.map(val => {
+                var description = val.ContractName.toLowerCase();
+                // var titleMatch = title.includes("smart");
+                var descriptionMatch = description.includes(e.toLowerCase());
+                
+                if(descriptionMatch){
+                  var ele = document.getElementById('contractval');
+                      // POPULATE SELECT ELEMENT WITH JSON.
+                      ele.innerHTML = ele.innerHTML +
+                          '<option title="' + val.ContractName + '" value="' +val.ContractID + '">' + val.ContractName + '</option>';
+                  // return {...val
+                  // };
+                  // console.log(...val);
+                }
+                return null;
+               })
+            }else{
+              
+              var ele = document.getElementById('contractval');
+              for (var i = 0; i < Contview.length; i++) {
+                  // POPULATE SELECT ELEMENT WITH JSON.
+                  ele.innerHTML = ele.innerHTML +
+                      '<option title="' + Contview[i]['ContractName'] + '" value="' + Contview[i]['ContractID'] + '">' + Contview[i]['ContractName'] + '</option>';
+              }
+            }
+              
+            //  console.log('0',staffview)  
+           
+        }) 
+        const url2 = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=9";
+
+        fetch(url2)
+        .then(res=>res.json())
+        .then(res=>{
+            var Prioview = res;
+              var ele = document.getElementById('priority');
+              for (var i = 0; i < Prioview.length; i++) {
+                  // POPULATE SELECT ELEMENT WITH JSON.
+                  ele.innerHTML = ele.innerHTML +
+                      '<option value="' + Prioview[i]['PriorityIDPK'] + '">' + Prioview[i]['PriorityName'] + '</option>';
+              }
+        
+        })
+}
+ 
+function ContChange(e){ 
+  var skillsSelect = document.getElementById("contractval");
+  var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+  document.getElementById("continput").value = selectedText;
+  setContID(e);
+  let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=102&UserID="+UserID+"&ContractID="+e;
+    fetch(url)
+    .then(res=>res.json())
+    .then(res=>{
+        setLocID(res[0].LocalityID);
+    })
+}
+
+function WOChange(CatID){
+  setWOtypeID(CatID);
+  var select = document.getElementById("division");
+  var length = select.options.length;
+  for (let i = length-1; i >= 0; i--) {
+      select.options[i] = null;
+  } 
+  let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=8&WoTypeID="+CatID;
+  fetch(url)
+        .then(res=>res.json())
+        .then(res=>{
+  
+        var Divisionview = res;
+        var ele = document.getElementById('division');
+        for (var i = 0; i < Divisionview.length; i++) {
+            // POPULATE SELECT ELEMENT WITH JSON.
+            ele.innerHTML = ele.innerHTML +
+                '<option value="' + Divisionview[i]['DivisionIDPK'] + '">' + Divisionview[i]['DivisionName'] + '</option>';
+        }            
+  }) 
+}
+
+function DivChange(divid){
+    setDivID(divid);
+    var select = document.getElementById("nature");
+    var length = select.options.length;
+    for (let i = length-1; i >= 0; i--) {
+        select.options[i] = null;
+    }
+
+    let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=5&DivisionID="+divid+"&CategoryID="+WOtypeID;
+    fetch(url)
+          .then(res=>res.json())
+          .then(res=>{
+            var Natureview = res;
+            var ele = document.getElementById('nature');
+            for (var i = 0; i < Natureview.length; i++) {
+                // POPULATE SELECT ELEMENT WITH JSON.
+                ele.innerHTML = ele.innerHTML +
+                    '<option value="' + Natureview[i]['ComplaintNatureName'] + '">' + Natureview[i]['ComplaintNatureName'] + '</option>';
+            }         
+    }) 
+        
+}
+
+function multidatechange(date){
+  
+  var muldate = [];
+  date.map((val) => {
+    let mon = val.getMonth()+1; 
+    muldate.push(val.getFullYear()+"-"+mon+"-"+val.getDate())
+    return null;
+  })
+  setProDate(muldate.toString()) 
+}
+
+function submitComp(){
+  
+  var UserName = localStorage.getItem('username');
+
+  var dataString ="NatureOfComplaint="+natureval+"&UserID="+UserID+"&Email=null&Description="+Descval+"&ContractID="+ContID+"&LocalityID="+LocID+"&BuildingID=null&FloorID=null&SpotID=null&ComplainerName="+UserName+"&ContactNo=null&PortalType=2&DocID=null&DivisionID="+DivID+"&PriorityID="+priorID+"&EmpID="+multiEmp+"&ProDate="+ProDate;
+        //console.log(dataString,"Body") 
+        if (natureval === '' || DivID === '' || priorID === '' || Descval === '' || ContID === ''){
+            setOpen(true);
+            setMessage("Please fill all mandatory fields");
+            setmsgColor('error');
+        }else{
+          let url = config.submiturl + "NsetrackComplaintRegistry.php";
+          fetch(url,{
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              
+            },
+            body: dataString
+          })
+          .then((res)=>res.json())
+          .then((data)=>{
+              if (data > 0) {
+                  setOpen(true);
+                  setMessage("Task Raised ,Complaint registered successfully");
+                  setmsgColor('success');
+                  staffassign(data);
+              }else{
+                  setOpen(true);
+                  setMessage("Problem during submission");
+                  setmsgColor('error');
+              }
+          })
+        }
+  
+}
+
+function staffassign(id){
+
+  let url = config.submiturl + "/SupportStaffAssign.php?EmployeeID="+EmpID+"&CCMComplaintID="+id+"&DivisionExe=STAFFASIGN";
+    fetch(url)
+          .then(res=>res.json())
+          .then(res=>{
+            console.log(res,"Assigned")
+          })
+}
+ 
+// var logofm = Smartfm;
+
+// logofm = 'static/media/smartfm.38ea370b.png';
 
 return (
 
@@ -2976,12 +3208,13 @@ return (
                 <Grid item xs={3} sm={2} md={2} style={{ textAlign:'left' }}>
                   <img alt="logo1" src={Nanosoft} className='logo1'></img>
                 </Grid>
-                <Grid item xs={6} sm={8} md={8} style={{textAlign:'center'}}>
+                <Grid item xs={7} sm={8} md={9} style={{textAlign:'center'}}>
                   <span className="Apphead">NanoSoft Tracker Board</span> 
                 </Grid>
-                <Grid item xs={3} sm={2} md={2} style={{textAlign:'end'}}>
-                  <img alt="logo2" src={logofm} className='logo2'></img>
-
+                <Grid item xs={2} sm={2} md={1} style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
+                  {/* <img alt="logo2" src={logofm} className='logo2'></img> */}
+                  <span className="usercss">{localStorage.getItem('username')}</span>
+                  <Icon style={{marginLeft: '3%'}} title={'Logout'} onClick={LogOutBtn}>logout</Icon>
                 </Grid>
               </Grid> 
             </AppBar>
@@ -3044,6 +3277,7 @@ return (
                             )}
                           </Popper>
                         </span>}
+                        <button className="btnsubmit" onClick={()=>{MonthChange('Complaint')}}>Submit</button>
                         <Icon style={{float:'right'}} title={refresh ? 'Disable Autorefresh' : 'Enable Autorefresh'} onClick={autorefresh}>{refresh ? 'update_disabled': 'refresh'}</Icon>
                         <button style={{float:'right'}} className="btnCss" onClick={()=>{filterchange()}}><Icon className="filcss">filter_alt</Icon>Filter</button>
                         <div id="filDiv">
@@ -3950,7 +4184,7 @@ return (
           vertical: 'top',
           horizontal: 'center',
   }}>
-    <Alert onClose={handleClose} severity="warning">
+    <Alert onClose={handleClose} severity={msgColor}>
       {Message}
     </Alert>
   </Snackbar>
@@ -4159,6 +4393,163 @@ return (
               </TableBody>
             </Table>
           </TableContainer>
+          }
+
+          {(slideType === 'Complaint') &&
+            <Grid container>
+              <Grid item xs={12} sm={12} md={4} >
+                    <div className="selcontain">
+                      <TextField label="Contract"
+                          id="continput"
+                          style={{width: '100%'}} 
+                          onChange={(e)=>{contractlist(e.target.value) }}
+                          // value={Contname}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          />
+                      <select className="selectcss" size="10" id="contractval" onChange={(e)=>{ContChange(e.target.value) }}>
+                        <option value="">-----Select-----</option>
+                      </select>
+                    </div>
+              </Grid>
+              <Grid item xs={12} sm={12} md={8} >
+                <Grid container>
+                  <Grid item xs={4} sm={4} md={4} >
+                    <div className="selcontain">
+                      <TextField  label="Date"
+                        value={Fromdate}
+                        disabled={true}
+                        />
+                    </div>
+                  </Grid>
+                  <Grid item xs={4} sm={4} md={4} >
+                      <div className="selcontain">
+                        <TextField  label="Time" 
+                          value={Localtime}
+                          disabled={true}
+                          />
+                      </div>
+                  </Grid>
+                  <Grid item xs={4} sm={4} md={4} >
+                      <div className="selcontain">
+                        <TextField  label="Status"
+                          value={"Open"}
+                          disabled={true}
+                          />
+                      </div>
+                  </Grid>
+                  
+                  <Grid item xs={12} sm={12} md={4} >
+                    <Grid container>
+                      <Grid item xs={12} sm={12} md={12}>
+                        <div className="selcontain">
+                          <label className="labelcompln">Workorder Type<span className="red1">*</span></label>
+                          <select className="selectcss" size="2" onChange={(e)=>{WOChange(e.target.value) }}>
+                            <option value="1">Complaints</option>
+                            <option value="2">Service Request</option>
+                          </select>
+                        </div>
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={12}>
+                        <div className="selcontain">
+                          <label className="labelcompln">Priority<span className="red1">*</span></label>
+                          <select className="selectcss" size="4" id="priority" onChange={(e)=>{setpriorID(e.target.value)}}>
+                            
+                          </select>
+                        </div>
+                      </Grid>
+                    </Grid>
+
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={4}>
+                    <div className="selcontain">
+                      <label className="labelcompln">Division<span className="red1">*</span></label>
+                      <select className="selectcss" size="8" id="division" onChange={(e)=>{DivChange(e.target.value) }}>
+                        <option value="">-----Select Division-----</option>
+                      </select>
+                    </div>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={4}>
+                    <div className="selcontain">
+                      <label className="labelcompln">Nature Of Complaint<span className="red1">*</span></label>
+                      <select className="selectcss" size="8" id="nature" onChange={(e)=>{setnatureval(e.target.value)}}>
+                        <option value="">-----Select Nature Of complaint-----</option>
+                      </select>
+                    </div>
+                  </Grid>
+
+                </Grid>
+              </Grid>
+              
+              <Grid item xs={12} sm={12} md={12}>
+                <div className="selcontain">
+                  <TextField
+                    style={{width: '100%'}}
+                    id="standard-multiline-flexible"
+                    label="Description"
+                    multiline
+                    rowsMax={4}
+                    value={Descval}
+                    onChange={(e)=>{setDescval(e.target.value)}}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6}>
+                <div className="selcontain">
+                  {/* <Autocomplete 
+                    style={{width:'100%'}} 
+                    size="small"
+                    {...defaultProps}
+                    id="Emp-select"
+                    value={Empvalue}
+                    onChange={(event, newValue) => {
+                      setEmpValue(newValue);
+                      if(newValue){
+                        setEmpID(newValue.NSEEMPID);
+                      }else{
+                        setEmpID(null);
+                      }
+                      
+                    }}
+                    renderInput={(params) => <TextField {...params} label="Select Employee" margin="normal" fullWidth/>}
+                  /> */}
+                  <label className="labelcompln">Select Employee</label>
+                  <Select
+                    style={{width:'100%'}}
+                    labelId="demo-mutiple-name-label"
+                    id="demo-mutiple-name"
+                    multiple
+                    value={personName}
+                    onChange={handleChange}
+                    input={<Input />}
+                  >
+                    {Empoption.map((name) => (
+                      <MenuItem key={name.NSEEMPID} value={name.NSEEMPID}>
+                        {name.EmpName}
+                      </MenuItem>
+                    ))}
+                  </Select>
+
+                </div>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6}>
+                <div className="multidate">
+                  <label className="labelcompln">Production ETA</label>
+                  <MultipleDatePicker
+                        onSubmit={dates => multidatechange(dates)}
+                      />
+                </div>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <div style={{textAlign: 'center'}}>
+                  <button id="btnsubmit" className="btnCss btnpad" onClick={()=>{submitComp()}}>Submit</button>
+                </div>
+              </Grid>
+              
+
+            </Grid>
+              
           }
       </div>
   </div>

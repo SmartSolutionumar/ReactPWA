@@ -1,12 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+// import App from './App';
+import { HashRouter, Redirect, Route, Switch  } from "react-router-dom"; 
+import Login from './Login';
+// import "./assets/scss/material-dashboard-pro-react.scss?v=1.7.0";  
+// import Home from './HomePage/TestHome';
+import Home from './components/SimpleCard';
+import PrivateRoute from './Authentication'; 
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <>
-    <App />
+    <HashRouter>
+        <Switch>      
+          <PrivateRoute  path="/Home" component={Home} />  
+          <Route path="/login" component={Login}/>
+          <Route path="/Home" component={Home}/>
+          <Redirect from="/" to="/login" />
+        </Switch>
+    </HashRouter>
   </>,
   document.getElementById('root')
 );
