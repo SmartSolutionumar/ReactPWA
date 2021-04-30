@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 // import CardHeader from '@material-ui/core/CardHeader';
 // import Box from '@material-ui/core/Box';
 // import smartfm from '../../src/assets/img/smartfm.png';
-import axios from 'axios';
+// import axios from 'axios';
 import CardContent from '@material-ui/core/CardContent';
 import ReactExport from "react-export-excel";
 import TextField from '@material-ui/core/TextField';
@@ -3169,14 +3169,44 @@ var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Descr
       }else{
         setformLoading(true); 
         let url = config.submiturl + "NsetrackComplaintRegistry.php";
-        axios.post(url,dataString)
-        .then(res => {
-          console.log(res.data);
-          if (res.data > 0) {
+        // axios.post(url,dataString)
+        // .then(res => {
+        //   console.log(res.data);
+        //   if (res.data > 0) {
+        //       setOpen(true);
+        //       setMessage("Task Raised ,Complaint registered successfully");
+        //       setmsgColor("success");
+        //       staffassign(res.data);
+        //       setformLoading(false);
+        //       setPersonName([]);
+        //       setDescval('');
+        //       document.getElementById("filterslide").style.width = "0vw";
+        //   }else{
+        //       setOpen(true);
+        //       setMessage("Problem during submission");
+        //       setmsgColor("error");
+        //       setformLoading(false);
+        //   }
+          
+            
+        // }) 
+        fetch(url,{
+          crossDomain:true,
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+          },
+          body: dataString
+        })
+        .then((res)=>res.json())
+        .then((data)=>{
+          if (data > 0) {
               setOpen(true);
               setMessage("Task Raised ,Complaint registered successfully");
               setmsgColor("success");
-              staffassign(res.data);
+              staffassign(data);
               setformLoading(false);
               setPersonName([]);
               setDescval('');
@@ -3187,32 +3217,7 @@ var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Descr
               setmsgColor("error");
               setformLoading(false);
           }
-          
-            
-        }) 
-        // fetch(url,{
-        //   crossDomain:true,
-        //   method: "POST",
-        //   headers: {
-        //       'Accept': 'application/json',
-        //       'Content-Type': 'application/json',
-        //       'Access-Control-Allow-Origin': '*'
-        //   },
-        //   body: dataString
-        // })
-        // .then((res)=>res.json())
-        // .then((data)=>{
-        //     if (data > 0) {
-        //         setOpen(true);
-        //         setMessage("Task Raised ,Complaint registered successfully");
-        //         setmsgColor("success");
-        //         staffassign(data);
-        //     }else{
-        //         setOpen(true);
-        //         setMessage("Problem during submission");
-        //         setmsgColor("error");
-        //     }
-        // })
+        })
       }
 
 }
