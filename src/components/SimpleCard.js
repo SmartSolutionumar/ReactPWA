@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Icon from "@material-ui/core/Icon";
 import Card from '@material-ui/core/Card';
+import IconButton from '@material-ui/core/IconButton';
 // import CardHeader from '@material-ui/core/CardHeader';
 // import Box from '@material-ui/core/Box';
 // import smartfm from '../../src/assets/img/smartfm.png';
+import axios from 'axios';
 import CardContent from '@material-ui/core/CardContent';
 import ReactExport from "react-export-excel";
 import TextField from '@material-ui/core/TextField';
@@ -16,6 +18,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
+  Calendar,
 } from '@material-ui/pickers';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input'; 
@@ -45,7 +48,7 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList'; 
+import MenuList from '@material-ui/core/MenuList';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import ConChart from './ConChart';
@@ -60,7 +63,9 @@ import MonthlyChartNR from './MonthlyChartNR';
 import MonthlyChartOTH from './MonthlyChartOTH';
 import EmpTaskchart from './EmpTaskchart';
 import Holdchart from './Holdchart';
-
+import NewCalendar from '../views/Calendar/Calendar'
+import SendIcon from '@material-ui/icons/Send';
+import DateRangeIcon from '@material-ui/icons/DateRange';
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 
@@ -113,6 +118,9 @@ const useStyles = makeStyles((theme) => ({
     height: '40vh',
     boxShadow: 'none',
   },
+  marginleft: {
+    marginleft:'10px'
+  }
  
 }));
  
@@ -176,6 +184,7 @@ function SimpleCard(props) {
   const classuse = useStyles();
   const { classes } = props;
   const [loading,setLoading] = useState(false);
+  const [formloading,setformLoading] = useState(false);
   const [Sumdet,setSumdet] = useState([]);
   const [Formtitle,setFormtitle] = useState('');
   const [Filtertitle,setFiltertitle] = useState('');
@@ -183,12 +192,7 @@ function SimpleCard(props) {
   const [Headval,setHeadval] = useState('DR');
   const [Colorline,setColorline] = useState('#F86C6B');
   const [refresh,setrefresh] = useState(true);
-  // const [ContChart,setContChart] = useState([]);
-  // const [ContChartDR,setContChartDR] = useState([]);
-  // const [ContChartCR,setContChartCR] = useState([]);
-  // const [ContChartNR,setContChartNR] = useState([]);
-  // const [ContChartOTH,setContChartOTH] = useState([]);
-  // const [ContChartOD,setContChartOD] = useState([]);
+
 
   const [ContChartLive,setContChartLive] = useState([]);
   const [ContChartAMC,setContChartAMC] = useState([]);
@@ -353,11 +357,11 @@ function SimpleCard(props) {
   const [TotproDR, setTotproDR] = React.useState('');
   const [TotproNR, setTotproNR] = React.useState('');
   const [TotproOther, setTotproOther] = React.useState('');
-
   const [WOtypeID,setWOtypeID] = React.useState(0);
   const [natureval,setnatureval] = React.useState('');
   const [ContID,setContID] = React.useState(''); 
   const [LocID,setLocID] = React.useState('');
+  const [BuildID,setBuildID] = React.useState('');
   const [priorID,setpriorID] = React.useState('');
   const [DivID,setDivID] = React.useState('');
   const [Descval,setDescval] = React.useState('');
@@ -369,7 +373,7 @@ function SimpleCard(props) {
   
 
   const handleChange = (event) => {
-    console.log(event.target.value.toString(),"Epl")
+    // console.log(event.target.value.toString(),"Epl")
     setPersonName(event.target.value);
     setmultiEmp(event.target.value.toString())
   };
@@ -403,9 +407,7 @@ function SimpleCard(props) {
     setSelectedDate2(date);
   };
 
-  // const handleMonthChange = (date) => {
-  //   setSelectedMonth(date);
-  // };
+
 
   const btnoptions = ['All', 'V2', 'V3','B2C','Multicom','V4', 'Spare Square', 'Smart Billing', 'SmartFM Xceed', 'SmartFM Sales'];
   const Ovropt = ['ContractWise', 'OverAll'];
@@ -417,8 +419,14 @@ function SimpleCard(props) {
   const OvrallClick = () => {
     // console.log(`You clicked ${Ovropt[OvrallIndex]}`);
   };
+  const openCalendar = () => {
+    document.getElementById("calendarslide").style.width = "97vw";
+  
+  }
 
   const handleMenuItemClick = (event, index) => {
+
+    
     setSelectedIndex(index);
     setConTypeFil(index);
     setbtnOpen(false);
@@ -718,7 +726,7 @@ useEffect(( ) => {
  },[]);
  
 function Emplist(){
-  const url = 'https://smartfm.in/NSEIPLSERVICE/DashboardService/VwAPINSEIPLALL/';
+  const url = config.Api+'VwAPINSEIPLALL/';
     const params = {
       "data":
       {
@@ -1033,7 +1041,7 @@ function Conchange(type){
     let addcls = document.getElementsByClassName('borderradius')[7];
     addcls.classList.add('activereq')
   }
-  if(type === 'RR'){
+  if(type === 'PYM'){
     if(OvrallIndex === 0){
       setContChartLive(ContChartLiveRR)
       setContChartAMC(ContChartAMCRR)
@@ -1045,7 +1053,8 @@ function Conchange(type){
       setContChartIMP(AllconChartIMPDR)
       setContChartOther(AllconChartOtherDR)
     }
-    let addcls = document.getElementsByClassName('borderradius')[8];
+    setColorline('#4DBD74')
+    let addcls = document.getElementsByClassName('borderradius')[10];
     addcls.classList.add('activereq')
   }
   if(type === 'OVD'){
@@ -1491,8 +1500,8 @@ function MonthChange(type,empname){
       if(!EmpID){
         document.getElementById("filterslide").style.width = "0vw";
         setOpen(true);
-        setMessage('Please select Employee!');
-        setmsgColor('warning');
+        setMessage("Please select Employee!");
+        setmsgColor("warning");
         return false;
       }
       let Fmon = selectedDate.getMonth()+1; 
@@ -1574,8 +1583,8 @@ function MonthChange(type,empname){
       if(!EmpID){
         document.getElementById("filterslide").style.width = "0vw";
         setOpen(true);
-        setMessage('Please select Employee!');
-        setmsgColor('warning');
+        setMessage("Please select Employee!");
+        setmsgColor("warning");
         return false;
       }
       let Fmon = selectedDate.getMonth()+1; 
@@ -1964,13 +1973,13 @@ function MonthChange(type,empname){
          
         })
     }
-
+    
     if(type === 'Complaint'){
       setFiltertitle("Register a Complaint")
       contractlist();
     }
-    
-    
+
+
 }
 
 // ********************************** API Section *************************************************** //
@@ -2930,8 +2939,8 @@ const getData = ( ) => {
       setSlidedata(res);
     }else{
       setOpen(true);
-      setMessage('No Record Found!');
-      setmsgColor('warning');
+      setMessage("No Record Found!");
+      setmsgColor("warning");
     }
     
   }); 
@@ -2945,6 +2954,9 @@ const getData = ( ) => {
 
  function filterpopClose(){
   document.getElementById("filterslide").style.width = "0vw";
+ }
+ function caldpopClose(){
+  document.getElementById("calendarslide").style.width = "0vw";
  }
 
  function filterchange(){
@@ -2999,196 +3011,222 @@ function LogOutBtn(){
   localStorage.clear(); 
   props.history.push('/login');
 }
-
-// Complaint Function
-// useEffect(()=>{
-//   contractlist();
-//   // eslint-disable-next-line
-// },[]);
-
-
+ 
 function contractlist(e){
     
-    const url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=101&UserID="+UserID;
-           
-        fetch(url)
-        .then(res=>res.json())
-        .then(res=>{    
-            console.log(res,"Conta")
-            var Contview = res;
+  const url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=101&UserID="+UserID;
+         
+      fetch(url)
+      .then(res=>res.json())
+      .then(res=>{    
+          console.log(res,"Conta")
+          var Contview = res;
+          let select = document.getElementById("contractval");
+            let length = select.options.length;
+            for (let i = length-1; i >= 0; i--) {
+                select.options[i] = null;
+            } 
+          if(e){
             let select = document.getElementById("contractval");
-              let length = select.options.length;
-              for (let i = length-1; i >= 0; i--) {
-                  select.options[i] = null;
-              } 
-            if(e){
-              let select = document.getElementById("contractval");
-              let length = select.options.length;
-              for (let i = length-1; i >= 0; i--) {
-                  select.options[i] = null;
-              } 
-              res.map(val => {
-                var description = val.ContractName.toLowerCase();
-                // var titleMatch = title.includes("smart");
-                var descriptionMatch = description.includes(e.toLowerCase());
-                
-                if(descriptionMatch){
-                  var ele = document.getElementById('contractval');
-                      // POPULATE SELECT ELEMENT WITH JSON.
-                      ele.innerHTML = ele.innerHTML +
-                          '<option title="' + val.ContractName + '" value="' +val.ContractID + '">' + val.ContractName + '</option>';
-                  // return {...val
-                  // };
-                  // console.log(...val);
-                }
-                return null;
-               })
-            }else{
+            let length = select.options.length;
+            for (let i = length-1; i >= 0; i--) {
+                select.options[i] = null;
+            } 
+            res.map(val => {
+              var description = val.ContractName.toLowerCase();
+              // var titleMatch = title.includes("smart");
+              var descriptionMatch = description.includes(e.toLowerCase());
               
-              var ele = document.getElementById('contractval');
-              for (var i = 0; i < Contview.length; i++) {
-                  // POPULATE SELECT ELEMENT WITH JSON.
-                  ele.innerHTML = ele.innerHTML +
-                      '<option title="' + Contview[i]['ContractName'] + '" value="' + Contview[i]['ContractID'] + '">' + Contview[i]['ContractName'] + '</option>';
+              if(descriptionMatch){
+                var ele = document.getElementById('contractval');
+                    // POPULATE SELECT ELEMENT WITH JSON.
+                    ele.innerHTML = ele.innerHTML +
+                        '<option title="' + val.ContractName + '" value="' +val.ContractID + '">' + val.ContractName + '</option>';
+                // return {...val
+                // };
+                // console.log(...val);
               }
+              return null;
+             })
+          }else{
+            
+            var ele = document.getElementById('contractval');
+            for (var i = 0; i < Contview.length; i++) {
+                // POPULATE SELECT ELEMENT WITH JSON.
+                ele.innerHTML = ele.innerHTML +
+                    '<option title="' + Contview[i]['ContractName'] + '" value="' + Contview[i]['ContractID'] + '">' + Contview[i]['ContractName'] + '</option>';
             }
-              
-            //  console.log('0',staffview)  
-           
-        }) 
-        const url2 = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=9";
+          }
+            
+          //  console.log('0',staffview)  
+         
+      }) 
+      const url2 = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=9";
 
-        fetch(url2)
-        .then(res=>res.json())
-        .then(res=>{
-            var Prioview = res;
-              var ele = document.getElementById('priority');
-              for (var i = 0; i < Prioview.length; i++) {
-                  // POPULATE SELECT ELEMENT WITH JSON.
-                  ele.innerHTML = ele.innerHTML +
-                      '<option value="' + Prioview[i]['PriorityIDPK'] + '">' + Prioview[i]['PriorityName'] + '</option>';
-              }
-        
-        })
+      fetch(url2)
+      .then(res=>res.json())
+      .then(res=>{
+          var Prioview = res;
+            var ele = document.getElementById('priority');
+            for (var i = 0; i < Prioview.length; i++) {
+                // POPULATE SELECT ELEMENT WITH JSON.
+                ele.innerHTML = ele.innerHTML +
+                    '<option value="' + Prioview[i]['PriorityIDPK'] + '">' + Prioview[i]['PriorityName'] + '</option>';
+            }
+      
+      })
 }
- 
+
 function ContChange(e){ 
-  var skillsSelect = document.getElementById("contractval");
-  var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
-  document.getElementById("continput").value = selectedText;
-  setContID(e);
-  let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=102&UserID="+UserID+"&ContractID="+e;
-    fetch(url)
-    .then(res=>res.json())
-    .then(res=>{
-        setLocID(res[0].LocalityID);
-    })
+var skillsSelect = document.getElementById("contractval");
+var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+document.getElementById("continput").value = selectedText;
+setContID(e);
+let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=102&UserID="+UserID+"&ContractID="+e;
+  fetch(url)
+  .then(res=>res.json())
+  .then(res=>{
+      setLocID(res[0].LocalityID);
+      GetBuilding(res[0].LocalityID,e);
+  })
+}
+
+function GetBuilding(locid,conid){
+  let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=103&UserID="+UserID+"&ContractID="+conid+"&LocalityID="+locid;
+  fetch(url)
+  .then(res=>res.json())
+  .then(res=>{
+    // console.log(res)
+      setBuildID(res[0].BuildingIDPK);
+  })
 }
 
 function WOChange(CatID){
-  setWOtypeID(CatID);
-  var select = document.getElementById("division");
-  var length = select.options.length;
-  for (let i = length-1; i >= 0; i--) {
-      select.options[i] = null;
-  } 
-  let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=8&WoTypeID="+CatID;
-  fetch(url)
-        .then(res=>res.json())
-        .then(res=>{
-  
-        var Divisionview = res;
-        var ele = document.getElementById('division');
-        for (var i = 0; i < Divisionview.length; i++) {
-            // POPULATE SELECT ELEMENT WITH JSON.
-            ele.innerHTML = ele.innerHTML +
-                '<option value="' + Divisionview[i]['DivisionIDPK'] + '">' + Divisionview[i]['DivisionName'] + '</option>';
-        }            
-  }) 
+setWOtypeID(CatID);
+var select = document.getElementById("division");
+var length = select.options.length;
+for (let i = length-1; i >= 0; i--) {
+    select.options[i] = null;
+} 
+let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=8&WoTypeID="+CatID;
+fetch(url)
+      .then(res=>res.json())
+      .then(res=>{
+
+      var Divisionview = res;
+      var ele = document.getElementById('division');
+      for (var i = 0; i < Divisionview.length; i++) {
+          // POPULATE SELECT ELEMENT WITH JSON.
+          ele.innerHTML = ele.innerHTML +
+              '<option value="' + Divisionview[i]['DivisionIDPK'] + '">' + Divisionview[i]['DivisionName'] + '</option>';
+      }            
+}) 
 }
 
 function DivChange(divid){
-    setDivID(divid);
-    var select = document.getElementById("nature");
-    var length = select.options.length;
-    for (let i = length-1; i >= 0; i--) {
-        select.options[i] = null;
-    }
+  setDivID(divid);
+  var select = document.getElementById("nature");
+  var length = select.options.length;
+  for (let i = length-1; i >= 0; i--) {
+      select.options[i] = null;
+  }
 
-    let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=5&DivisionID="+divid+"&CategoryID="+WOtypeID;
-    fetch(url)
-          .then(res=>res.json())
-          .then(res=>{
-            var Natureview = res;
-            var ele = document.getElementById('nature');
-            for (var i = 0; i < Natureview.length; i++) {
-                // POPULATE SELECT ELEMENT WITH JSON.
-                ele.innerHTML = ele.innerHTML +
-                    '<option value="' + Natureview[i]['ComplaintNatureName'] + '">' + Natureview[i]['ComplaintNatureName'] + '</option>';
-            }         
-    }) 
-        
+  let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=5&DivisionID="+divid+"&CategoryID="+WOtypeID;
+  fetch(url)
+        .then(res=>res.json())
+        .then(res=>{
+          var Natureview = res;
+          var ele = document.getElementById('nature');
+          for (var i = 0; i < Natureview.length; i++) {
+              // POPULATE SELECT ELEMENT WITH JSON.
+              ele.innerHTML = ele.innerHTML +
+                  '<option value="' + Natureview[i]['ComplaintNatureName'] + '">' + Natureview[i]['ComplaintNatureName'] + '</option>';
+          }         
+  }) 
+      
 }
 
 function multidatechange(date){
-  
-  var muldate = [];
-  date.map((val) => {
-    let mon = val.getMonth()+1; 
-    muldate.push(val.getFullYear()+"-"+mon+"-"+val.getDate())
-    return null;
-  })
-  setProDate(muldate.toString()) 
+
+var muldate = [];
+date.map((val) => {
+  let mon = val.getMonth()+1; 
+  muldate.push(val.getFullYear()+"-"+mon+"-"+val.getDate())
+  return null;
+})
+setProDate(muldate.toString()) 
 }
 
-function submitComp(){
-  
-  var UserName = localStorage.getItem('username');
+function submitComp(){ 
+var UserName = localStorage.getItem('username');
+var EID = localStorage.getItem('Employeeid');
 
-  var dataString ="NatureOfComplaint="+natureval+"&UserID="+UserID+"&Email=null&Description="+Descval+"&ContractID="+ContID+"&LocalityID="+LocID+"&BuildingID=null&FloorID=null&SpotID=null&ComplainerName="+UserName+"&ContactNo=null&PortalType=2&DocID=null&DivisionID="+DivID+"&PriorityID="+priorID+"&EmpID="+multiEmp+"&ProDate="+ProDate;
-        //console.log(dataString,"Body") 
-        if (natureval === '' || DivID === '' || priorID === '' || Descval === '' || ContID === ''){
-            setOpen(true);
-            setMessage("Please fill all mandatory fields");
-            setmsgColor('error');
-        }else{
-          let url = config.submiturl + "NsetrackComplaintRegistry.php";
-          fetch(url,{
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-              
-            },
-            body: dataString
-          })
-          .then((res)=>res.json())
-          .then((data)=>{
-              if (data > 0) {
-                  setOpen(true);
-                  setMessage("Task Raised ,Complaint registered successfully");
-                  setmsgColor('success');
-                  staffassign(data);
-              }else{
-                  setOpen(true);
-                  setMessage("Problem during submission");
-                  setmsgColor('error');
-              }
-          })
-        }
-  
+var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Description="+Descval+"&ContractID="+ContID+"&LocalityID="+LocID+"&BuildingID="+BuildID+"&FloorID=0&SpotID=0&ComplainerName="+UserName+"&ContactNo=null&PortalType=2&DocID=null&DivisionID="+DivID+"&PriorityID="+priorID+"&EmpID="+multiEmp+"&ProDate="+ProDate;
+      if (natureval === '' || DivID === '' || priorID === '' || Descval === '' || ContID === ''){
+          setOpen(true);
+          setMessage("Please fill all mandatory fields");
+          setmsgColor("error");
+      }else{
+        setformLoading(true); 
+        let url = config.submiturl + "NsetrackComplaintRegistry.php";
+        axios.post(url,dataString)
+        .then(res => {
+          console.log(res.data);
+          if (res.data > 0) {
+              setOpen(true);
+              setMessage("Task Raised ,Complaint registered successfully");
+              setmsgColor("success");
+              staffassign(res.data);
+              setformLoading(false);
+              setPersonName([]);
+              setDescval('');
+              document.getElementById("filterslide").style.width = "0vw";
+          }else{
+              setOpen(true);
+              setMessage("Problem during submission");
+              setmsgColor("error");
+              setformLoading(false);
+          }
+          
+            
+        }) 
+        // fetch(url,{
+        //   crossDomain:true,
+        //   method: "POST",
+        //   headers: {
+        //       'Accept': 'application/json',
+        //       'Content-Type': 'application/json',
+        //       'Access-Control-Allow-Origin': '*'
+        //   },
+        //   body: dataString
+        // })
+        // .then((res)=>res.json())
+        // .then((data)=>{
+        //     if (data > 0) {
+        //         setOpen(true);
+        //         setMessage("Task Raised ,Complaint registered successfully");
+        //         setmsgColor("success");
+        //         staffassign(data);
+        //     }else{
+        //         setOpen(true);
+        //         setMessage("Problem during submission");
+        //         setmsgColor("error");
+        //     }
+        // })
+      }
+
 }
 
 function staffassign(id){
 
-  let url = config.submiturl + "/SupportStaffAssign.php?EmployeeID="+EmpID+"&CCMComplaintID="+id+"&DivisionExe=STAFFASIGN";
-    fetch(url)
-          .then(res=>res.json())
-          .then(res=>{
-            console.log(res,"Assigned")
-          })
+let url = config.configurl + "/SupportStaffAssign.php?EmployeeID="+EmpID+"&CCMComplaintID="+id+"&DivisionExe=STAFFASIGN";
+  fetch(url)
+        .then(res=>res.json())
+        .then(res=>{
+          console.log(res,"Assigned")
+        })
 }
- 
+
 // var logofm = Smartfm;
 
 // logofm = 'static/media/smartfm.38ea370b.png';
@@ -3277,9 +3315,19 @@ return (
                             )}
                           </Popper>
                         </span>}
-                        <button className="btnsubmit" onClick={()=>{MonthChange('Complaint')}}>Submit</button>
-                        <Icon style={{float:'right'}} title={refresh ? 'Disable Autorefresh' : 'Enable Autorefresh'} onClick={autorefresh}>{refresh ? 'update_disabled': 'refresh'}</Icon>
-                        <button style={{float:'right'}} className="btnCss" onClick={()=>{filterchange()}}><Icon className="filcss">filter_alt</Icon>Filter</button>
+                       
+                        <IconButton aria-label="delete" className={classes.marginleft} onClick={()=>{MonthChange('Complaint')}}>
+                          <Icon title="Register Complaint" className="sendbtn">send</Icon>
+                        </IconButton>
+                        <IconButton aria-label="delete" className={classes.marginleft} onClick={()=>openCalendar()} >
+                          {/* <DateRangeIcon  className="sendbtn" fontSize="small" /> */}
+                          <Icon title="Calender" className="sendbtn">date_range</Icon>
+                        </IconButton>
+                       
+                        {/* <button className="btnsubmit" onClick={()=>{MonthChange('Complaint')}}>Submit</button>
+                        <button className="btnsubmit" onClick={()=>openCalendar()}>Calendar</button> */}
+                        <Icon style={{float:'right',margin:'0.7rem'}} title={refresh ? 'Disable Autorefresh' : 'Enable Autorefresh'} onClick={autorefresh}>{refresh ? 'update_disabled': 'refresh'}</Icon>
+                        <button style={{float:'right',margin:'0.7rem'}} className="btnCss" onClick={()=>{filterchange()}}><Icon className="filcss">filter_alt</Icon>Filter</button>
                         <div id="filDiv">
                             <Grid container style={{padding:'6px'}}>
                               <Grid item xs={6} sm={4} md={2}>
@@ -3533,11 +3581,11 @@ return (
                                 </Grid>
 
                                 <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #f0e68c'}}>
-                                  <p  className="Headlabel">Repeated</p>
+                                  <p  className="Headlabel" style={{'color':'#864c99'}}>PYM</p>
 
-                                  <h3   className="Headval">
+                                  <h3 className="Headval" onClick={()=>{Conchange('PYM')}}>
 
-                                    {val.val.RepetedCount}
+                                    {val.val.PYM}
                                     
                                     </h3>
                                 </Grid>
@@ -3760,26 +3808,7 @@ return (
                           <Grid item xs={12} sm={12} md={12} >
                             <EmpStatchart value = {EmpWorkhrs} />
                           </Grid>
-                          {/* <Grid item xs={2} sm={2} md={2} >
-                            <TableContainer className={classuse.tableroot} component={Paper}>
-                              <Table stickyHeader className={classes.table} aria-label="simple table">
-                                <TableHead>
-                                <StyledTableRow>
-                                  <TableCell className={classuse.tablecell}>Employee Not Started</TableCell>
-                                  </StyledTableRow>
-                                </TableHead>
-                                <TableBody>
-                                  {EmpWise.map((row,i) => (
-                                    <StyledTableRow key={i}>
-                                      <TableCell component="th" scope="row">
-                                        {row.Descriptions}
-                                      </TableCell>
-                                    </StyledTableRow>
-                                  ))} 
-                                </TableBody>
-                              </Table>
-                            </TableContainer>
-                          </Grid> */}
+                        
                         </Grid>
                       </CardContent>
                   
@@ -3801,26 +3830,7 @@ return (
                           <Grid item xs={12} sm={12} md={12} >
                             <EmpEttchart value = {EmpEtt} />
                           </Grid>
-                          {/* <Grid item xs={2} sm={2} md={2} >
-                            <TableContainer className={classuse.tableroot} component={Paper}>
-                              <Table stickyHeader className={classes.table} aria-label="simple table">
-                                <TableHead>
-                                <StyledTableRow>
-                                  <TableCell className={classuse.tablecell}>Employee Not Started</TableCell>
-                                  </StyledTableRow>
-                                </TableHead>
-                                <TableBody>
-                                  {EmpWise.map((row,i) => (
-                                    <StyledTableRow key={i}>
-                                      <TableCell component="th" scope="row">
-                                        {row.Descriptions}
-                                      </TableCell>
-                                    </StyledTableRow>
-                                  ))} 
-                                </TableBody>
-                              </Table>
-                            </TableContainer>
-                          </Grid> */}
+                          
                         </Grid>
                       </CardContent>
                   
@@ -3936,242 +3946,6 @@ return (
                 </Card>
               </Grid>
 
-
-              {/* <!-----------ContractWise With OD--------------------- */}
-
-
-              {/* <Grid item xs={12} sm={6} md={6} className="Gridpad">
-                <Card   className='cardshadow' >
-                      <div className="CardHeader">
-                            <div style={{display: 'flex'}}>
-                              <span className="cardheadlabel">Contract Wise With OverDue</span>
-                              <span className="headCsscurve"></span>
-                            </div>
-                      </div>
-
-                      <CardContent   className='cardtablecon'>
-                        <TableContainer className={classuse.tableroot}component={Paper}>
-                              <Table stickyHeader className={classes.table} aria-label="simple table">
-                              <TableHead>
-                              <StyledTableRow>
-                              <TableCell className={classuse.tablecell}>Name</TableCell>
-                                <TableCell className={classuse.tablecell} align="right">DR</TableCell>
-                                <TableCell className={classuse.tablecell} align="right">CR</TableCell>
-                                <TableCell className={classuse.tablecell} align="right">NR</TableCell> 
-                              </StyledTableRow>
-                            </TableHead>
-
-                            
-                            
-                            <TableBody>
-                              {ConOD.map((row,i) => (
-                                <StyledTableRow key={i}>
-                                <TableCell component="th" scope="row">
-                                    {row.Descriptions}
-                                  </TableCell>
-                              <TableCell align="right">{row.DR}</TableCell>
-                              <TableCell align="right">{row.CR}</TableCell>
-                              <TableCell align="right">{row.NR}</TableCell> 
-                                </StyledTableRow>
-                              ))} 
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-                      </CardContent>
-                        
-                </Card>
-              </Grid> */}
-
-
-      {/* <!------------------------Responsibility With Contract Wise----------------------------------- */}
-
-              {/* <Grid item xs={12} sm={12} md={12} className="Gridpad">
-                    <Card className='cardshadow' >
-                      <div className="CardHeader">
-                        <div style={{display: 'flex'}}>
-                          <span className="cardheadlabel">Responsibility With Contract Wise</span>
-                          <span className="headCsscurve"></span>
-                        </div>
-                      </div>
-
-                      <CardContent   className='cardcontent'>
-                            <Grid container >
-                              <Grid item xs={12} sm={12} md={12}>
-
-                                <CanvasJSChart options = {options1} />
-                            
-                              </Grid>
-                            </Grid>
-                          
-                      </CardContent>
-                  
-                    </Card>
-              </Grid> */}
-
-
-      {/* <!--------------Contract Status Wise Summary----------------------------------------        */}
-      
-              {/* <Grid item xs={12} sm={6} md={6} className="Gridpad">
-                <Card className='cardshadow'>
-                  <div className="CardHeader">
-                    <div style={{display: 'flex'}}>
-                      <span className="cardheadlabel">Contract Status Wise Summary</span>
-                      <span className="headCsscurve"></span>
-                    </div>
-                  </div>
-
-                  <CardContent className='cardtablecon'>
-                    <TableContainer className={classuse.tablesum} component={Paper}>
-                      <Table stickyHeader className={classes.table} aria-label="simple table">
-                        <TableHead>
-                          <StyledTableRow>
-                            <TableCell className={classuse.tablecell}>Contract Type</TableCell>
-                            <TableCell className={classuse.tablecell} align="right">Count</TableCell>
-                          </StyledTableRow>
-                        </TableHead>
-                      
-                        <TableBody>
-                          {ConSummry.map((row,i) => (
-                            <StyledTableRow key={i}>
-                            <TableCell component="th" scope="row">
-                                {row.ConType}
-                              </TableCell>
-                          <TableCell align="right">{row.DtCount}</TableCell>
-                            </StyledTableRow>
-                          ))} 
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  </CardContent>
-                        
-                </Card>
-              </Grid> */}
-
-              {/* <!-----------Contract Status Wise--------------- */}
-
-              {/* <Grid item xs={12} sm={6} md={6} className="Gridpad">
-                <Card className='cardshadow'>
-                  <div className="CardHeader">
-                    <div style={{display: 'flex'}}>
-                      <span className="cardheadlabel">Contract Status Wise</span>
-                      <span className="headCsscurve"></span>
-                    </div>
-                  </div>
-
-                  <CardContent  className='cardtablecon'>
-                    <TableContainer className={classuse.tablesum}component={Paper}>
-                      <Table stickyHeader className={classes.table} aria-label="simple table">
-                        <TableHead>
-                          <StyledTableRow>
-                          <TableCell className={classuse.tablecell}>Description</TableCell>
-                            <TableCell className={classuse.tablecell} align="right">DR</TableCell>
-                            <TableCell className={classuse.tablecell} align="right">CR</TableCell>
-                            <TableCell className={classuse.tablecell} align="right">NR</TableCell>
-                          </StyledTableRow>
-                        </TableHead>
-                    
-                        <TableBody>
-                          {ConStawise.map((row,i) => (
-                            <StyledTableRow key={i}>
-                            <TableCell component="th" scope="row">
-                                {row.Descriptions}
-                              </TableCell>
-                          <TableCell align="right">{row.DR}</TableCell>
-                          <TableCell align="right">{row.CR}</TableCell>
-                          <TableCell align="right">{row.NR}</TableCell>
-                            </StyledTableRow>
-                          ))} 
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  </CardContent>
-                        
-                </Card>
-              </Grid> */}
-
-              {/* <!-------------ETA OD----------------------------------- */}
-
-              {/* <Grid item xs={12} sm={6} md={6} className="Gridpad">
-                    <Card className='cardshadow'>
-                    <div className="CardHeader">
-                          <div style={{display: 'flex'}}>
-                            <span className="cardheadlabel">ETA OD</span>
-                            <span className="headCsscurve"></span>
-                          </div>
-                        </div>
-
-              <CardContent className='cardtablecon'>
-              <TableContainer className={classuse.tableroot}component={Paper}>
-                <Table stickyHeader className={classes.table} aria-label="simple table">
-                <TableHead>
-                <StyledTableRow>
-                <TableCell className={classuse.tablecell}>3 Day</TableCell>
-                  <TableCell className={classuse.tablecell} align="right">Count</TableCell>
-                  
-                </StyledTableRow>
-              </TableHead>
-              
-              <TableBody>
-                {EmpWise.map((row) => (
-                  <TableRow >
-                  <TableCell component="th" scope="row">
-                      {row.Descriptions}
-                    </TableCell>
-                <TableCell align="right">{row.DR}</TableCell>
-              
-                  </StyledTableRow>
-                ))} 
-              </TableBody>
-            </Table>
-          </TableContainer>
-                      </CardContent>
-                        
-                </Card>
-              </Grid> */}
-
-
-
-      {/* <!-------------------OD SUMMARY-------------------------------------- */}
-
-              {/* <Grid item xs={12} sm={6} md={6} className="Gridpad">
-                  <Card className='cardshadow'>
-                    <div className="CardHeader">
-                          <div style={{display: 'flex'}}>
-                            <span className="cardheadlabel">OD SUMMARY</span>
-                            <span className="headCsscurve"></span>
-                          </div>
-                        </div>
-
-              <CardContent className='cardtablecon'>
-              <TableContainer className={classuse.tableroot}component={Paper}>
-                <Table stickyHeader className={classes.table} aria-label="simple table">
-                <TableHead>
-                <StyledTableRow>
-                <TableCell className={classuse.tablecell}>3 Day</TableCell>
-                  <TableCell className={classuse.tablecell} align="right">DR</TableCell>
-                  <TableCell className={classuse.tablecell} align="right">CR</TableCell>
-                  <TableCell className={classuse.tablecell} align="right">NR</TableCell>
-                </StyledTableRow>
-              </TableHead>
-              
-              <TableBody>
-                {EmpWise.map((row) => (
-                  <TableRow >
-                  <TableCell component="th" scope="row">
-                      {row.Descriptions}
-                    </TableCell>
-                <TableCell align="right">{row.DR}</TableCell>
-                <TableCell align="right">{row.CR}</TableCell>
-                <TableCell align="right">{row.NR}</TableCell>
-                  </StyledTableRow>
-                ))} 
-              </TableBody>
-            </Table>
-          </TableContainer>
-                      </CardContent>
-                        
-                </Card>
-              </Grid> */}
 
             </Grid>
           </Grid>
@@ -4394,8 +4168,9 @@ return (
             </Table>
           </TableContainer>
           }
-
-          {(slideType === 'Complaint') &&
+           {(slideType === 'Complaint') &&
+            formloading ? <Spinner/>
+            :
             <Grid container>
               <Grid item xs={12} sm={12} md={4} >
                     <div className="selcontain">
@@ -4549,11 +4324,21 @@ return (
               
 
             </Grid>
-              
+             
           }
       </div>
   </div>
-  
+  {/* calendar */}
+  <div id='calendarslide'>
+    <div className="popclosebtn" onClick={() => caldpopClose()}>
+          <span className="btnclose">X</span>
+    </div>
+       
+
+       <NewCalendar />
+    
+  </div>
+
   <div>
     <button id="scrolltop" title="Back to Top" onClick={scrollTotop}><Icon>arrow_upward</Icon></button>
   </div>

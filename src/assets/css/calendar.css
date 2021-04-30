@@ -1,0 +1,41 @@
+@import './day.css';
+@import './monthnew.css';
+@import './week.css';
+@import './year.css';
+@import './listMenu.css';
+
+.MuiBackdrop-root {
+    background-color: transparent !important;
+  }
+  
+  .MuiPaper-rounded {
+    border-radius: 8px !important;
+  }
+  
+.divAppbar {
+    width: 100%;
+    height: 3rem;
+    /* background: aliceblue; */
+}
+.width15{
+    width: 15%;
+}
+.width11{
+    width: 11%;
+}
+.flex{
+    display: flex;
+}
+.dpadd8{
+    padding: 8px;
+}
+.dpadd6{
+    padding: 6px 0px;
+}
+.btnlabel{
+    font-weight: 600;
+
+}
+.fright{
+    float: right;
+}
