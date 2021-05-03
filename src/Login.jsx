@@ -55,7 +55,7 @@ function LoginForm(props) {
         .then(res=>res.json())
         .then(res=>{  
             const status = res.UserValues;   
-            console.log(status,"loggdfg")
+            // console.log(status,"loggdfg")
             if(status[0].UserIDPK === 0){ 
                 setmessage({ open: true,color: 'error',message: "UserName and Password Invalid!" });
                 setloading(false)
@@ -85,16 +85,16 @@ return(
         <div className="logincss">
             {loading ? <Spinner/>  :  
             <Grid container justify="center" style={{height: '100%'}}>
-                <Grid item xs={12} sm={12} md={4} lg={4} style={{height: '100%',display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
+                <Grid item xs={11} sm={10} md={4} lg={4} style={{height: '100%',display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
                     <Card className="cardshadow" >
                         
                         <CardContent  style={{backgroundImage: `url(${cardbg})`}} className='cardcontent'>
                             <Grid container>
-                                <Grid item xs={12} sm={12} md={6}>
+                                <Grid item xs={6} sm={6} md={6}>
                                     <h3 className="TextWeight500">Welcome Back</h3>
                                     <p className="TextWeight400">Login in to your account</p>
                                 </Grid>
-                                <Grid item xs={12} sm={12} md={6}>
+                                <Grid item xs={6} sm={6} md={6}>
                                     <img src={Nanologo} alt="logo" className="headerImgSize"/>
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={12}>
@@ -103,11 +103,13 @@ return(
                                         onChange={(e)=>{setUserName(e.target.value) }}
                                         value={UserName}
                                         onKeyPress={(e)=>handleSubmitenter(e)}
+                                        style={{width: '100%'}}
                                         />
                                         <TextField id="password" label="Password" type="password"
                                         onChange={(e)=>{setPassword(e.target.value) }}
                                         value={Password}
                                         onKeyPress={(e)=>handleSubmitenter(e)}
+                                        style={{width: '100%'}}
                                         />
                                     </form>
                                 </Grid>
