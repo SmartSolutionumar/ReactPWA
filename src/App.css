@@ -168,7 +168,7 @@ p.Headlabel::first-letter{
     margin-top: 14% !important;
   }
 }
-@media (max-width: 600px){
+@media (max-width: 350px){
   .marginTop{
     margin-top: 25% !important;
   }
@@ -357,7 +357,7 @@ p.Headlabel::first-letter{
     width: 10%;
   }
   .formslide{
-    width: 80%;
+    width: 89%;
   }
 }
 
@@ -567,4 +567,30 @@ select[aria-selected=true] {
     padding: 0px 11px;
     position: relative;
     top: -5px;
+}
+
+.Loadingpane{
+  position: absolute;
+    width: 92%;
+    height: 60%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background: transparent;
+    z-index: 1;
+}
+@media(max-width: 950px){
+  .Loadingpane{
+    height: 67%;
+    width: 80%;
+  }
+}
+
+.Loadingimg{
+  width: 250px;
+}
+@media(max-width: 950px){
+  .Loadingimg{
+    width: 250px;
+  }
 }

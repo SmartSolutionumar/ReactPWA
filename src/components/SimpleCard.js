@@ -5,6 +5,7 @@ import Icon from "@material-ui/core/Icon";
 import Card from '@material-ui/core/Card';
 import IconButton from '@material-ui/core/IconButton';
 import axios from 'axios';
+import ChartLoader from '../assets/img/Chartloader.gif';
 
 import CardContent from '@material-ui/core/CardContent';
 import ReactExport from "react-export-excel";
@@ -3226,18 +3227,19 @@ if(WOtypeID === '2'){
   }else{
     EMPassgn =  EID;
   }
-}
-
+} 
 var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Description="+Descval+"&ContractID="+ContID+"&LocalityID="+LocID+"&BuildingID="+BuildID+"&FloorID=0&SpotID=0&ComplainerName="+UserName+"&ContactNo=null&PortalType=2&DocID=null&DivisionID="+DivID+"&PriorityID=1&EmpID="+EMPassgn+"&ProDate="+Startdate+"&TaskType="+WOtypeID+"&EndDate="+Todate;
 // console.log(dataString);
 // return false;
       if (natureval === '' || DivID === '' || Descval === '' || ContID === ''){
           setOpen(true);
           setMessage("Please fill all mandatory fields");
-          setmsgColor("error");
+          setmsgColor("error"); 
+        return false;
       }else{
-        setformLoading(true);
+        setformLoading(true); 
         let url = config.submiturl + "NsetrackComplaintRegistry.php";
+
         axios.post(url,dataString)
         .then(res => {
           // console.log(res.data);
@@ -3250,7 +3252,7 @@ var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Descr
               setPersonName([]);
               setmultiEmp('');
               setDescval('');
-              contractlist();
+              // contractlist();
               setProDate([]);
               // document.getElementById("filterslide").style.width = "0vw";
           }else{
@@ -3258,7 +3260,7 @@ var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Descr
               setMessage("Problem during submission");
               setmsgColor("error");
               setformLoading(false);
-              contractlist();
+              //contractlist();
               setProDate([]);
           }
           
@@ -3336,7 +3338,7 @@ return (
                 <Grid item xs={5} sm={8} md={9} style={{textAlign:'center'}}>
                   <span className="Apphead">NanoSoft Tracker Board</span> 
                 </Grid>
-                <Grid item xs={4} sm={2} md={1} style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
+                <Grid item xs={4} sm={2} md={1} style={{display: 'flex',alignItems: 'center',justifyContent: 'flex-end'}}>
                   {/* <img alt="logo2" src={logofm} className='logo2'></img> */}
                   <span className="usercss">{localStorage.getItem('username')}</span>
                   <Icon style={{marginLeft: '3%',cursor: 'pointer'}} title={'Logout'} onClick={LogOutBtn}>logout</Icon>
@@ -4287,8 +4289,13 @@ return (
           </TableContainer>
           }
            {(slideType === 'Complaint') ?
-              formloading ? <Spinner/>
-              :
+              <>
+              {formloading && 
+              <div className="Loadingpane">
+                <img src={ChartLoader} alt='Loading......'
+                    className="Loadingimg"></img>
+              </div>
+              }
               <Grid container>
               <Grid item xs={12} sm={12} md={4} >
                     <div className="selcontain">
@@ -4361,7 +4368,7 @@ return (
                   </Grid>
                   <Grid item xs={12} sm={12} md={4}>
                     <div className="selcontain">
-                      <label className="labelcompln">Division<span className="red1">*</span></label>
+                      <label className="labelcompln">Complaint Request<span className="red1">*</span></label>
                       <select className="selectcss" size="9" id="division" onChange={(e)=>{DivChange(e.target.value) }}>
                         <option value="">-----Select Division-----</option>
                       </select>
@@ -4477,6 +4484,7 @@ return (
               
 
             </Grid>
+              </>
              :
              null
           }
