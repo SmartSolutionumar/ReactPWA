@@ -9,12 +9,12 @@
   "icons": [
   
     {
-      "src": "images/icons/icon-192x192.png",
+      "src": "http://www.simpleimageresizer.com/_uploads/photos/fe0f3462/Capture-removebg-preview_2_1_1_192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "images/icons/icon-512x512.png",
+      "src": "http://www.simpleimageresizer.com/_uploads/photos/fe0f3462/Capture-removebg-preview_2_1_512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }

@@ -1,32 +1,66 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useContext} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 
-import IconButton from '@material-ui/core/IconButton';
+// import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
-
+import {config} from '../../config'
+import Notification from '../../components/_helperComponents/Notification'
+import { MenuContext } from '../Calendar/MonthNew';
 
 
 export default function CustomizedDialogs(props) {
-  const [open, setOpen] = React.useState(true);
+  // const [open, setOpen] = React.useState(true);
   const [text, setText] = useState('')
+  const [Message, setMessage] = useState({ open: false,color: '',message: ''});
 
-  useEffect(() => {
-    setOpen(props.open)
-  }, [props.open]);
+  const monthContext = useContext(MenuContext);
+
 
   const handleClose = () => {
-    setOpen(false);
+    monthContext.dialogClose()
   };
+
+  const SaveSubmit = () => {
+
+    let ComplaintID =  localStorage.getItem('ComplaintIDPK')
+
+    if(!text){
+      setMessage({ open:true,color:'error',message: 'Rework Remarks is empty' })
+      return false;
+    }
+
+    const param =  config.configurl+`/HoldETA.php?ComplaintType=${8}&MaintenanceRemarks=${text}&ETADate=2019-11-03&ComplaintIDPK=${ComplaintID}`
+
+      fetch(param)
+			.then(response => response.json())
+			.then(data => {
+          if(data.success === '1'){
+            setMessage({ open:true,color:'success',message: data.message })
+            monthContext.refresh()
+            handleClose();
+            setText('')
+            return false;
+          }else{
+            setMessage({ open:true,color:'error',message: data.message })
+            return false;
+          }
+          
+			});
+  }
 
   return (
     <div>
 
+<Notification open={Message.open} color={Message.color} 
+            message={Message.message} onClose={()=>setMessage({open: false,color: Message.color,message: Message.message})} />
+
+
     <Dialog  
       fullWidth={true}
       maxWidth={'sm'}
-      open={open} 
+      open={props.open} 
       onClose={handleClose} 
       aria-labelledby="max-width-dialog-title">
 
@@ -54,7 +88,7 @@ export default function CustomizedDialogs(props) {
 
           <div style={{paddingTop:'1rem'}} align='right'>
 
-          <Button variant="outlined" color="primary">
+          <Button variant="outlined" color="primary" onClick={()=>SaveSubmit()}>
           Update
           </Button>
          

@@ -23,3 +23,43 @@
   .width100{
       width: 100%;
   }
+  .column70 {
+    float: left;
+    width: 70%;
+    padding: 10px;
+  }
+  .column30 {
+    float: left;
+    width: 30%;
+    padding: 10px;
+  }
+  .padd10{
+      padding: 10px;
+  }
+  .upper
+{
+  display:flex;
+  flex-direction:row;
+}
+
+.upper > div
+{
+  flex:1 1 auto;
+}
+.marginright2{
+  margin-right: 2.5rem;
+}
+.gridbtnpos{
+  position: absolute;
+    right: 2%;
+    z-index: 11;
+}
+.MuiTableContainer-root {
+  width: 100%;
+  overflow-y: auto !important;
+}
+.ccellbody {
+  fontSize: 10px;
+  fontWeight: 600;
+  
+}

@@ -1,21 +1,23 @@
 import React, {useState,useEffect} from 'react'
 import Grid from '@material-ui/core/Grid'; 
 import { addYears,getYear,subYears } from 'date-fns'
-const { forwardRef, useRef, useImperativeHandle,useContext } = React;
+const { forwardRef, useImperativeHandle } = React;
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const newdata = new Date();
+// const newdata = new Date();
 
 const Year = forwardRef((props, ref) => {
 
-    const [yearArr, setyearArr] = useState([])
+    // const [yearArr, setyearArr] = useState([])
     const [currentYear, setcurrentYear] = useState(new Date())
 
     useEffect(() => {
         [...Array(1)].map((e, i) => {
                       
-             monthOf(i+1)
+             monthOf(i+1);
+             return null;
         })
+        // eslint-disable-next-line
     }, [])
 
     useImperativeHandle(ref, () => ({
@@ -52,15 +54,17 @@ const Year = forwardRef((props, ref) => {
         let dy = [...Array(new Date(year, month, 0).getDate())]
         dy.map((val, i) => {
             
-            newdy.push({ date : i==0 ? ' 1' : i+1, name: '' })
+            newdy.push({ date : i === 0 ? ' 1' : i+1, name: '' });
+            return null;
         })
 
         let dd = [];
         [...Array(parseInt(arr))].map((e,i) => {
-            dd.push({ date : (new Date(year, month -1 , 0).getDate() - i), name: '' })
+            dd.push({ date : (new Date(year, month -1 , 0).getDate() - i), name: '' });
+            return null;
         })
 
-        if(name == 'Sun'){
+        if(name === 'Sun'){
             return newdy;
         }else{
 
@@ -81,8 +85,8 @@ const Year = forwardRef((props, ref) => {
 
     const monthOf = (params) => {
 
-        let day =  daysInMonth(params,getYear(currentYear)); 
-        setyearArr(day)
+        // let day =  daysInMonth(params,getYear(currentYear)); 
+        // setyearArr(day)
        
         
     }

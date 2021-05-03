@@ -55,6 +55,7 @@ function LoginForm(props) {
         .then(res=>res.json())
         .then(res=>{  
             const status = res.UserValues;   
+            console.log(status,"loggdfg")
             if(status[0].UserIDPK === 0){ 
                 setmessage({ open: true,color: 'error',message: "UserName and Password Invalid!" });
                 setloading(false)

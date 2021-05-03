@@ -1,13 +1,11 @@
-import React, { useState,useEffect }  from 'react';
+import React, { useState,useEffect,createContext }  from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Icon from "@material-ui/core/Icon";
 import Card from '@material-ui/core/Card';
 import IconButton from '@material-ui/core/IconButton';
-// import CardHeader from '@material-ui/core/CardHeader';
-// import Box from '@material-ui/core/Box';
-// import smartfm from '../../src/assets/img/smartfm.png';
-// import axios from 'axios';
+import axios from 'axios';
+
 import CardContent from '@material-ui/core/CardContent';
 import ReactExport from "react-export-excel";
 import TextField from '@material-ui/core/TextField';
@@ -15,10 +13,10 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import 'date-fns';
 import MultipleDatePicker from 'react-multiple-datepicker';
 import DateFnsUtils from '@date-io/date-fns';
+import Popover from '@material-ui/core/Popover';
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-  Calendar,
+  KeyboardDatePicker, 
 } from '@material-ui/pickers';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input'; 
@@ -53,9 +51,9 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import ConChart from './ConChart';
 import EmpChart from './EmpChart';
-import EmpStatchart from './EmpStatchart';
-import EmpEttchart from './EmpEttchart';
-import EmpETAchart from './EmpETAchart';
+// import EmpStatchart from './EmpStatchart';
+// import EmpEttchart from './EmpEttchart';
+// import EmpETAchart from './EmpETAchart';
 import MonthlyChart from './MonthlyChart';
 import MonthlyChartDR from './MonthlyChartDR';
 import MonthlyChartCR from './MonthlyChartCR';
@@ -63,13 +61,22 @@ import MonthlyChartNR from './MonthlyChartNR';
 import MonthlyChartOTH from './MonthlyChartOTH';
 import EmpTaskchart from './EmpTaskchart';
 import Holdchart from './Holdchart';
-import NewCalendar from '../views/Calendar/Calendar'
-import SendIcon from '@material-ui/icons/Send';
-import DateRangeIcon from '@material-ui/icons/DateRange';
+import NewCalendar from '../views/Calendar/Calendar';
+// import Menu from '@material-ui/core/Menu'; 
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import ListItemText from '@material-ui/core/ListItemText';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+import GridView from '../views/Task/Tableview'
+
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+export const SimpleContext = createContext();
+
+// var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var CanvasJS = CanvasJSReact.CanvasJS;
 // import Chart from "react-apexcharts";
 
@@ -278,34 +285,34 @@ function SimpleCard(props) {
   const [EmpChartIMPOTH,setEmpChartIMPOTH] = useState([]);
   const [EmpChartOtherOTH,setEmpChartOtherOTH] = useState([]);
 
-  const [ETAToday,setETAToday] = useState([]);
-  const [ETAtype,setETAtype] = useState('today');
-  const [ETACharttoday,setETACharttoday] = useState([]);
-  const [ETAChartnext,setETAChartnext] = useState([]);
-  const [EmpWise,setEmpWise] = useState([]);
+  // const [ETAToday,setETAToday] = useState([]);
+  // const [ETAtype,setETAtype] = useState('today');
+  // const [ETACharttoday,setETACharttoday] = useState([]);
+  // const [ETAChartnext,setETAChartnext] = useState([]);
+  // const [EmpWise,setEmpWise] = useState([]);
   // const [ConSummry,setConSummry] = useState([]);
   // const [ConStawise,setConStawise] = useState([]);
   // const [ConOD,setConOD] = useState([]);
   // const [EmpContractDR,setEmpContractDR] = useState([]);
   // const [EmpContractCR,setEmpContractCR] = useState([]);
   // const [EmpContractNR,setEmpContractNR] = useState([]);
-  const [CriticalPriority,setCriticalPriority] = useState([]);
-  const [HighPriority,setHighPriority] = useState([]);
-  const [MediumPriority,setMediumPriority] = useState([]);
-  const [LowPriority,setLowPriority] = useState([]);
-  const[ContractWise,setContractWise] = useState([]);
+  // const [CriticalPriority,setCriticalPriority] = useState([]);
+  // const [HighPriority,setHighPriority] = useState([]);
+  // const [MediumPriority,setMediumPriority] = useState([]);
+  // const [LowPriority,setLowPriority] = useState([]);
+  // const[ContractWise,setContractWise] = useState([]);
   const[Countdata,setCountdata] = useState(0);
   const [Slidedata,setSlidedata] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [Message,setMessage] = useState('');
   const [msgColor,setmsgColor] = useState('');
   const [ConTypeFil,setConTypeFil] = useState(0);
-  const [EmpWorkhrs,setEmpWorkhrs] = useState([]);
-  const [EmpEtt,setEmpEtt] = useState([]);
-  const [EmpETA,setEmpETA] = useState([]);
-  const [EmpTodayETA,setEmpTodayETA] = useState([]);
-  const [EmpTodaywork,setEmpTodaywork] = useState([]);
-  const [EmpETAtype,setEmpETAtype] = useState('todayETA');
+  // const [EmpWorkhrs,setEmpWorkhrs] = useState([]);
+  // const [EmpEtt,setEmpEtt] = useState([]);
+  // const [EmpETA,setEmpETA] = useState([]);
+  // const [EmpTodayETA,setEmpTodayETA] = useState([]);
+  // const [EmpTodaywork,setEmpTodaywork] = useState([]);
+  // const [EmpETAtype,setEmpETAtype] = useState('todayETA');
 
   const [EmpTaskDet,setEmpTaskDet] = useState([]);
   const [EmpConsol,setEmpConsol] = useState([]);
@@ -357,23 +364,26 @@ function SimpleCard(props) {
   const [TotproDR, setTotproDR] = React.useState('');
   const [TotproNR, setTotproNR] = React.useState('');
   const [TotproOther, setTotproOther] = React.useState('');
-  const [WOtypeID,setWOtypeID] = React.useState(0);
+  const [WOtypeID,setWOtypeID] = React.useState('1');
   const [natureval,setnatureval] = React.useState('');
   const [ContID,setContID] = React.useState(''); 
   const [LocID,setLocID] = React.useState('');
   const [BuildID,setBuildID] = React.useState('');
-  const [priorID,setpriorID] = React.useState('');
+  // const [priorID,setpriorID] = React.useState('');
   const [DivID,setDivID] = React.useState('');
   const [Descval,setDescval] = React.useState('');
   const[Localtime,setLocaltime] = React.useState('');
 
   const [personName, setPersonName] = React.useState([]);
   const [multiEmp, setmultiEmp] = React.useState('');
-  const [ProDate, setProDate] = React.useState('');
-  
+  const [ProDate, setProDate] = React.useState([]);
+  const [tastView, setTastView] = useState(true)
+  const [EndDate, setEndDate] = React.useState(null);
+
+  const [anchMenuEl, setAnchMenuEl] = React.useState(null);
 
   const handleChange = (event) => {
-    // console.log(event.target.value.toString(),"Epl")
+    
     setPersonName(event.target.value);
     setmultiEmp(event.target.value.toString())
   };
@@ -401,6 +411,12 @@ function SimpleCard(props) {
   const handleDateChange = (date) => {
     // console.log("Date",date)
     setSelectedDate(date);
+  };
+
+  const handleEndDateChange = (date) => {
+    // console.log("Date",date)
+    
+    setEndDate(date);
   };
 
   const handleDateChange2 = (date) => {
@@ -499,76 +515,78 @@ function SimpleCard(props) {
     }
 
     setOpen(false);
+    setMessage(Message);
+    setmsgColor(msgColor);
   };
 
 // Canvas Charts
-  const options = {
-    height: 200,
-      animationEnabled: true,
-        toolTip: {
-          shared: true
-        },
+  // const options = {
+  //   height: 200,
+  //     animationEnabled: true,
+  //       toolTip: {
+  //         shared: true
+  //       },
         
-        axisX : {
-          gridThickness:0, 
-        },
-        axisY:{
-          gridThickness: 0
-        },
-        data: [
-      {
-          indexLabel: "{y}",
-          indexLabelPlacement: "outside", 
-          indexLabelFontSize:9,
-          indexLabelFontWeight:800,  
-          type: "column",
-          name: "P1 - Critical",
-          legendText: "P1-Critical",
-          showInLegend: true,
-          indexLabelFontColor: "#5A5757",
-          dataPoints: CriticalPriority,
+  //       axisX : {
+  //         gridThickness:0, 
+  //       },
+  //       axisY:{
+  //         gridThickness: 0
+  //       },
+  //       data: [
+  //     {
+  //         indexLabel: "{y}",
+  //         indexLabelPlacement: "outside", 
+  //         indexLabelFontSize:9,
+  //         indexLabelFontWeight:800,  
+  //         type: "column",
+  //         name: "P1 - Critical",
+  //         legendText: "P1-Critical",
+  //         showInLegend: true,
+  //         indexLabelFontColor: "#5A5757",
+  //         dataPoints: CriticalPriority,
         
           
           
-        },
-        {
-        indexLabel: "{y}",
-        indexLabelPlacement: "outside", 
-        indexLabelFontSize:9,
-        indexLabelFontWeight:800,  
-          type: "column",	
-          name: "P2 - High",
-          legendText: "P2 - High", 
-          showInLegend: true, 
-          indexLabelFontColor: "#5A5757",
-          dataPoints:HighPriority,
+  //       },
+  //       {
+  //       indexLabel: "{y}",
+  //       indexLabelPlacement: "outside", 
+  //       indexLabelFontSize:9,
+  //       indexLabelFontWeight:800,  
+  //         type: "column",	
+  //         name: "P2 - High",
+  //         legendText: "P2 - High", 
+  //         showInLegend: true, 
+  //         indexLabelFontColor: "#5A5757",
+  //         dataPoints:HighPriority,
           
-        },
-        {
-          indexLabel: "{y}",
-          indexLabelPlacement: "outside", 
-          indexLabelFontSize:9,
-          indexLabelFontWeight:800,  
-          type: "column",	
-          name: "P3 - Medium",
-          legendText: "P3 - Medium", 
-          showInLegend: true, 
-          dataPoints: MediumPriority,
-        },
-        {
-          indexLabel: "{y}",
-          indexLabelPlacement: "outside", 
-          indexLabelFontSize:9,
-          indexLabelFontWeight:800,  
-          type: "column",	
-          name: "P4 - Low",
-          legendText: "P4 - Low", 
-          showInLegend: true, 
-          dataPoints:LowPriority,
+  //       },
+  //       {
+  //         indexLabel: "{y}",
+  //         indexLabelPlacement: "outside", 
+  //         indexLabelFontSize:9,
+  //         indexLabelFontWeight:800,  
+  //         type: "column",	
+  //         name: "P3 - Medium",
+  //         legendText: "P3 - Medium", 
+  //         showInLegend: true, 
+  //         dataPoints: MediumPriority,
+  //       },
+  //       {
+  //         indexLabel: "{y}",
+  //         indexLabelPlacement: "outside", 
+  //         indexLabelFontSize:9,
+  //         indexLabelFontWeight:800,  
+  //         type: "column",	
+  //         name: "P4 - Low",
+  //         legendText: "P4 - Low", 
+  //         showInLegend: true, 
+  //         dataPoints:LowPriority,
           
-        }
-      ]
-  }
+  //       }
+  //     ]
+  // }
 
    
 
@@ -579,46 +597,46 @@ function SimpleCard(props) {
                 ]);
  
 
-  const ETAModal = (e) =>{
-    var id = e.dataPoint.data;
-    setFormtitle(e.dataPoint.label);
-    if(ETAtype === 'today'){
-      OverlaySlide(9,id,0,e.dataPoint.label +" - ("+ e.dataPoint.y+")"); 
-    }else{
-      OverlaySlide(10,id,0,e.dataPoint.label +" - ("+ e.dataPoint.y+")"); 
-    }
+  // const ETAModal = (e) =>{
+  //   var id = e.dataPoint.data;
+  //   setFormtitle(e.dataPoint.label);
+  //   // if(ETAtype === 'today'){
+  //   //   OverlaySlide(9,id,0,e.dataPoint.label +" - ("+ e.dataPoint.y+")"); 
+  //   // }else{
+  //   //   OverlaySlide(10,id,0,e.dataPoint.label +" - ("+ e.dataPoint.y+")"); 
+  //   // }
     
-  }
+  // }
 
-  const ETAoption = {
-    height: 250, 
-    zoomEnabled: true,
-      animationEnabled: true,
+  // const ETAoption = {
+  //   height: 250, 
+  //   zoomEnabled: true,
+  //     animationEnabled: true,
         
-        axisX : {
-          gridThickness:0, 
-          labelMaxWidth: 80,
-          labelAngle: 50,
-          labelFontSize: 10,
-          interval:1,
-        },
-        axisY:{
-          gridThickness: 0
-        },
-        data: [
-      {
-          type: "spline",
-          indexLabel: "{y}",
-          indexLabelPlacement: "outside", 
-          toolTipContent: " <span style='\"'color: #4C9CA0;'\"'>Name</span> : {text}</br>Total : {y}",
-          indexLabelFontSize:12,
-          indexLabelFontWeight:800, 
-          indexLabelFontColor: "#5A5757",
-          click: ETAModal,
-          dataPoints: ETAToday, 
-        } 
-      ]
-  }
+  //       axisX : {
+  //         gridThickness:0, 
+  //         labelMaxWidth: 80,
+  //         labelAngle: 50,
+  //         labelFontSize: 10,
+  //         interval:1,
+  //       },
+  //       axisY:{
+  //         gridThickness: 0
+  //       },
+  //       data: [
+  //     {
+  //         type: "spline",
+  //         indexLabel: "{y}",
+  //         indexLabelPlacement: "outside", 
+  //         toolTipContent: " <span style='\"'color: #4C9CA0;'\"'>Name</span> : {text}</br>Total : {y}",
+  //         indexLabelFontSize:12,
+  //         indexLabelFontWeight:800, 
+  //         indexLabelFontColor: "#5A5757",
+  //         click: ETAModal,
+  //         dataPoints: ETAToday, 
+  //       } 
+  //     ]
+  // }
   // employee and contract wise chart
 
 
@@ -1500,7 +1518,7 @@ function MonthChange(type,empname){
       if(!EmpID){
         document.getElementById("filterslide").style.width = "0vw";
         setOpen(true);
-        setMessage("Please select Employee!");
+        setMessage('Please select Employee!');
         setmsgColor("warning");
         return false;
       }
@@ -1583,7 +1601,7 @@ function MonthChange(type,empname){
       if(!EmpID){
         document.getElementById("filterslide").style.width = "0vw";
         setOpen(true);
-        setMessage("Please select Employee!");
+        setMessage('Please select Employee!');
         setmsgColor("warning");
         return false;
       }
@@ -1623,7 +1641,7 @@ function MonthChange(type,empname){
       })
       .then((res)=>res.json())
       .then((data)=>{ 
-        console.log("Work statsu",data)
+        // console.log("Work statsu",data)
         // let res = data.Output.data;
         // let TaskEmpDR = [];
         // let TaskEmpCR = [];
@@ -1752,7 +1770,7 @@ function MonthChange(type,empname){
         .then((res)=>res.json())
         .then((data)=>{  
           let res = data.Output.data;
-         console.log("Total",res)
+        //  console.log("Total",res)
          setTotproCR(res[0].CR);
          setTotproDR(res[0].DR);
          setTotproNR(res[0].NR);
@@ -1858,7 +1876,7 @@ function MonthChange(type,empname){
         .then((res)=>res.json())
         .then((data)=>{  
           let res = data.Output.data;
-         console.log("Total",res)
+        //  console.log("Total",res)
          setTotproCR(res[0].CR);
          setTotproDR(res[0].DR);
          setTotproNR(res[0].NR);
@@ -1964,7 +1982,7 @@ function MonthChange(type,empname){
         .then((res)=>res.json())
         .then((data)=>{  
           let res = data.Output.data;
-         console.log("Total",res)
+        //  console.log("Total",res)
          setTotproCR(res[0].CR);
          setTotproDR(res[0].DR);
          setTotproNR(res[0].NR);
@@ -2117,7 +2135,7 @@ const getData = ( ) => {
                         'oths': val.oths,
                         'NR':val.NR,
                         "WorkOrderID": val.WorkOrderID})
-                        setEmpWise(empWise);
+                        // setEmpWise(empWise);
                         
       }else if(val.Header === '4') {
               contractWise.push({'Descriptions':val.Descriptions,
@@ -2127,7 +2145,7 @@ const getData = ( ) => {
                           'NR':val.NR,
                           'oths': val.oths,
                           "WorkOrderID": val.WorkOrderID})
-                          setContractWise(contractWise);
+                          // setContractWise(contractWise);
       }else if(val.Header === '15') {
         
           ConLiveDR.push({
@@ -2516,27 +2534,27 @@ const getData = ( ) => {
                     'label':val.ConType,
                     'y':Number(val.IMP),
                     "WorkOrderID": val.WorkOrderID})
-                    setEmpWorkhrs(Empwork);
+                    // setEmpWorkhrs(Empwork);
       }else if(val.Header === '29') {
         EmpEtime.push({'Total':val.IMP,
                     'Descriptions1':val.Descriptions1,
                     'label':val.Descriptions,
                     'y':Number(val.LIVE),
                     "WorkOrderID": val.WorkOrderID})
-                    setEmpEtt(EmpEtime);
+                    // setEmpEtt(EmpEtime);
       }else if(val.Header === '30') {
         EmployeeETA.push({
                     'label':val.Descriptions,
                     'y':Number(val.DR),
                     "WorkOrderID": val.WorkOrderID})
-                    setEmpETA(EmployeeETA);
-                    setEmpTodayETA(EmployeeETA); 
+                    // setEmpETA(EmployeeETA);
+                    // setEmpTodayETA(EmployeeETA); 
       }else if(val.Header === '31') {
         EmployeeTodaywork.push({
                     'label':val.Descriptions,
                     'y':Number(val.DR),
                     "WorkOrderID": val.WorkOrderID})
-                    setEmpTodaywork(EmployeeTodaywork);
+                    // setEmpTodaywork(EmployeeTodaywork);
       }
       else if(val.Header === '14') {
         if(val.OVD > 0){
@@ -2553,8 +2571,8 @@ const getData = ( ) => {
                        'y':Number(val.DR),
                        'text':val.Descriptions,
                        "data": val.WorkOrderID})
-                      setETACharttoday(Todayeta)
-                      setETAToday(Todayeta);
+                      // setETACharttoday(Todayeta)
+                      // setETAToday(Todayeta);
 
       }
       else if(val.Header === '3') {
@@ -2570,7 +2588,7 @@ const getData = ( ) => {
                 'label': 'NR',
                 'y': Number(val.NR)
               })
-              setCriticalPriority(criticalPriority);
+              // setCriticalPriority(criticalPriority);
 
             } else if(val.Descriptions === 'P2 - HIGH'){
 
@@ -2584,7 +2602,7 @@ const getData = ( ) => {
               {'label':'NR',
               'y':Number(val.NR)
               })
-            setHighPriority(highPriority);
+            // setHighPriority(highPriority);
 
             }
             else if(val.Descriptions === 'P3 - MEDIUM'){
@@ -2599,7 +2617,7 @@ const getData = ( ) => {
                   {'label':'NR',
                   'y':Number(val.NR)
                 })
-              setMediumPriority(mediumPriority);
+              // setMediumPriority(mediumPriority);
               
             }
             else if(val.Descriptions === 'P4 - LOW'){
@@ -2613,7 +2631,7 @@ const getData = ( ) => {
                 {'label':'NR',
                 'y':Number(val.NR)
               })
-              setLowPriority(lowPriority);
+              // setLowPriority(lowPriority);
             }
  
 
@@ -2654,7 +2672,7 @@ const getData = ( ) => {
         ETAnext.push({'label':val.Descriptions,
                        'y':Number(val.DR),
                        "data": val.WorkOrderID})
-        setETAChartnext(ETAnext);
+        // setETAChartnext(ETAnext);
 
       }
       else if(val.Header === '32') {
@@ -2939,7 +2957,7 @@ const getData = ( ) => {
       setSlidedata(res);
     }else{
       setOpen(true);
-      setMessage("No Record Found!");
+      setMessage('No Record Found!');
       setmsgColor("warning");
     }
     
@@ -2957,6 +2975,7 @@ const getData = ( ) => {
  }
  function caldpopClose(){
   document.getElementById("calendarslide").style.width = "0vw";
+  setTastView(true)
  }
 
  function filterchange(){
@@ -3019,7 +3038,7 @@ function contractlist(e){
       fetch(url)
       .then(res=>res.json())
       .then(res=>{    
-          console.log(res,"Conta")
+          // console.log(res,"Conta")
           var Contview = res;
           let select = document.getElementById("contractval");
             let length = select.options.length;
@@ -3061,20 +3080,39 @@ function contractlist(e){
           //  console.log('0',staffview)  
          
       }) 
-      const url2 = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=9";
+      // const url2 = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=9";
 
-      fetch(url2)
-      .then(res=>res.json())
-      .then(res=>{
-          var Prioview = res;
-            var ele = document.getElementById('priority');
-            for (var i = 0; i < Prioview.length; i++) {
+      // fetch(url2)
+      // .then(res=>res.json())
+      // .then(res=>{
+      //     var Prioview = res;
+      //       var ele = document.getElementById('priority');
+      //       for (var i = 0; i < Prioview.length; i++) {
+      //           // POPULATE SELECT ELEMENT WITH JSON.
+      //           ele.innerHTML = ele.innerHTML +
+      //               '<option value="' + Prioview[i]['PriorityIDPK'] + '">' + Prioview[i]['PriorityName'] + '</option>';
+      //       }
+      
+      // })
+      // WOType
+       
+      let url3 = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=8";
+      fetch(url3)
+            .then(res=>res.json())
+            .then(res=>{
+              var selectdiv = document.getElementById("division");
+              var lengthdiv = selectdiv.options.length;
+              for (let i = lengthdiv-1; i >= 0; i--) {
+                  selectdiv.options[i] = null;
+              }
+            var Divisionview = res;
+            var ele = document.getElementById('division');
+            for (var i = 0; i < Divisionview.length; i++) {
                 // POPULATE SELECT ELEMENT WITH JSON.
                 ele.innerHTML = ele.innerHTML +
-                    '<option value="' + Prioview[i]['PriorityIDPK'] + '">' + Prioview[i]['PriorityName'] + '</option>';
-            }
-      
-      })
+                    '<option value="' + Divisionview[i]['DivisionIDPK'] + '">' + Divisionview[i]['DivisionName'] + '</option>';
+            }            
+      }) 
 }
 
 function ContChange(e){ 
@@ -3101,26 +3139,36 @@ function GetBuilding(locid,conid){
   })
 }
 
-function WOChange(CatID){
-setWOtypeID(CatID);
-var select = document.getElementById("division");
-var length = select.options.length;
-for (let i = length-1; i >= 0; i--) {
-    select.options[i] = null;
-} 
-let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=8&WoTypeID="+CatID;
-fetch(url)
-      .then(res=>res.json())
-      .then(res=>{
+function WOChange(e){
+  setWOtypeID(e.target.value);
+  var select = document.getElementById("nature");
+  var length = select.options.length;
+  for (let i = length-1; i >= 0; i--) {
+      select.options[i] = null;
+  }
+  contractlist();
+  setProDate([]);
+  setEndDate(null);
+  setmultiEmp('');
+  setPersonName([]);
+  // var select = document.getElementById("division");
+  // var length = select.options.length;
+  // for (let i = length-1; i >= 0; i--) {
+  //     select.options[i] = null;
+  // } 
+  // let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=8&WoTypeID="+CatID;
+  // fetch(url)
+  //       .then(res=>res.json())
+  //       .then(res=>{
 
-      var Divisionview = res;
-      var ele = document.getElementById('division');
-      for (var i = 0; i < Divisionview.length; i++) {
-          // POPULATE SELECT ELEMENT WITH JSON.
-          ele.innerHTML = ele.innerHTML +
-              '<option value="' + Divisionview[i]['DivisionIDPK'] + '">' + Divisionview[i]['DivisionName'] + '</option>';
-      }            
-}) 
+  //       var Divisionview = res;
+  //       var ele = document.getElementById('division');
+  //       for (var i = 0; i < Divisionview.length; i++) {
+  //           // POPULATE SELECT ELEMENT WITH JSON.
+  //           ele.innerHTML = ele.innerHTML +
+  //               '<option value="' + Divisionview[i]['DivisionIDPK'] + '">' + Divisionview[i]['DivisionName'] + '</option>';
+  //       }            
+  // }) 
 }
 
 function DivChange(divid){
@@ -3153,30 +3201,86 @@ date.map((val) => {
   let mon = val.getMonth()+1; 
   muldate.push(val.getFullYear()+"-"+mon+"-"+val.getDate())
   return null;
-})
-setProDate(muldate.toString()) 
+}) 
+setProDate(muldate) 
 }
 
-function submitComp(){ 
+function submitComp(){
+
 var UserName = localStorage.getItem('username');
 var EID = localStorage.getItem('Employeeid');
+var Todate = '';
+if(EndDate){
+  const DateEnd = EndDate.getMonth()+1; 
+  Todate = EndDate.getFullYear()+"-"+DateEnd+"-"+EndDate.getDate();
+}
+var Startdate = ''; 
+if(ProDate.length > 0){
+  Startdate = ProDate.toString();
+}
 
-var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Description="+Descval+"&ContractID="+ContID+"&LocalityID="+LocID+"&BuildingID="+BuildID+"&FloorID=0&SpotID=0&ComplainerName="+UserName+"&ContactNo=null&PortalType=2&DocID=null&DivisionID="+DivID+"&PriorityID="+priorID+"&EmpID="+multiEmp+"&ProDate="+ProDate;
-      if (natureval === '' || DivID === '' || priorID === '' || Descval === '' || ContID === ''){
+var EMPassgn =  '';
+if(WOtypeID === '2'){
+  if(multiEmp){
+    EMPassgn =  multiEmp;
+  }else{
+    EMPassgn =  EID;
+  }
+}
+
+var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Description="+Descval+"&ContractID="+ContID+"&LocalityID="+LocID+"&BuildingID="+BuildID+"&FloorID=0&SpotID=0&ComplainerName="+UserName+"&ContactNo=null&PortalType=2&DocID=null&DivisionID="+DivID+"&PriorityID=1&EmpID="+EMPassgn+"&ProDate="+Startdate+"&TaskType="+WOtypeID+"&EndDate="+Todate;
+// console.log(dataString);
+// return false;
+      if (natureval === '' || DivID === '' || Descval === '' || ContID === ''){
           setOpen(true);
           setMessage("Please fill all mandatory fields");
           setmsgColor("error");
       }else{
-        setformLoading(true); 
+        setformLoading(true);
         let url = config.submiturl + "NsetrackComplaintRegistry.php";
-        // axios.post(url,dataString)
-        // .then(res => {
-        //   console.log(res.data);
-        //   if (res.data > 0) {
+        axios.post(url,dataString)
+        .then(res => {
+          // console.log(res.data);
+          if (res.data > 0) {
+              setOpen(true);
+              setMessage("Task Raised ,Complaint registered successfully");
+              setmsgColor("success");
+              staffassign(res.data);
+              setformLoading(false);
+              setPersonName([]);
+              setmultiEmp('');
+              setDescval('');
+              contractlist();
+              setProDate([]);
+              // document.getElementById("filterslide").style.width = "0vw";
+          }else{
+              setOpen(true);
+              setMessage("Problem during submission");
+              setmsgColor("error");
+              setformLoading(false);
+              contractlist();
+              setProDate([]);
+          }
+          
+            
+        }) 
+        // fetch(url,{
+        //   crossDomain:true,
+        //   method: "POST",
+        //   headers: {
+        //       'Accept': 'application/json',
+        //       'Content-Type': 'application/json',
+        //       'Access-Control-Allow-Origin': '*'
+        //   },
+        //   body: dataString
+        // })
+        // .then((res)=>res.json())
+        // .then((data)=>{
+        //   if (data > 0) {
         //       setOpen(true);
         //       setMessage("Task Raised ,Complaint registered successfully");
         //       setmsgColor("success");
-        //       staffassign(res.data);
+        //       staffassign(data);
         //       setformLoading(false);
         //       setPersonName([]);
         //       setDescval('');
@@ -3187,37 +3291,7 @@ var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Descr
         //       setmsgColor("error");
         //       setformLoading(false);
         //   }
-          
-            
-        // }) 
-        fetch(url,{
-          crossDomain:true,
-          method: "POST",
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin': '*'
-          },
-          body: dataString
-        })
-        .then((res)=>res.json())
-        .then((data)=>{
-          if (data > 0) {
-              setOpen(true);
-              setMessage("Task Raised ,Complaint registered successfully");
-              setmsgColor("success");
-              staffassign(data);
-              setformLoading(false);
-              setPersonName([]);
-              setDescval('');
-              document.getElementById("filterslide").style.width = "0vw";
-          }else{
-              setOpen(true);
-              setMessage("Problem during submission");
-              setmsgColor("error");
-              setformLoading(false);
-          }
-        })
+        // })
       }
 
 }
@@ -3228,9 +3302,17 @@ let url = config.configurl + "/SupportStaffAssign.php?EmployeeID="+EmpID+"&CCMCo
   fetch(url)
         .then(res=>res.json())
         .then(res=>{
-          console.log(res,"Assigned")
+          // console.log(res,"Assigned")
         })
 }
+
+function Tablecontext(e,id){ 
+  setAnchMenuEl(e.currentTarget);
+}
+
+const handleCloseMenu = (val) => {
+  setAnchMenuEl(null); 
+};
 
 // var logofm = Smartfm;
 
@@ -3251,13 +3333,13 @@ return (
                 <Grid item xs={3} sm={2} md={2} style={{ textAlign:'left' }}>
                   <img alt="logo1" src={Nanosoft} className='logo1'></img>
                 </Grid>
-                <Grid item xs={7} sm={8} md={9} style={{textAlign:'center'}}>
+                <Grid item xs={5} sm={8} md={9} style={{textAlign:'center'}}>
                   <span className="Apphead">NanoSoft Tracker Board</span> 
                 </Grid>
-                <Grid item xs={2} sm={2} md={1} style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
+                <Grid item xs={4} sm={2} md={1} style={{display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
                   {/* <img alt="logo2" src={logofm} className='logo2'></img> */}
                   <span className="usercss">{localStorage.getItem('username')}</span>
-                  <Icon style={{marginLeft: '3%'}} title={'Logout'} onClick={LogOutBtn}>logout</Icon>
+                  <Icon style={{marginLeft: '3%',cursor: 'pointer'}} title={'Logout'} onClick={LogOutBtn}>logout</Icon>
                 </Grid>
               </Grid> 
             </AppBar>
@@ -3322,17 +3404,17 @@ return (
                         </span>}
                        
                         <IconButton aria-label="delete" className={classes.marginleft} onClick={()=>{MonthChange('Complaint')}}>
-                          <Icon title="Register Complaint" className="sendbtn">send</Icon>
+                        <Icon title="Register Complaint" className="sendbtn">send</Icon>
                         </IconButton>
                         <IconButton aria-label="delete" className={classes.marginleft} onClick={()=>openCalendar()} >
-                          {/* <DateRangeIcon  className="sendbtn" fontSize="small" /> */}
-                          <Icon title="Calender" className="sendbtn">date_range</Icon>
+                        <Icon title="Calender" className="sendbtn">date_range</Icon>
                         </IconButton>
+                       
                        
                         {/* <button className="btnsubmit" onClick={()=>{MonthChange('Complaint')}}>Submit</button>
                         <button className="btnsubmit" onClick={()=>openCalendar()}>Calendar</button> */}
                         <Icon style={{float:'right',margin:'0.7rem'}} title={refresh ? 'Disable Autorefresh' : 'Enable Autorefresh'} onClick={autorefresh}>{refresh ? 'update_disabled': 'refresh'}</Icon>
-                        <button style={{float:'right',margin:'0.7rem'}} className="btnCss" onClick={()=>{filterchange()}}><Icon className="filcss">filter_alt</Icon>Filter</button>
+                        <button style={{float:'right',margin:'0.7rem 2px'}} className="btnCss" onClick={()=>{filterchange()}}><Icon className="filcss">filter_alt</Icon>Filter</button>
                         <div id="filDiv">
                             <Grid container style={{padding:'6px'}}>
                               <Grid item xs={6} sm={4} md={2}>
@@ -3746,7 +3828,7 @@ return (
                 </Card>
               </Grid>}
 
-              <Grid item xs={12} sm={12} md={12} className="Gridpad">
+              {/* <Grid item xs={12} sm={12} md={12} className="Gridpad">
                     <Card className="cardshadow">
                         
                       <div className="CardHeader">
@@ -3770,9 +3852,9 @@ return (
                       </CardContent>
                   
                 </Card>
-              </Grid>
+              </Grid> */}
 
-              <Grid item xs={12} sm={12} md={12} className="Gridpad">
+              {/* <Grid item xs={12} sm={12} md={12} className="Gridpad">
                     <Card className="cardshadow">
                         
                       <div className="CardHeader">
@@ -3796,9 +3878,9 @@ return (
                       </CardContent>
                   
                 </Card>
-              </Grid>
+              </Grid> */}
 
-              <Grid item xs={12} sm={12} md={12} className="Gridpad">
+              {/* <Grid item xs={12} sm={12} md={12} className="Gridpad">
                     <Card className="cardshadow">
                         
                       <div className="CardHeader">
@@ -3818,9 +3900,9 @@ return (
                       </CardContent>
                   
                 </Card>
-              </Grid>
+              </Grid> */}
 
-              <Grid item xs={12} sm={12} md={12} className="Gridpad">
+              {/* <Grid item xs={12} sm={12} md={12} className="Gridpad">
                     <Card className="cardshadow">
                         
                       <div className="CardHeader">
@@ -3840,9 +3922,9 @@ return (
                       </CardContent>
                   
                 </Card>
-              </Grid>
+              </Grid> */}
       {/* <!------------------------Contract Wise--------------------------------------------------- */}
-              <Grid item xs={12} sm={6} md={6} className="Gridpad">
+              {/* <Grid item xs={12} sm={6} md={6} className="Gridpad">
                     <Card className="cardshadow">
                         
                       <div className="CardHeader">
@@ -3882,9 +3964,9 @@ return (
                       </CardContent>
                   
                 </Card>
-              </Grid>
+              </Grid> */}
       {/* <!-----------Priority Wise-------------------------------------------- */}
-              <Grid item xs={12} sm={6} md={6} className="Gridpad">
+              {/* <Grid item xs={12} sm={6} md={6} className="Gridpad">
                     <Card  className= "cardshadow" >
                     <div className="CardHeader">
                           <div style={{display: 'flex'}}>
@@ -3906,10 +3988,10 @@ return (
                       </CardContent>
                   
                 </Card>
-              </Grid>
+              </Grid> */}
 
               {/* <!---------Responsibility Wise------------------------- */}       
-              <Grid item xs={12} sm={12} md={12} className="Gridpad">
+              {/* <Grid item xs={12} sm={12} md={12} className="Gridpad">
                     <Card   className= 'cardshadow'>
                     <div className="CardHeader">
                           <div style={{display: 'flex'}}>
@@ -3949,7 +4031,7 @@ return (
                       </CardContent>
                         
                 </Card>
-              </Grid>
+              </Grid> */}
 
 
             </Grid>
@@ -4016,7 +4098,7 @@ return (
               <TableBody>
                 {Slidedata.map((row,i) => (
                   (Formtitle === 'Log Sheet') ?
-                  <StyledTableRow key={i}>
+                  <StyledTableRow key={i} >
                     <TableCell className={classuse.cellbody}>{row.ContractName}</TableCell>
                     <TableCell className={classuse.cellbody}>{row.EmpName}</TableCell>
                     <TableCell className={classuse.cellbody}>{row.TaskNo}</TableCell>
@@ -4026,7 +4108,7 @@ return (
                     <TableCell className={classuse.cellbody}>{row.TotalHrs}</TableCell>
                   </StyledTableRow>
                   :
-                  <StyledTableRow key={i}>
+                  <StyledTableRow key={i} onClick={(e) => {Tablecontext(e,row.ContractIDPK)}}>
                     <TableCell className={classuse.cellbody}>{row.ComplaintNo}</TableCell>
                     <TableCell className={classuse.cellbody}>{row.ComplainedDate}</TableCell>
                     <TableCell className={classuse.cellbody}>{row.ETADate}</TableCell>
@@ -4045,7 +4127,38 @@ return (
               </TableBody>
             </Table>
           </TableContainer>
+          {/* <StyledMenu
+            id="customized-menu"
+            anchorEl={anchMenuEl}
+            keepMounted
+            open={Boolean(anchMenuEl)}
+            onClose={handleCloseMenu}
+          >
+                <StyledMenuItem onClick={()=>handleCloseMenu('Update Payment')}>
+                  <ListItemIcon>
+                    <Icon >update</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary="Update Payment" />
+                </StyledMenuItem>
+          </StyledMenu> */}
+          <Popover 
+          open={Boolean(anchMenuEl)}
+          anchorEl={anchMenuEl}
+          onClose={handleCloseMenu}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+        >
+          <Icon style={{padding:'3px'}}>update</Icon>
+          <span className="paylabel">Update Payment</span>
+        </Popover>
       </div>
+      
   </div>
 
   <div id="filterslide">
@@ -4173,10 +4286,10 @@ return (
             </Table>
           </TableContainer>
           }
-           {(slideType === 'Complaint') &&
-            formloading ? <Spinner/>
-            :
-            <Grid container>
+           {(slideType === 'Complaint') ?
+              formloading ? <Spinner/>
+              :
+              <Grid container>
               <Grid item xs={12} sm={12} md={4} >
                     <div className="selcontain">
                       <TextField label="Contract"
@@ -4188,7 +4301,7 @@ return (
                             shrink: true,
                           }}
                           />
-                      <select className="selectcss" size="10" id="contractval" onChange={(e)=>{ContChange(e.target.value) }}>
+                      <select className="selectcss" size="11" id="contractval" onChange={(e)=>{ContChange(e.target.value) }}>
                         <option value="">-----Select-----</option>
                       </select>
                     </div>
@@ -4220,40 +4333,44 @@ return (
                       </div>
                   </Grid>
                   
-                  <Grid item xs={12} sm={12} md={4} >
+                  <Grid item xs={12} sm={12} md={3} >
                     <Grid container>
                       <Grid item xs={12} sm={12} md={12}>
                         <div className="selcontain">
                           <label className="labelcompln">Workorder Type<span className="red1">*</span></label>
-                          <select className="selectcss" size="2" onChange={(e)=>{WOChange(e.target.value) }}>
+                          {/* <select className="selectcss" size="2" onChange={(e)=>{WOChange(e.target.value) }}>
                             <option value="1">Complaints</option>
                             <option value="2">Service Request</option>
-                          </select>
+                          </select> */}
+                          <RadioGroup aria-label="gender" name="gender1" value={WOtypeID} onChange={WOChange}>
+                            <FormControlLabel value="1" control={<Radio />} label="Client Task" />
+                            <FormControlLabel value="2" control={<Radio />} label="Internal Task" />
+                          </RadioGroup>
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={12} md={12}>
+                      {/* <Grid item xs={12} sm={12} md={12}>
                         <div className="selcontain">
                           <label className="labelcompln">Priority<span className="red1">*</span></label>
                           <select className="selectcss" size="4" id="priority" onChange={(e)=>{setpriorID(e.target.value)}}>
                             
                           </select>
                         </div>
-                      </Grid>
+                      </Grid> */}
                     </Grid>
 
                   </Grid>
                   <Grid item xs={12} sm={12} md={4}>
                     <div className="selcontain">
                       <label className="labelcompln">Division<span className="red1">*</span></label>
-                      <select className="selectcss" size="8" id="division" onChange={(e)=>{DivChange(e.target.value) }}>
+                      <select className="selectcss" size="9" id="division" onChange={(e)=>{DivChange(e.target.value) }}>
                         <option value="">-----Select Division-----</option>
                       </select>
                     </div>
                   </Grid>
-                  <Grid item xs={12} sm={12} md={4}>
+                  <Grid item xs={12} sm={12} md={5}>
                     <div className="selcontain">
                       <label className="labelcompln">Nature Of Complaint<span className="red1">*</span></label>
-                      <select className="selectcss" size="8" id="nature" onChange={(e)=>{setnatureval(e.target.value)}}>
+                      <select className="selectcss" size="9" id="nature" onChange={(e)=>{setnatureval(e.target.value)}}>
                         <option value="">-----Select Nature Of complaint-----</option>
                       </select>
                     </div>
@@ -4272,10 +4389,14 @@ return (
                     rowsMax={4}
                     value={Descval}
                     onChange={(e)=>{setDescval(e.target.value)}}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                 </div>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
+                {WOtypeID === '2' &&
                 <div className="selcontain">
                   {/* <Autocomplete 
                     style={{width:'100%'}} 
@@ -4312,14 +4433,41 @@ return (
                   </Select>
 
                 </div>
+                }
               </Grid>
-              <Grid item xs={12} sm={12} md={6}>
+              <Grid item xs={12} sm={12} md={3}>
+              {WOtypeID === '2' &&
                 <div className="multidate">
-                  <label className="labelcompln">Production ETA</label>
+                  <label className="labelcompln">Start Date</label>
                   <MultipleDatePicker
                         onSubmit={dates => multidatechange(dates)}
                       />
                 </div>
+              }
+              </Grid>
+              <Grid item xs={12} sm={12} md={3}>
+              {WOtypeID === '2' &&
+                <div className="enddate">
+                  <label className="labelcompln">End Date</label>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      disableToolbar
+                      variant="inline"
+                      format="dd-MM-yyyy"
+                      margin="normal"
+                      id="date-picker-inline"
+                      disabled={ProDate.length > 1 ? true : false}
+                      // label="End Date"
+                      value={EndDate}
+                      onChange={handleEndDateChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </div>
+              }
               </Grid>
               <Grid item xs={12} sm={12} md={12}>
                 <div style={{textAlign: 'center'}}>
@@ -4329,7 +4477,8 @@ return (
               
 
             </Grid>
-             
+             :
+             null
           }
       </div>
   </div>
@@ -4338,11 +4487,21 @@ return (
     <div className="popclosebtn" onClick={() => caldpopClose()}>
           <span className="btnclose">X</span>
     </div>
-       
 
-       <NewCalendar />
+        <SimpleContext.Provider value={{ 
+              togglePage: (val) => {setTastView(val)}
+            }}>
+              
+            {
+              tastView ? <NewCalendar /> : <GridView />
+            }
+
+        </SimpleContext.Provider>
+      
     
   </div>
+
+  
 
   <div>
     <button id="scrolltop" title="Back to Top" onClick={scrollTotop}><Icon>arrow_upward</Icon></button>
@@ -4357,21 +4516,5 @@ SimpleCard.propTypes = {
 };
 
 export default withStyles(styles)(SimpleCard);
-
-
-
-  
-
- 
-	
- 
- 
-
- 
- 
-
-
-
- 
 
 

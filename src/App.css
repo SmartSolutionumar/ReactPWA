@@ -168,6 +168,11 @@ p.Headlabel::first-letter{
     margin-top: 14% !important;
   }
 }
+@media (max-width: 600px){
+  .marginTop{
+    margin-top: 25% !important;
+  }
+}
 @media screen and (max-width: 950px) and (orientation: landscape){
   .marginTop{
     margin-top: 8% !important;
@@ -182,6 +187,12 @@ p.Headlabel::first-letter{
     padding-right: 40px;
     border-top-left-radius: 5px;
     border-bottom-right-radius: 5px;
+}
+@media (max-width: 950px){
+  .cardheadlabel{
+    font-size: 10px;
+    font-weight: 600;
+  }
 }
 .CardHeader{
   background: #ebeef1;
@@ -280,7 +291,7 @@ p.Headlabel::first-letter{
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 1302;
+  z-index: 1101;
   top: 0;
   right: 0;
   background-color: transparent;
@@ -319,7 +330,7 @@ p.Headlabel::first-letter{
 }
 .formslide{
   margin-top: 4%;
-  background: #EEEEEE;
+  background: #fff;
   padding: 15px;
   width: 95%;
   /* margin-left: 55px; */
@@ -456,10 +467,15 @@ html {
 }
 
 .usercss{ 
-  padding: 2px 3%;
+    padding: 2px 3%;
     font-size: 15px;
     font-weight: 600; 
     display: inline-block;
+}
+@media (max-width: 950px){
+  .usercss{
+    font-size: 12px;
+  }
 }
 
 .btnsubmit{ 
@@ -478,9 +494,21 @@ html {
   width: 100%;
   border-radius: 3px;
 }
+select:focus option:checked, select:focus option:visited, select[multiple]:focus option:checked {
+  background: #0a63ab linear-gradient(0deg, #0a63ab 0%, #0a63ab 100%);
+}
+/* option:checked {
+  background: #0a63ab linear-gradient(0deg, #0a63ab 0%, #0a63ab 100%);
+  color: #fff;
+} */
+select[aria-selected=true] {
+    background-color: inherit;
+    color: lightgray;
+} 
 
 .labelcompln{
   font-size: 12px;
+  font-weight: 600;
 }
 
 .red1{
@@ -491,15 +519,29 @@ html {
   padding: 2%;
 }
 
+.selcontain > div > label {
+  color: #444 !important;
+  font-weight: 600;
+}
+
 .multidate > div > input {
   width: 100%;
   border: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.42);
   background: transparent;
 }
+@media (max-width : 600px){
+  .multibtn > div > button {
+    font-size: 10px;
+  }
+}
+
+.enddate{
+  padding: 3%;
+}
 
 .multidate{
-  padding: 4%;
+  padding: 7%;
 }
 .calenderwid{
   width: 100%;
@@ -510,4 +552,11 @@ html {
 }
 .sendbtn{
   color: #337ab7;
+}
+
+.paylabel{
+  font-size: 13px;
+    padding: 0px 11px;
+    position: relative;
+    top: -5px;
 }

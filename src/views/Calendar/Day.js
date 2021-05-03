@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import {todayHrs, todayHours} from './dayjson'
-import { format,subDays,addDays,startOfWeek,isSameMonth,startOfMonth,endOfMonth,isSameDay,startOfDay } from 'date-fns'
+import { format,subDays,addDays,isSameMonth,startOfMonth,isSameDay,startOfDay } from 'date-fns'
 const { forwardRef, useImperativeHandle } = React;
 
 const styles = (theme) => ({
@@ -56,7 +56,7 @@ const DialogActions = withStyles((theme) => ({
 const Day = forwardRef((props, ref) => {
 
     const [currentMonth, setCurrentMonth] = useState(new Date());
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    // const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedHrs, setSelectedHrs] = useState({time:'', date:'', index: ''})
     const [open, setOpen] = React.useState(false);
     const [textevent, settextevent] = useState('');
@@ -104,7 +104,7 @@ function renderDays() {
 
   function renderCells() {
     const monthStart = startOfMonth(currentMonth);
-    const monthEnd = endOfMonth(monthStart);
+    // const monthEnd = endOfMonth(monthStart);
 
 
     const dateFormat = "d";
@@ -122,12 +122,13 @@ function renderDays() {
             className={`col weecell ${
               !isSameMonth(day, monthStart)
                 ? "disabled"
-                : isSameDay(day, selectedDate) ? "selectednull" : ""
+                : isSameDay(day, new Date()) ? "selectednull" : ""
             }`}
             key={i}
+            // eslint-disable-next-line no-loop-func
             onClick={() => {onDateClick(cloneDay,formattedDate) }}
           >
-            <span className={`wnumber ${isSameDay(day, selectedDate) ? "dselectdt" : ""}`}>{formattedDate}</span>
+            <span className={`wnumber ${isSameDay(day, new Date()) ? "dselectdt" : ""}`}>{formattedDate}</span>
             </div>
         );
         
@@ -144,7 +145,7 @@ function renderDays() {
 
 
 function renderCellsHours() {
-const startDate = startOfWeek(new Date());
+// const startDate = startOfWeek(new Date());
 
 const dateFormat = "d";
 const rows = [];
@@ -179,6 +180,7 @@ dayState.map((val,f) => {
     </div>
   );
   days = [];
+  return null;
 })
 
 return <div className="wbody">{rows}</div>;
@@ -220,10 +222,11 @@ const handleClick = (e) => {
 
 const handleClose = (params) => {
   setOpen(false);
-  if(params == 'save'){
-    const prev = dayState.filter(ev => ev.time == selectedHrs.time);
+  if(params === 'save'){
+    const prev = dayState.filter(ev => ev.time === selectedHrs.time);
 
         var newArray = dayState;
+        // eslint-disable-next-line no-new-object
         var editData = new Object();
         editData = { 
           time  : prev[0].time,
@@ -233,7 +236,7 @@ const handleClose = (params) => {
 
         const newData = [...newArray];
 
-        const index = newData.findIndex(item => item.time == selectedHrs.time);
+        const index = newData.findIndex(item => item.time === selectedHrs.time);
 
         const item = newData[index];
 

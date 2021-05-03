@@ -1,10 +1,10 @@
 import React,{useState,forwardRef, useImperativeHandle} from 'react'
-import { format,subWeeks,addDays,startOfWeek,addWeeks,isSameMonth,startOfMonth,endOfMonth,endOfWeek,isSameDay } from 'date-fns'
+import { format,subWeeks,addDays,startOfWeek,addWeeks,isSameMonth,startOfMonth,isSameDay } from 'date-fns'
 
 const Week = forwardRef((props, ref) => {
 
     const [currentMonth, setCurrentMonth] = useState(new Date());
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    // const [selectedDate, setSelectedDate] = useState(new Date());
 
     const todayHours = [ '12 AM','1 AM','2 AM','3 AM','4 AM','5 AM','6 AM','7 AM','8 AM','9 AM','10 AM','11 AM'
   ,'12 PM','1 PM','2 PM','3 PM','4 PM','5 PM','6 PM','7 PM','8 PM','9 PM','10 PM','11 PM']
@@ -53,33 +53,32 @@ const Week = forwardRef((props, ref) => {
 
       function renderCells() {
         //const { currentMonth, selectedDate } = this.state;
-        const monthStart = startOfMonth(currentMonth);
-        const monthEnd = endOfMonth(monthStart);
+        var monthStart = startOfMonth(currentMonth);
+        // const monthEnd = endOfMonth(monthStart);
         const startDate = startOfWeek(currentMonth);
-        const endDate = endOfWeek(monthEnd);
+        // const endDate = endOfWeek(monthEnd);
     
         const dateFormat = "d";
         const rows = [];
     
         let days = [];
-        let day = startDate;
-        let formattedDate = "";
+        let day = startDate; 
     
         // while (day <= endDate) {
-          for (let i = 0; i < 7; i++) {
-            formattedDate = format(day, dateFormat);
+          for (let i = 0; i < 7; i++) { 
+            const formattedDate = format(day, dateFormat);
             const cloneDay = day;
             days.push(
               <div
                 className={`col weecell ${
                   !isSameMonth(day, monthStart)
                     ? "disabled"
-                    : isSameDay(day, selectedDate) ? "selectednull" : ""
+                    : isSameDay(day, new Date()) ? "selectednull" : ""
                 }`}
-                key={day}
-                onClick={() => {onDateClick(cloneDay,formattedDate) }}
+                key={day} 
+                onClick={(e) => { onDateClick(cloneDay,formattedDate) }}
               >
-                <span className={`wnumber ${isSameDay(day, selectedDate) ? "wselectdt" : ""}`}>{formattedDate}</span>
+                <span className={`wnumber ${isSameDay(day, new Date()) ? "wselectdt" : ""}`}>{formattedDate}</span>
                 </div>
             );
             
@@ -97,8 +96,8 @@ const Week = forwardRef((props, ref) => {
 
 
   function renderCellsHours() {
-    const monthStart = startOfMonth(currentMonth);
-    const monthEnd = endOfMonth(monthStart);
+    // const monthStart = startOfMonth(currentMonth);
+    // const monthEnd = endOfMonth(monthStart);
     const startDate = startOfWeek(new Date());
 
 
@@ -106,13 +105,13 @@ const Week = forwardRef((props, ref) => {
     const rows = [];
 
     let days = [];
-    let formattedDate = "";
+    var formattedDate = "";
 
     for (let f = 0; f < todayHours.length; f++) {
       let day = startDate;
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
-        const cloneDay = day;
+        // const cloneDay = day;
         days.push(
           <div id={formattedDate+' index'+f} onClick={(e)=> { handleClick(e) }}
             className={`col wcell`}
@@ -159,7 +158,7 @@ const Week = forwardRef((props, ref) => {
     }
 
     const handleClick = (e) => {
-      let pDoc = document.getElementById(e.target.id);
+      // let pDoc = document.getElementById(e.target.id);
       // console.log('e',e.target.id,pDoc.parentNode)
 
     }

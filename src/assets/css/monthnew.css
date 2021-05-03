@@ -370,3 +370,42 @@ main {
   text-align: left !important;
   font-weight: 400 !important;
 }
+.spnclose {
+  font-size: 12px;
+    float: right;
+    color: green;
+    font-weight: 600;
+    padding-right: 1.7rem;
+    padding-top: 0.2rem;
+}
+.spncloself {
+  font-size: 12px;
+  float: left;
+  padding-left: 1rem;
+  color: red;
+  font-weight: 600;
+  line-height: 2.5;
+}
+[badge]:after {
+  background: green;
+  border-radius: 46%;
+  color: #fff;
+  content: attr(badge);
+  font-size: 11px;
+  margin-top: -10px;
+  min-width: 15px;
+  height: 15px;
+  padding: 2px;
+  position: absolute;
+  text-align: center;
+  top: 12px;
+  right: 5px;
+  line-height: 1.5;
+
+}
+
+[badge^="-"]:after,
+[badge="0"]:after,
+[badge=""]:after {
+display: none;
+}

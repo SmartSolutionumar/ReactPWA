@@ -11,8 +11,6 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Popover from '@material-ui/core/Popover';
 import MenuIcon from '@material-ui/icons/Menu';
-import TableRow from '@material-ui/core/TableRow';
-import { makeStyles } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -27,13 +25,18 @@ import Status from '../menu/Status'
 import StartWork from '../menu/StartWork'
 import AddCheckPoint from '../menu/AddCheckPoint'
 import StandBy from '../menu/StandBy'
-
+import ETAProductionDate from '../menu/ETA&ProductionDate'
+import Analysis from '../menu/AnalysisClose';
+import Execution from '../menu/ExecutionClose';
+import UpdateTime from '../menu/UpdateTime'
 
 
 
 import {config} from '../../config';
 import {format,subMonths,addDays, startOfWeek,addMonths,isSameMonth,startOfMonth,endOfMonth, endOfWeek,isSameDay } from 'date-fns'
-const { forwardRef, useRef, useImperativeHandle } = React;
+const { forwardRef, useImperativeHandle, createContext } = React;
+
+export const MenuContext = createContext();
 
 
 const StyledMenu = withStyles({
@@ -118,21 +121,27 @@ const MonthCalendar = forwardRef((props, ref) => {
     const [open, setOpen] = React.useState(false);
     const [textevent, settextevent] = useState('');
     const [dayState, setDayState] = useState([]);
+    const [closedayState, setCloseDayState] = useState([]);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [secPoP, setsecPoP] = useState([])
     const [ThirdPop, setThirdPop] = useState('')
     const [anchorElEveList, setAnchorElEveList] = useState(null);
     const [MenuList, setMenuList] = useState(null)
     const [anchMenuEl, setAnchMenuEl] = React.useState(null);
-
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [PopStatus, setPopStatus] = useState('')
     useEffect(() => {
-        monthviewApi(currentMonth)
+        monthviewApi(currentMonth,'MONTH');
+        monthviewApi(currentMonth,'CLOSE');
+        localStorage.setItem('date',currentMonth);
+        // eslint-disable-next-line
     }, []);
 
     useImperativeHandle(ref, () => ({
 
       Prev : () => {
         prevMonth();
+        
       },
       Next : () => {
         nextMonth();
@@ -142,41 +151,44 @@ const MonthCalendar = forwardRef((props, ref) => {
 
     const nextMonth = () => {
       const next = addMonths(currentMonth, 1)
-      monthviewApi(next)
+      monthviewApi(next,'MONTH');
+      monthviewApi(next,'CLOSE');
       setCurrentMonth(next)
-      
+      localStorage.setItem('date',next)
     };
   
     const prevMonth = () => {
       
       const prev = subMonths(currentMonth, 1)
-      monthviewApi(prev)
+      monthviewApi(prev,'MONTH');
+      monthviewApi(prev,'CLOSE');
       setCurrentMonth(prev)
+      localStorage.setItem('date',prev)
      
     };
 
-    const monthviewApi = (month) => {
+    // const openTask = (event) => {
+    //   event.stopPropagation();
+    // }
+    // const closeTask = (event) => {
+    //   event.stopPropagation();
+    // }
 
-        let current = format(month, 'yyyy/MM/dd')
+    const monthviewApi = (month,type) => {
 
-        const url = config.configurl+`/SupportnewCalander.php?ColumnIndex=3&value=null&EMPID=${localStorage.getItem('Employeeid')}&WoDate=${current}&QueryType=MONTH`
+        let current = format(month, 'yyyy/MM/dd') //localStorage.getItem('Employeeid')
+
+        const url = config.configurl+`/SupportnewCalander.php?ColumnIndex=3&value=null&EMPID=${localStorage.getItem('Employeeid')}&WoDate=${current}&QueryType=${type}`
         fetch(url).then(response => response.json())
         .then(data => {
           if(data.length > 0){
-
+            // console.log(data)
            const arrFilter =  getUniqueListBy(data, 'DeliveryDate')
 
            var arr = []
            arrFilter.map(a => {
 
-            var arrEvnt = data.filter(f=> f.DeliveryDate == a.DeliveryDate)
-          //   .map(b=> {
-          //     return {      tag: b.TicketType+' - '+b.ComplaintNo+' - '+b.ContractCode,
-          //                   date: reverse(b.DeliveryDate),
-          //                   TicketType: b.TicketType,
-          //                   totPct : b.ManMin ? calcPercentage(b.ManMin) +'%' : ''
-          //             }
-          // })
+            var arrEvnt = data.filter(f=> f.DeliveryDate === a.DeliveryDate)
 
             arr.push({
               day  : a.DeliveryDate.split("-")[0],
@@ -184,12 +196,16 @@ const MonthCalendar = forwardRef((props, ref) => {
               year: a.DeliveryDate.split("-")[2],
               events: arrEvnt
             })
-            
-
+            return null;
            })
-
-           setDayState(arr)
+           if(type === 'MONTH'){
+            setDayState(arr)
+           }else{
+            setCloseDayState(arr)
+           }
            
+           setAnchorElEveList(null);
+           setAnchMenuEl(null);
           }
         });
     }
@@ -199,13 +215,13 @@ const MonthCalendar = forwardRef((props, ref) => {
   function getUniqueListBy(arr, key) {
     return [...new Map(arr.map(item => [item[key], item])).values()]
   }
-  const calcPercentage = (a) => {
+  // const calcPercentage = (a) => {
 
-    if(Number(a) > 0){
-        return Math.round((Number(a) / 420) * 100)
-    }
+  //   if(Number(a) > 0){
+  //       return Math.round((Number(a) / 420) * 100)
+  //   }
 
-  }
+  // }
   
   function renderDays() {
     const dateFormat = "eee";
@@ -224,9 +240,13 @@ const MonthCalendar = forwardRef((props, ref) => {
     return <div className="days row">{days}</div>;
   }
 
-  const handlePoplist = (event,params,pop) => {
+  const handlePoplist = (event,params,pop,status) => {
     event.stopPropagation();
-        
+
+    if(status){
+      setPopStatus(status)
+    }
+   
 
         if(pop){
           setAnchorEl(event.currentTarget);
@@ -234,8 +254,13 @@ const MonthCalendar = forwardRef((props, ref) => {
         }else{
           setAnchorElEveList(event.currentTarget);
           setThirdPop(params)
+          localStorage.setItem('ComplaintIDPK', params[0].ComplaintIDPK); 
+          localStorage.setItem('ComplaintNo', params[0].ComplaintNo); 
 
         }
+
+        
+        
         // const result = params.map(function(el) {
         //   let o = Object.assign({}, el);
         //   o.day = day;
@@ -245,30 +270,35 @@ const MonthCalendar = forwardRef((props, ref) => {
   }
 
   const eventBinding = (day, monthStart) => {
-    const FilrMon = dayState.filter(m =>m.month == format(currentMonth, "MM"));
-    const listday = format(day,'d');
-    const dayfilt = dayState.filter(n => n.day == listday);
-    if(FilrMon.length == 0){ return false}
+    const FilrMon = dayState.filter(m =>m.month === format(currentMonth, "MM"));
+    const listday = format(day,'dd');
+    
+    const dayfilt = FilrMon.filter(n => n.day === listday);
+ 
+   
+    if(dayfilt.length === 0){ return false}
+    
       if(isSameMonth(day, monthStart)){
           if(dayfilt.length > 0){
+           
               if(dayfilt[0].events.length > 0 ){
-
+                
                 if(dayfilt[0].events.length > 3 ){
                   
                 return dayfilt[0].events.slice(0,4).map((en,i) => {
-                  if(i < 2){
-                    return(<div className={`tagday ${'bg'+en.TicketType}`} onClick={(event)=>handlePoplist(event,[en],false)} >{en.ComplaintNo}
-                    <span className='fright'>{en.ManMin}</span></div> )                  
-                  }
-                   else if(i == 3){
-                      return(<div className='tagdaymore' onClick={(event)=>handlePoplist(event,dayfilt[0].events,true)} >+{ dayfilt[0].events.length - 2 +' more'}</div> )                  
+                    if(i < 2){
+                      return(<div className={`tagday ${'bg'+en.TicketType}`} onClick={(event)=>handlePoplist(event,[en],false,'open')} >{en.TicketType+" - "+en.ComplaintNo}
+                      <span className='fright'>{en.ManMin}</span></div> )                  
                     }
-    
+                    else if(i === 3){
+                        return(<div className='tagdaymore' onClick={(event)=>handlePoplist(event,dayfilt[0].events,true,'open')} >+{ dayfilt[0].events.length - 2 +' more'}</div> )                  
+                    }
+                    return null;
                   })
 
                 }else{
                 
-                return dayfilt[0].events.slice(0,4).map((en,i) => <div className={`tagday ${'bg'+en.TicketType}`} onClick={(event)=>handlePoplist(event,[en],false)}>{en.ComplaintNo}
+                return dayfilt[0].events.slice(0,4).map((en,i) => <div key={i} className={`tagday ${'bg'+en.TicketType}`} onClick={(event)=>handlePoplist(event,[en],false,'open')}>{en.TicketType+" - "+en.ComplaintNo}
                 <span className='fright'>{en.ManMin}</span></div> )
                 
                 }
@@ -278,6 +308,28 @@ const MonthCalendar = forwardRef((props, ref) => {
           }
 
       }
+
+      const closeEventBind = (day, monthStart) => {
+        const FilrMon = closedayState.filter(m =>m.month === format(currentMonth, "MM"));
+        const listday = format(day,'dd');
+        
+        const dayfilt = FilrMon.filter(n => n.day === listday);
+       
+        if(dayfilt.length === 0){ return false}
+        
+          if(isSameMonth(day, monthStart)){
+              if(dayfilt.length > 0){
+               
+                  if(dayfilt[0].events.length > 0 ){
+                    
+                    return dayfilt[0].events.slice(0,1).map((en,i) => <span className='spnclose' badge={dayfilt[0].events.length} onClick={(e)=> handlePoplist(e,dayfilt[0].events,true,'closed')}>closed</span> )
+                    
+                  }
+    
+                }
+              }
+    
+          }
 
 
   function renderCells() {
@@ -305,9 +357,12 @@ const MonthCalendar = forwardRef((props, ref) => {
                 : isSameDay(day, selectedDate) ? "selectednull" : ""
             }`}
             key={day}
+            // eslint-disable-next-line no-loop-func
             onClick={() => { onDateClick(cloneDay,formattedDate) }}
           >
             <span className={`number ${isSameDay(day, selectedDate) ? "selectdt" : ""}`}>{formattedDate}</span>
+            
+            {closeEventBind(cloneDay,monthStart)}
             <div style={{marginTop:'1.9rem'}}> 
 
             {eventBinding(cloneDay,monthStart)}
@@ -340,14 +395,15 @@ const MonthCalendar = forwardRef((props, ref) => {
   const handleClose = (params) => {
     setOpen(false);
     if(!textevent){ return false }
-    if(params == 'save'){
+    if(params === 'save'){
       const slDate = format(selectedDate, "d");
-      const prev = dayState.filter(ev => ev.day == slDate);
+      const prev = dayState.filter(ev => ev.day === slDate);
 
       if(prev.length > 0){
 
-        var newArray = dayState;
-        var editData = new Object();
+        let newArray = dayState;
+        // eslint-disable-next-line no-new-object
+        let editData = new Object();
         editData = { 
           day  : prev[0].day,
           month: prev[0].month,
@@ -356,7 +412,7 @@ const MonthCalendar = forwardRef((props, ref) => {
 
         const newData = [...newArray];
 
-        const index = newData.findIndex(item => item.day == slDate);
+        const index = newData.findIndex(item => item.day === slDate);
 
         const item = newData[index];
 
@@ -367,8 +423,8 @@ const MonthCalendar = forwardRef((props, ref) => {
 
       }else{
 
-        var newArray = dayState;
-        var editData = new Object();
+        // eslint-disable-next-line no-new-object
+        let editData = new Object();
         editData = { 
           day  : slDate,
           month: format(currentMonth, "MM"),
@@ -385,18 +441,18 @@ const MonthCalendar = forwardRef((props, ref) => {
      
 
   }
-      const handleClickPOP = (event,params,day) => {
-        event.stopPropagation();
-        setAnchorEl(event.currentTarget);
-        const result = params.map(function(el) {
-          let o = Object.assign({}, el);
-          o.day = day;
-          return o;
-        })
+      // const handleClickPOP = (event,params,day) => {
+      //   event.stopPropagation();
+      //   setAnchorEl(event.currentTarget);
+      //   const result = params.map(function(el) {
+      //     let o = Object.assign({}, el);
+      //     o.day = day;
+      //     return o;
+      //   })
 
-        setsecPoP(result)
+      //   setsecPoP(result)
       
-      }
+      // }
       const handleClosepop = () => {
         setAnchorEl(null);
       };
@@ -407,22 +463,27 @@ const MonthCalendar = forwardRef((props, ref) => {
       const openEveList = Boolean(anchorElEveList);
       const idEveList = openEveList ? 'simple-popover' : undefined;
     
-      const handleClickEveList = (event,params) => {
-        event.stopPropagation();
-        setAnchorElEveList(event.currentTarget);
-        setThirdPop(params.tag)
+      // const handleClickEveList = (event,params) => {
+      //   event.stopPropagation();
+      //   setAnchorElEveList(event.currentTarget);
+      //   setThirdPop(params.tag)
         
        
-      }
+      // }
 
       const handleCloseEveList = () => {
         setAnchorElEveList(null);
       };
 
       const handleClickMenu = (event) => {
+        // console.log(event.currentTarget)
         setAnchMenuEl(event.currentTarget);
       };
       const handleCloseMenu = (val) => {
+
+        if(val){
+          setDialogOpen(true)
+        }
         setAnchMenuEl(null);
         setMenuList(val)
       };
@@ -494,7 +555,8 @@ const MonthCalendar = forwardRef((props, ref) => {
                   secPoP.length > 0 &&
                   
                   secPoP.map((ev, i) => { 
-                    return (<div key={i} className={`tagday ${'bg'+ev.TicketType}`} onClick={(e)=> handlePoplist(e,[ev],false)}>{ev.ComplaintNo}</div>);
+                    return (<div key={i} className={`tagday ${'bg'+ev.TicketType}`} onClick={(e)=> handlePoplist(e,[ev],false)}>{ev.TicketType+" - "+ev.ComplaintNo}
+                    <span className='fright'>{ev.ManMin}</span></div> )     
                   
                   })
 
@@ -524,8 +586,13 @@ const MonthCalendar = forwardRef((props, ref) => {
         <div style={{padding:'0.6rem',width:'20rem'}}>
         
         <div style={{float:'right'}}>
-          <MenuIcon className='menuIcpnpos' onClick={handleClickMenu} />
-          <CloseIcon style={{width:'17px'}} onClick={handleCloseEveList}/></div>
+          
+          {
+            PopStatus === 'open' && 
+            <MenuIcon className='menuIcpnpos' onClick={handleClickMenu} />
+          }
+          <CloseIcon style={{width:'17px'}} onClick={handleCloseEveList}/>
+          </div>
 
         {ThirdPop.length > 0 &&
         ThirdPop.map((a,i)=>(
@@ -578,13 +645,25 @@ const MonthCalendar = forwardRef((props, ref) => {
         open={Boolean(anchMenuEl)}
         onClose={handleCloseMenu}
       >
-        <StyledMenuItem onClick={()=>handleCloseMenu('ETA & Hold Update')}>
+        <StyledMenuItem onClick={()=>handleCloseMenu('Hold Remarks')}>
           <ListItemIcon>
             <SendIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="ETA & Hold Update" />
+          <ListItemText primary="Hold Remarks" />
         </StyledMenuItem>
-        <StyledMenuItem onClick={()=>handleCloseMenu('Analysis Close')}>
+        <StyledMenuItem onClick={()=>handleCloseMenu('Rework Remarks') }>
+          <ListItemIcon>
+            <SendIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Rework Remarks" />
+        </StyledMenuItem>
+        <StyledMenuItem onClick={()=>handleCloseMenu('ETA & Production Date') }>
+          <ListItemIcon>
+            <SendIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="ETA & Production Date" />
+        </StyledMenuItem>
+        <StyledMenuItem onClick={()=>handleCloseMenu('Analysis Close') }>
           <ListItemIcon>
             <DraftsIcon fontSize="small" />
           </ListItemIcon>
@@ -638,30 +717,47 @@ const MonthCalendar = forwardRef((props, ref) => {
 
     </StyledMenu>
 
- 
+    <MenuContext.Provider value={{ 
+          dialogClose: () => setDialogOpen(false),
+          refresh: () => {monthviewApi(currentMonth,'MONTH');monthviewApi(currentMonth,'CLOSE')},
+        }}>
+    
     {
-      MenuList == 'ETA & Hold Update' && <ETAHoldUpdate open={true} />
+      MenuList === 'Hold Remarks' && <ETAHoldUpdate open={dialogOpen}/>
     }
     {
-      MenuList == 'ETA & Rework Remarks' && <ETAReworkRemarks open={true}/>
+      MenuList === 'Rework Remarks' && <ETAReworkRemarks open={dialogOpen} />
     }
     {
-      MenuList == 'Reason For Pending' && <ReasonforPending open={true}/>
+      MenuList === 'ETA & Production Date' && <ETAProductionDate open={dialogOpen}/>
     }
     {
-      MenuList == 'Status' && <Status open={true}/>
+      MenuList === 'Reason for Pending' && <ReasonforPending open={dialogOpen} />
     }
     {
-      MenuList == 'Add CheckPoint' && <AddCheckPoint open={true}/>
+      MenuList === 'Status' && <Status open={dialogOpen}/>
     }
     {
-      MenuList == 'Start Work' && <StartWork open={true}/>
+      MenuList === 'Add CheckPoints' && <AddCheckPoint open={dialogOpen}/>
     }
     {
-      MenuList == 'StandBy' && <StandBy open={true}/>
+      MenuList === 'Start Work' && <StartWork open={dialogOpen}/>
+    }
+    {
+      MenuList === 'StandBy' && <StandBy open={dialogOpen}/>
+    }
+    {
+      MenuList === 'Analysis Close' && <Analysis open={dialogOpen}/>
+    }
+    {
+      MenuList === 'Execution Close' && <Execution open={dialogOpen}/>
+    }
+    {
+      MenuList === 'Update Time' && <UpdateTime open={dialogOpen}/>
     }
 
-      
+
+    </MenuContext.Provider>
 
 
       </div>
