@@ -268,6 +268,9 @@ main {
   padding: 1px 8px;
   margin-right: 5px;
   margin-bottom: 2px;
+  overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .tagdaymore{
     font-size: 0.80em;
@@ -378,6 +381,11 @@ main {
     padding-right: 1.7rem;
     padding-top: 0.2rem;
 }
+@media(max-width: 950px){
+  .spnclose {
+    font-size: 0px;
+  }
+}
 .spncloself {
   font-size: 12px;
   float: left;
@@ -408,4 +416,12 @@ main {
 [badge="0"]:after,
 [badge=""]:after {
 display: none;
+}
+
+.ExeIcon{
+  font-size: 14px !important;
+    position: relative;
+    top: 2px;
+    left: -4px;
+    color: rgba(0, 0, 0, 0.87);
 }

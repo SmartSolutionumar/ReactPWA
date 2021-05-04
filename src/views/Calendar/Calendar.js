@@ -5,6 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Button from '@material-ui/core/Button';
+import Grid from "@material-ui/core/Grid";
 import {  format,subDays,subWeeks,subMonths,subYears,addDays,
     addWeeks,addMonths,addYears } from 'date-fns'
 import '../../assets/css/calendar.css'
@@ -88,34 +89,51 @@ function Calendar(){
             <SimpleContext.Consumer>
             {context => ( 
            <div>
-                <div className='divAppbar dtable flex'>
-                    <div className='dtablecell width15 dpadd8'>
-                        <Typography variant="h6" className={classes.title}>Calendar</Typography>
+                <Grid container >
+          
+                    <Grid item xs={4} sm={4} md={2}>
+                        <div className=' dpadd8'>
+                            <Typography variant="h6" className={classes.title}>Calendar</Typography>
+                        </div>
+                    </Grid>
+                    <Grid item xs={4} sm={4} md={1}>
+                        <IconButton aria-label="delete" onClick={()=>onClickPrev()}>
+                            <ChevronLeftIcon  />
+                        </IconButton>
+                        <IconButton aria-label="delete" onClick={()=>onClickNext()}>
+                            <ChevronRightIcon  />
+                        </IconButton>
+                    </Grid>
+                    <Grid item xs={4} sm={4} md={1} className='btnlabel dpadd6'>
+                        <Button color="inherit" disabled >{format(currentDate, formate)} </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={10} md={7} className='btnlabel dpadd6'>
+                        <Button color="inherit" disabled onClick={()=>{setCalendar('day');setFormate('MMM d yyyy')}} >Day</Button>
+                        <Button color="inherit" disabled onClick={()=>{setCalendar('week');setFormate('MMM yyyy')}} >Week</Button>
+                        <Button color="inherit" onClick={()=>{setCalendar('month');setFormate('MMM yyyy')}} >Month</Button> 
+                        <Button color="inherit" disabled onClick={()=>{setCalendar('year');setFormate('yyyy')}} >Year</Button>
+                    </Grid>
+                    <Grid item xs={4} sm={2} md={1}>
+                        <Button color="inherit" onClick={()=>context.togglePage(false)}>Grid View </Button>
+                    </Grid>
+                </Grid>
+                {/* <div className='divAppbar dtable flex'>
+                    
+
+
+                    <div className='width11'>
+                        
                     </div>
 
+                    <div className='btnlabel dpadd6'>
+                        
+                    </div>
 
-                <div className='width11'>
-                    <IconButton aria-label="delete" onClick={()=>onClickPrev()}>
-                        <ChevronLeftIcon  />
-                    </IconButton>
-                    <IconButton aria-label="delete" onClick={()=>onClickNext()}>
-                        <ChevronRightIcon  />
-                    </IconButton>
-                </div>
+                    <div className='dpadd6 gridbtnpos'>
+                        
+                    </div>
 
-                <div className='btnlabel dpadd6'>
-                    <Button color="inherit" disabled >{format(currentDate, formate)} </Button>
-                    <Button color="inherit" disabled onClick={()=>{setCalendar('day');setFormate('MMM d yyyy')}} >Day</Button>
-                    <Button color="inherit" disabled onClick={()=>{setCalendar('week');setFormate('MMM yyyy')}} >Week</Button>
-                    <Button color="inherit" onClick={()=>{setCalendar('month');setFormate('MMM yyyy')}} >Month</Button> 
-                    <Button color="inherit" disabled onClick={()=>{setCalendar('year');setFormate('yyyy')}} >Year</Button>
-                </div>
-
-                <div className='dpadd6 gridbtnpos'>
-                    <Button color="inherit" onClick={()=>context.togglePage(false)}>Grid View </Button>
-                </div>
-
-                </div>
+                </div> */}
 
                 <div>
                  { calendar === 'day' && <Day ref={dayRef}/> }
@@ -126,7 +144,7 @@ function Calendar(){
                 </div>
 
                 )}
-                </SimpleContext.Consumer>
+            </SimpleContext.Consumer>
         </div>
     )
 }

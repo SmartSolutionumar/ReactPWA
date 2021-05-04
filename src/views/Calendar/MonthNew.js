@@ -8,6 +8,7 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
+import Icon from "@material-ui/core/Icon";
 import TextField from '@material-ui/core/TextField';
 import Popover from '@material-ui/core/Popover';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -274,6 +275,7 @@ const MonthCalendar = forwardRef((props, ref) => {
     const listday = format(day,'dd');
     
     const dayfilt = FilrMon.filter(n => n.day === listday);
+    console.log(dayfilt,"Nalysis")
  
    
     if(dayfilt.length === 0){ return false}
@@ -286,10 +288,11 @@ const MonthCalendar = forwardRef((props, ref) => {
                 if(dayfilt[0].events.length > 3 ){
                   
                 return dayfilt[0].events.slice(0,4).map((en,i) => {
-                    if(i < 2){
-                      return(<div className={`tagday ${'bg'+en.TicketType}`} onClick={(event)=>handlePoplist(event,[en],false,'open')} >{en.TicketType+" - "+en.ComplaintNo}
-                      <span className='fright'>{en.ManMin}</span></div> )                  
-                    }
+                  if(i < 2){
+                    return(<div className={`tagday ${'bg'+en.TicketType}`} title={en.ComplaintNo +'\n'+ en.RequestDetailsDesc} onClick={(event)=>handlePoplist(event,[en],false,'open')} ><Icon className="ExeIcon">{en.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{en.TicketType+" - "+en.ContractName} </div> )  
+                                   
+                  }
+                   
                     else if(i === 3){
                         return(<div className='tagdaymore' onClick={(event)=>handlePoplist(event,dayfilt[0].events,true,'open')} >+{ dayfilt[0].events.length - 2 +' more'}</div> )                  
                     }
@@ -298,8 +301,7 @@ const MonthCalendar = forwardRef((props, ref) => {
 
                 }else{
                 
-                return dayfilt[0].events.slice(0,4).map((en,i) => <div key={i} className={`tagday ${'bg'+en.TicketType}`} onClick={(event)=>handlePoplist(event,[en],false,'open')}>{en.TicketType+" - "+en.ComplaintNo}
-                <span className='fright'>{en.ManMin}</span></div> )
+                return dayfilt[0].events.slice(0,4).map((en,i) => <div key={i} className={`tagday ${'bg'+en.TicketType}`} title={en.ComplaintNo +'\n'+ en.RequestDetailsDesc} onClick={(event)=>handlePoplist(event,[en],false,'open')}><Icon className="ExeIcon">{en.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{en.TicketType+" - "+en.ContractName}</div> )
                 
                 }
               }
@@ -322,7 +324,7 @@ const MonthCalendar = forwardRef((props, ref) => {
                
                   if(dayfilt[0].events.length > 0 ){
                     
-                    return dayfilt[0].events.slice(0,1).map((en,i) => <span className='spnclose' badge={dayfilt[0].events.length} onClick={(e)=> handlePoplist(e,dayfilt[0].events,true,'closed')}>closed</span> )
+                    return dayfilt[0].events.slice(0,1).map((en,i) => <span key={i} className='spnclose' badge={dayfilt[0].events.length} onClick={(e)=> handlePoplist(e,dayfilt[0].events,true,'closed')}>closed</span> )
                     
                   }
     
@@ -555,8 +557,8 @@ const MonthCalendar = forwardRef((props, ref) => {
                   secPoP.length > 0 &&
                   
                   secPoP.map((ev, i) => { 
-                    return (<div key={i} className={`tagday ${'bg'+ev.TicketType}`} onClick={(e)=> handlePoplist(e,[ev],false)}>{ev.TicketType+" - "+ev.ComplaintNo}
-                    <span className='fright'>{ev.ManMin}</span></div> )     
+                    return (<div key={i} className={`tagday ${'bg'+ev.TicketType}`} title={ev.ComplaintNo +'\n'+ ev.RequestDetailsDesc} onClick={(e)=> handlePoplist(e,[ev],false)}>{ev.TicketType+" - "+ev.ContractName}</div> )  
+                    /* <span className='fright'>{ev.ManMin}</span>    */
                   
                   })
 
@@ -608,13 +610,18 @@ const MonthCalendar = forwardRef((props, ref) => {
               </div>
 
               <div  className='flex'>
+              <p className='poplistlf'>ContractName</p> 
+              <p className='poplistlr'>{a.ContractName} </p>
+              </div>
+
+              <div  className='flex'>
               <p className='poplistlf'>RequestDetailsDesc</p> 
               <p className='poplistlr'>{a.RequestDetailsDesc} </p>
               </div>
 
               <div  className='flex'>
-              <p className='poplistlf'>ManMin</p> 
-              <p className='poplistlr'>{a.ManMin} </p>
+              <p className='poplistlf'>{PopStatus === 'open' ? 'ManMin' : 'UtilizedMin'}</p> 
+              <p className='poplistlr'>{PopStatus === 'open' ? a.ManMin: a.UtilizMins} </p>
               </div>
 
               <div  className='flex'>

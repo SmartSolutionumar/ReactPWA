@@ -69,7 +69,7 @@ export default function CustomizedDialogs(props) {
       fetch(param)
 			.then(response => response.json())
 			.then(data => {
-          if(data.success === '1'){
+          if(data.success === 1 ){
             setMessage({ open:true,color:'success',message: data.message })
             monthContext.refresh()
             handleClose();

@@ -130,7 +130,7 @@ export default function CustomizedDialogs(props) {
      fetch(param1)
     .then(response => response.json())
     .then(data => {
-        if(data.success === '1'){
+        if(data.success === 1){
           
         }else{
           setMessage({ open:true,color:'error',message: data.message })
@@ -167,14 +167,14 @@ export default function CustomizedDialogs(props) {
    fetch(param2)
     .then(response => response.json())
     .then(data => {
-        if(data.success === '1'){
-          setMessage({ open:true,color:'success',message: data.message })
+        if(data === 1){
+          setMessage({ open:true,color:'success',message: 'successfully' })
           monthContext.refresh()
           handleClose();
           clear();
           return false;
         }else{
-          setMessage({ open:true,color:'error',message: data.message })
+          setMessage({ open:true,color:'error',message: data })
           return false;
         }
         
@@ -186,20 +186,22 @@ export default function CustomizedDialogs(props) {
 
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
     let EmpID =  localStorage.getItem('Employeeid')
+    let fromdate = format(fromDate, 'yyyy/MM/dd hh:mm a')
+    let todate = format(toDate, 'yyyy/MM/dd hh:mm a')
 
-    const param2 =  config.configurl+`/SupportAnalysisUpdate.php?CCMComplaintID=${ComplaintID}&CCMStartTime=${fromDate}&CCMEndTime=${toDate}&OberVation=${observation}&Rootcause=${rootCause}&EmployeeID=${EmpID}&ResolutionTime=${totalMin}&MaintenanceHrs=${totalMin}&TotalMin=${totalMin}&CorrectiveAction=${corrective}&ServiceCarriedOut=${carriedOut}&Type=Forward&ExecEmpID=${staff.Id}`
+    const param2 =  config.configurl+`/SupportAnalysisUpdate.php?CCMComplaintID=${ComplaintID}&CCMStartTime=${fromdate}&CCMEndTime=${todate}&OberVation=${observation}&Rootcause=${rootCause}&EmployeeID=${EmpID}&ResolutionTime=${totalMin}&MaintenanceHrs=${totalMin}&TotalMin=${totalMin}&CorrectiveAction=${corrective}&ServiceCarriedOut=${carriedOut}&Type=Forward&ExecEmpID=${staff.Id}`
 
      fetch(param2)
     .then(response => response.json())
     .then(data => {
-        if(data.success === '1'){
-          setMessage({ open:true,color:'success',message: data.message })
+        if(data === 1){
+          setMessage({ open:true,color:'success',message: 'successfully' })
           monthContext.refresh()
           handleClose();
           clear();
           return false;
         }else{
-          setMessage({ open:true,color:'error',message: data.message })
+          setMessage({ open:true,color:'error',message: data })
           return false;
         }
         
@@ -212,6 +214,8 @@ export default function CustomizedDialogs(props) {
 
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
     let EmpID =  localStorage.getItem('Employeeid')
+    let fromdate = format(fromDate, 'yyyy/MM/dd hh:mm a')
+    let todate = format(toDate, 'yyyy/MM/dd hh:mm a')
 
     var radio = ''
 
@@ -222,18 +226,18 @@ export default function CustomizedDialogs(props) {
        radio = 'AnalizeCloseNo';
     }
 
-    const param2 =  config.configurl+`/SupportAnalysisUpdate.php?CCMComplaintID=${ComplaintID}&CCMStartTime=${fromDate}&CCMEndTime=${toDate}&OberVation=${observation}&Rootcause=${rootCause}&EmployeeID=${EmpID}&ResolutionTime=${totalMin}&MaintenanceHrs=${totalMin}&TotalMin=${totalMin}&CorrectiveAction=${corrective}&ServiceCarriedOut=${carriedOut}&Type=${radio}&ExecEmpID=${staff.Id}`
+    const param2 =  config.configurl+`/SupportAnalysisUpdate.php?CCMComplaintID=${ComplaintID}&CCMStartTime=${fromdate}&CCMEndTime=${todate}&OberVation=${observation}&Rootcause=${rootCause}&EmployeeID=${EmpID}&ResolutionTime=${totalMin}&MaintenanceHrs=${totalMin}&TotalMin=${totalMin}&CorrectiveAction=${corrective}&ServiceCarriedOut=${carriedOut}&Type=${radio}&ExecEmpID=${staff.Id}`
        fetch(param2)
     .then(response => response.json())
     .then(data => {
-        if(data.success === '1'){
-          setMessage({ open:true,color:'success',message: data.message })
+        if(data === 1){
+          setMessage({ open:true,color:'success',message: 'successfully' })
           monthContext.refresh()
           handleClose();
           clear();
           return false;
         }else{
-          setMessage({ open:true,color:'error',message: data.message })
+          setMessage({ open:true,color:'error',message: data })
           return false;
         }
         

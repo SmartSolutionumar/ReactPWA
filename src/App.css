@@ -558,6 +558,12 @@ select[aria-selected=true] {
   border-radius: 5px;
   height: fit-content;
 }
+@media (max-width : 950px){
+  .calenderwid {
+    width: 90%;
+  }
+}
+
 .sendbtn{
   color: #337ab7;
 }

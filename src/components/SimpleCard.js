@@ -347,6 +347,8 @@ function SimpleCard(props) {
   const Tomon = selectedDate2.getMonth()+1; 
   var Fromdate = selectedDate.getDate()+"-"+Frommon+"-"+selectedDate.getFullYear() ;
   var Todate = selectedDate2.getDate()+"-"+Tomon+"-"+selectedDate2.getFullYear() ;
+  const Curmon = new Date().getMonth()+1; 
+  var Curdate = new Date().getDate()+"-"+Curmon+"-"+new Date().getFullYear() ;
   // const [selectedMonth, setSelectedMonth] = React.useState(new Date());
   const [filteropen,setfilteropen] = useState(false);
   const [slideType,setslideType] = useState('');
@@ -376,15 +378,19 @@ function SimpleCard(props) {
   const[Localtime,setLocaltime] = React.useState('');
 
   const [personName, setPersonName] = React.useState([]);
+  const [EmployeeName, setEmployeeName] = React.useState([]);
   const [multiEmp, setmultiEmp] = React.useState('');
   const [ProDate, setProDate] = React.useState([]);
-  const [tastView, setTastView] = useState(true)
   const [EndDate, setEndDate] = React.useState(null);
 
-  const [anchMenuEl, setAnchMenuEl] = React.useState(null);
+  const [tastView, setTastView] = useState(true);
+  const [Calendarview, setCalendarview] = useState(false);
 
-  const handleChange = (event) => {
-    
+  const [anchMenuEl, setAnchMenuEl] = React.useState(null); 
+  
+  const handleChange = (event,index) => { 
+    // evt.currentTarget.getAttribute("data-name")
+    setEmployeeName(e => [...e,index.props.children])  
     setPersonName(event.target.value);
     setmultiEmp(event.target.value.toString())
   };
@@ -438,7 +444,7 @@ function SimpleCard(props) {
   };
   const openCalendar = () => {
     document.getElementById("calendarslide").style.width = "97vw";
-  
+    setCalendarview(true);
   }
 
   const handleMenuItemClick = (event, index) => {
@@ -771,7 +777,7 @@ function Emplist(){
       })
       .then((res)=>res.json())
       .then((data)=>{ 
-        setEmpoption(data.Output.data)
+        setEmpoption(data.Output.data) 
       })
       //Contract Dropdown
       const params2 = {
@@ -2976,6 +2982,7 @@ const getData = ( ) => {
  }
  function caldpopClose(){
   document.getElementById("calendarslide").style.width = "0vw";
+  setCalendarview(false);
   setTastView(true)
  }
 
@@ -3152,6 +3159,7 @@ function WOChange(e){
   setEndDate(null);
   setmultiEmp('');
   setPersonName([]);
+  document.getElementById("continput").value = '';
   // var select = document.getElementById("division");
   // var length = select.options.length;
   // for (let i = length-1; i >= 0; i--) {
@@ -3206,8 +3214,7 @@ date.map((val) => {
 setProDate(muldate) 
 }
 
-function submitComp(){
-
+function submitComp(){ 
 var UserName = localStorage.getItem('username');
 var EID = localStorage.getItem('Employeeid');
 var Todate = '';
@@ -3231,6 +3238,14 @@ if(WOtypeID === '2'){
 var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Description="+Descval+"&ContractID="+ContID+"&LocalityID="+LocID+"&BuildingID="+BuildID+"&FloorID=0&SpotID=0&ComplainerName="+UserName+"&ContactNo=null&PortalType=2&DocID=null&DivisionID="+DivID+"&PriorityID=1&EmpID="+EMPassgn+"&ProDate="+Startdate+"&TaskType="+WOtypeID+"&EndDate="+Todate;
 // console.log(dataString);
 // return false;
+      if(WOtypeID === '2'){
+        if (Startdate === '' || Todate === ''){
+          setOpen(true);
+          setMessage("Please fill all mandatory fields");
+          setmsgColor("error"); 
+          return false;
+        }
+      }
       if (natureval === '' || DivID === '' || Descval === '' || ContID === ''){
           setOpen(true);
           setMessage("Please fill all mandatory fields");
@@ -3248,12 +3263,25 @@ var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Descr
               setMessage("Task Raised ,Complaint registered successfully");
               setmsgColor("success");
               staffassign(res.data);
+              // contractlist();
+              if(WOtypeID === '2'){
+                var contSelect = document.getElementById("contractval");
+                var contText = contSelect.options[contSelect.selectedIndex].text;
+                var Emploname = localStorage.getItem('username');
+                if(personName.length > 0){
+                  Emploname = EmployeeName.toString();
+                }
+                Connectmsg('@'+Emploname,'',contText,Curdate,'',natureval,Descval,'High','',Startdate); 
+              }else{
+                let contSelect = document.getElementById("contractval");
+                let contText = contSelect.options[contSelect.selectedIndex].text;
+                Connectmsg('@Nasrullah,Thoufeeq,Yasar','',contText,Curdate,'',natureval,Descval,'High','',''); 
+              }
+              setEmployeeName([]);
               setformLoading(false);
               setPersonName([]);
               setmultiEmp('');
               setDescval('');
-              // contractlist();
-              setProDate([]);
               // document.getElementById("filterslide").style.width = "0vw";
           }else{
               setOpen(true);
@@ -3261,7 +3289,6 @@ var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Descr
               setmsgColor("error");
               setformLoading(false);
               //contractlist();
-              setProDate([]);
           }
           
             
@@ -3306,6 +3333,19 @@ let url = config.configurl + "/SupportStaffAssign.php?EmployeeID="+EmpID+"&CCMCo
         .then(res=>{
           // console.log(res,"Assigned")
         })
+}
+
+function Connectmsg(Empname, Taskno, Cont , ComDate ,type,nature,Desc,Prior,devdt,prodt){
+  
+  
+  let url = 'http://smartfm.in/mattermost-php/tests/test.php';
+  var dataString ="EmpID="+Empname+"&Taskno="+Taskno+"&Cont="+Cont+"&ComDate="+ComDate+"&type="+type+"&nature="+nature+"&Desc="+Desc+"&Prior="+Prior+"&devdt="+devdt+"&prodt="+prodt;
+
+  axios.post(url,dataString)
+  .then(res => {
+    console.log(res);
+  }) 
+
 }
 
 function Tablecontext(e,id){ 
@@ -3804,8 +3844,9 @@ return (
                   
                 </Card>
               </Grid>
-              {(Headval !== 'SNA' && Headval !== 'NOETA' && Headval !== 'MR' && Headval !== 'FR' && Headval !== 'RR') &&
+              
               <Grid item xs={12} sm={12} md={12} className="Gridpad">
+              
                     <Card className="cardshadow">
                         
                       <div className="CardHeader">
@@ -3818,17 +3859,25 @@ return (
 
                       <CardContent   className='cardcontent' style={{height: '35vh'}}>
                             <Grid container >
-                               
+                            {(Headval !== 'SNA' && Headval !== 'NOETA' && Headval !== 'MR' && Headval !== 'FR' && Headval !== 'RR') ?    
                                <Grid item xs={12} sm={12} md={12} >
                                   {chartchange ? 
                                    <EmpChart value = {EmpChartLive} value2 = {EmpChartAMC} value3 = {EmpChartIMP} value4 = {EmpChartOther} openModal={OverlaySlide} Headprop={Headval} /> : null
                                   }
                                </Grid>
+                               :
+                               <Grid item xs={12} sm={12} md={12} >
+                                 <div style={{display:'flex',justifyContent: 'center',alignItems: 'center',height: '35vh'}}>
+                                   No Data
+                                  </div>
+                               </Grid>
+                            }
                             </Grid>
                       </CardContent>
                   
                 </Card>
-              </Grid>}
+              
+              </Grid>
 
               {/* <Grid item xs={12} sm={12} md={12} className="Gridpad">
                     <Card className="cardshadow">
@@ -4318,7 +4367,7 @@ return (
                   <Grid item xs={4} sm={4} md={4} >
                     <div className="selcontain">
                       <TextField  label="Date"
-                        value={Fromdate}
+                        value={Curdate}
                         disabled={true}
                         />
                     </div>
@@ -4495,7 +4544,7 @@ return (
     <div className="popclosebtn" onClick={() => caldpopClose()}>
           <span className="btnclose">X</span>
     </div>
-
+        {Calendarview && 
         <SimpleContext.Provider value={{ 
               togglePage: (val) => {setTastView(val)}
             }}>
@@ -4505,7 +4554,8 @@ return (
             }
 
         </SimpleContext.Provider>
-      
+        
+        }
     
   </div>
 

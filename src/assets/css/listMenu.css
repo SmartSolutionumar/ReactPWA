@@ -49,11 +49,12 @@
 .marginright2{
   margin-right: 2.5rem;
 }
-.gridbtnpos{
-  position: absolute;
-    right: 2%;
-    z-index: 11;
+@media(min-width: 960px){
+  .gridbtnpos{
+    float: right;
+  }
 }
+
 .MuiTableContainer-root {
   width: 100%;
   overflow-y: auto !important;
