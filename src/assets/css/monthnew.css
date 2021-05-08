@@ -317,7 +317,7 @@ main {
   text-align: center;
 }
 .bgDR{
-  background: crimson !important;
+  background: red !important;
 }
 .bgPR{
   background: #efa42d !important;
@@ -339,6 +339,12 @@ main {
 }
 .bgRR{
   background: #9B59B6 !important;
+}
+.bgER{
+  background: #F49A3C;
+}
+.bgTR{
+  background: #f1ea11;
 }
 .poplistlf{
   width: 50%;
@@ -424,4 +430,17 @@ display: none;
     top: 2px;
     left: -4px;
     color: rgba(0, 0, 0, 0.87);
+}
+
+.openperc{
+  font-size: 12px;
+    float: left;
+    color: #0d71f1;
+    font-weight: 600;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+.moreperc{
+  color: red;
 }

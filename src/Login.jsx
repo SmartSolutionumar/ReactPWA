@@ -55,7 +55,7 @@ function LoginForm(props) {
         .then(res=>res.json())
         .then(res=>{  
             const status = res.UserValues;   
-            // console.log(status,"loggdfg")
+            console.log(res,"loggdfg")
             if(status[0].UserIDPK === 0){ 
                 setmessage({ open: true,color: 'error',message: "UserName and Password Invalid!" });
                 setloading(false)
@@ -65,6 +65,8 @@ function LoginForm(props) {
                 localStorage.setItem('username', UserName); 
                 localStorage.setItem('userid', status[0].UserIDPK);
                 localStorage.setItem('Employeeid', status[0].EmployeeID);
+                localStorage.setItem('SuperUser', status[0].EmployeeType);
+                
                 props.history.push('/Home'); 
                 
             }

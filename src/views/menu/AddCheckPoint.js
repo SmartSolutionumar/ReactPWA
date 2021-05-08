@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 // import {config} from '../../config'
 import Notification from '../../components/_helperComponents/Notification'
 import { MenuContext } from '../Calendar/MonthNew';
+import {SimpleMenuContext } from '../../components/SimpleCard';
 
 
 export default function CustomizedDialogs(props) {
@@ -15,11 +16,19 @@ export default function CustomizedDialogs(props) {
   const [Message, setMessage] = useState({ open: false,color: '',message: ''});
 
   const monthContext = useContext(MenuContext);
+  const SimpleContext = useContext(SimpleMenuContext);
 
 
   const handleClose = () => {
-    monthContext.dialogClose()
-  };
+    if(monthContext){
+      monthContext.dialogClose()
+    }
+    if(SimpleContext){
+      SimpleContext.dialogClose()
+    }
+   
+    
+  }; 
 
   const SaveSubmit = () => {
     handleClose()

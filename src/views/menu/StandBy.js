@@ -8,17 +8,24 @@ import CloseIcon from '@material-ui/icons/Close';
 import {config} from '../../config'
 import Notification from '../../components/_helperComponents/Notification'
 import { MenuContext } from '../Calendar/MonthNew';
-import moment from 'moment'
+import moment from 'moment';
+import {SimpleMenuContext } from '../../components/SimpleCard';
 
 
 export default function CustomizedDialogs(props) {
   const [Message, setMessage] = useState({ open: false,color: '',message: ''});
 
   const monthContext = useContext(MenuContext);
+  const SimpleContext = useContext(SimpleMenuContext);
 
   
   const handleClose = () => {
-    monthContext.dialogClose()
+    if(monthContext){
+      monthContext.dialogClose();
+    }
+    if(SimpleContext){
+      SimpleContext.dialogClose();
+    }
   };
 
 
@@ -36,8 +43,13 @@ export default function CustomizedDialogs(props) {
 			.then(response => response.json())
 			.then(data => {
           if(data.success === '1'){
-            setMessage({ open:true,color:'success',message: data.message })
-            monthContext.refresh()
+            setMessage({ open:true,color:'success',message: data.message }) 
+            if(monthContext){
+              monthContext.refresh();
+            }
+            if(SimpleContext){
+              SimpleContext.refresh();
+            }
             handleClose();
             return false;
           }else{

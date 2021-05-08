@@ -212,15 +212,16 @@ export default function CustomizedTabs() {
             <Table stickyHeader className={classes.table} aria-label="simple table">
                 <TableHead>
                 <StyledTableRow>
-               
+                <TableCell className={classes.tablecell} style={{width:'70px'}}>DelvDate</TableCell>
+                  <TableCell className={classes.tablecell} style={{width:'70px'}}>TaskType</TableCell>
+                  <TableCell className={classes.tablecell} style={{width:'70px'}}>TicketType</TableCell>
                     <TableCell className={classes.tablecell} style={{width:'95px'}}>ComplaintNo</TableCell>
                     <TableCell className={classes.tablecell} style={{width:'70px'}}>Date</TableCell>
-                    <TableCell className={classes.tablecell} style={{width:'80px'}}>ETA Date</TableCell>
-                    <TableCell className={classes.tablecell} style={{width:'80px'}}>ETA Time</TableCell>
-                    <TableCell className={classes.tablecell} style={{width:'70px'}}>TicketType</TableCell>
                     <TableCell className={classes.tablecell} style={{width:'120px'}}>ContractName</TableCell>
                     <TableCell className={classes.tablecell} style={{width:'80px'}}>RegisteredBy</TableCell>
                     <TableCell className={classes.tablecell} style={{width:'300px'}}>Description</TableCell>
+                    <TableCell className={classes.tablecell} style={{width:'80px'}}>ETA Date</TableCell>
+                    <TableCell className={classes.tablecell} style={{width:'80px'}}>ETA Time</TableCell>
                     <TableCell className={classes.tablecell} style={{width:'70px'}}>Priority</TableCell>
                     <TableCell className={classes.tablecell} style={{width:'80px'}}>ANAName</TableCell>
                     <TableCell className={classes.tablecell} style={{width:'80px'}}>EXEName</TableCell>
@@ -231,14 +232,16 @@ export default function CustomizedTabs() {
                 <TableBody>
                 {openData.map((row,i) => (
                     <StyledTableRow key={i}>
+                    <TableCell className={classes.cellbody}>{row.DeliveryDate}</TableCell>
+                    <TableCell className={classes.cellbody}>{row.TaskType}</TableCell>
+                    <TableCell className={`ccellbody ${'bg'+row.TicketType}`} >{row.TicketType}</TableCell>
                     <TableCell className={classes.cellbody}>{row.ComplaintNo}</TableCell>
                     <TableCell className={classes.cellbody}>{row.ComplainedDate}</TableCell>
-                    <TableCell className={classes.cellbody}>{row.ETADate}</TableCell>
-                    <TableCell className={classes.cellbody}>{row.ETATime}</TableCell>
-                    <TableCell className={`ccellbody ${'bg'+row.TicketType}`} >{row.TicketType}</TableCell>
                     <TableCell className={classes.cellbody}>{row.ContractName}</TableCell>
                     <TableCell className={classes.cellbody}>{row.ComplainerName}</TableCell>
                     <TableCell className={classes.cellbody}>{row.RequestDetailsDesc}</TableCell>
+                    <TableCell className={classes.cellbody}>{row.ETADate}</TableCell>
+                    <TableCell className={classes.cellbody}>{row.ETATime}</TableCell>
                     <TableCell className={classes.cellbody}>{row.PriorityName}</TableCell>
                     <TableCell className={classes.cellbody}>{row.TechName}</TableCell>
                     <TableCell className={classes.cellbody}>{row.bdmempname}</TableCell>

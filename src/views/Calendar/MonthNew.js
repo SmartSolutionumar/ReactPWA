@@ -29,7 +29,7 @@ import StandBy from '../menu/StandBy'
 import ETAProductionDate from '../menu/ETA&ProductionDate'
 import Analysis from '../menu/AnalysisClose';
 import Execution from '../menu/ExecutionClose';
-import UpdateTime from '../menu/UpdateTime'
+import UpdateTime from '../menu/UpdateTime';
 
 
 
@@ -139,30 +139,34 @@ const MonthCalendar = forwardRef((props, ref) => {
     }, []);
 
     useImperativeHandle(ref, () => ({
-
-      Prev : () => {
-        prevMonth();
+      Empwise : (id) => {
+        monthviewApi(currentMonth,'MONTH',id);
+        monthviewApi(currentMonth,'CLOSE',id);
+        // alert(id);
+      },
+      Prev : (id) => {
+        prevMonth(id);
         
       },
-      Next : () => {
-        nextMonth();
+      Next : (id) => {
+        nextMonth(id);
     }
   
     }));
 
-    const nextMonth = () => {
+    const nextMonth = (EMPID) => {
       const next = addMonths(currentMonth, 1)
-      monthviewApi(next,'MONTH');
-      monthviewApi(next,'CLOSE');
+      monthviewApi(next,'MONTH',EMPID);
+      monthviewApi(next,'CLOSE',EMPID);
       setCurrentMonth(next)
       localStorage.setItem('date',next)
     };
   
-    const prevMonth = () => {
+    const prevMonth = (EMPID) => {
       
       const prev = subMonths(currentMonth, 1)
-      monthviewApi(prev,'MONTH');
-      monthviewApi(prev,'CLOSE');
+      monthviewApi(prev,'MONTH',EMPID);
+      monthviewApi(prev,'CLOSE',EMPID);
       setCurrentMonth(prev)
       localStorage.setItem('date',prev)
      
@@ -175,34 +179,53 @@ const MonthCalendar = forwardRef((props, ref) => {
     //   event.stopPropagation();
     // }
 
-    const monthviewApi = (month,type) => {
+    const monthviewApi = (month,type,EmpID) => {
 
         let current = format(month, 'yyyy/MM/dd') //localStorage.getItem('Employeeid')
 
-        const url = config.configurl+`/SupportnewCalander.php?ColumnIndex=3&value=null&EMPID=${localStorage.getItem('Employeeid')}&WoDate=${current}&QueryType=${type}`
+        const url = config.configurl+`/SupportnewCalander.php?ColumnIndex=3&value=null&EMPID=${EmpID ? EmpID : localStorage.getItem('Employeeid')}&WoDate=${current}&QueryType=${type}`
         fetch(url).then(response => response.json())
         .then(data => {
           if(data.length > 0){
-            // console.log(data)
-           const arrFilter =  getUniqueListBy(data, 'DeliveryDate')
+             
+            if(type === 'CLOSE'){
+              const arrFilter =  getUniqueListBy(data, 'LogDate')
 
-           var arr = []
-           arrFilter.map(a => {
+              var arrcls = []
+              arrFilter.map(a => {
 
-            var arrEvnt = data.filter(f=> f.DeliveryDate === a.DeliveryDate)
+                var arrEvntcls = data.filter(f=> f.LogDate === a.LogDate)
 
-            arr.push({
-              day  : a.DeliveryDate.split("-")[0],
-              month: a.DeliveryDate.split("-")[1],
-              year: a.DeliveryDate.split("-")[2],
-              events: arrEvnt
-            })
-            return null;
-           })
+                arrcls.push({
+                  day  : a.LogDate.split("-")[0],
+                  month: a.LogDate.split("-")[1],
+                  year: a.LogDate.split("-")[2],
+                  events: arrEvntcls
+                })
+                return null;
+              })
+            }else{
+              const arrFilter =  getUniqueListBy(data, 'DeliveryDate')
+
+              var arr = []
+              arrFilter.map(a => {
+
+                var arrEvnt = data.filter(f=> f.DeliveryDate === a.DeliveryDate)
+
+                arr.push({
+                  day  : a.DeliveryDate.split("-")[0],
+                  month: a.DeliveryDate.split("-")[1],
+                  year: a.DeliveryDate.split("-")[2],
+                  events: arrEvnt
+                })
+                return null;
+              })
+            }
+           
            if(type === 'MONTH'){
             setDayState(arr)
            }else{
-            setCloseDayState(arr)
+            setCloseDayState(arrcls)
            }
            
            setAnchorElEveList(null);
@@ -275,7 +298,7 @@ const MonthCalendar = forwardRef((props, ref) => {
     const listday = format(day,'dd');
     
     const dayfilt = FilrMon.filter(n => n.day === listday);
-    console.log(dayfilt,"Nalysis")
+    // console.log(dayfilt,"Nalysis")
  
    
     if(dayfilt.length === 0){ return false}
@@ -284,24 +307,31 @@ const MonthCalendar = forwardRef((props, ref) => {
           if(dayfilt.length > 0){
            
               if(dayfilt[0].events.length > 0 ){
+                var arr = [];
+                var per = '';
+                dayfilt[0].events.map(d => {
+                  arr.push(Number(d.ManMinPer));
+                  return null;
+                })
+                per = arr.reduce((a, b) => a + b, 0);
                 
                 if(dayfilt[0].events.length > 3 ){
                   
                 return dayfilt[0].events.slice(0,4).map((en,i) => {
                   if(i < 2){
-                    return(<div className={`tagday ${'bg'+en.TicketType}`} title={en.ComplaintNo +'\n'+ en.RequestDetailsDesc} onClick={(event)=>handlePoplist(event,[en],false,'open')} ><Icon className="ExeIcon">{en.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{en.TicketType+" - "+en.ContractName} </div> )  
+                    return(<span key={i}><span className="openperc">{per ? per+"%" : "?"}</span><div className={`tagday ${'bg'+en.TicketType}`} title={en.TicketType+" - "+en.ComplaintNo +'\n'+en.ContractName+'\n'+ en.RequestDetailsDesc} onClick={(event)=>handlePoplist(event,[en],false,'open')} ><Icon className="ExeIcon">{en.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{en.TaskType+" - "+en.ContractName} </div></span> )  
                                    
                   }
                    
                     else if(i === 3){
-                        return(<div className='tagdaymore' onClick={(event)=>handlePoplist(event,dayfilt[0].events,true,'open')} >+{ dayfilt[0].events.length - 2 +' more'}</div> )                  
+                        return(<div key={i} className='tagdaymore' onClick={(event)=>handlePoplist(event,dayfilt[0].events,true,'open')} >+{ dayfilt[0].events.length - 2 +' more'}</div> )                  
                     }
                     return null;
                   })
 
                 }else{
                 
-                return dayfilt[0].events.slice(0,4).map((en,i) => <div key={i} className={`tagday ${'bg'+en.TicketType}`} title={en.ComplaintNo +'\n'+ en.RequestDetailsDesc} onClick={(event)=>handlePoplist(event,[en],false,'open')}><Icon className="ExeIcon">{en.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{en.TicketType+" - "+en.ContractName}</div> )
+                return dayfilt[0].events.slice(0,4).map((en,i) => <span key={i}><span className="openperc">{en.ManMinPer ? en.ManMinPer+"%" : "?"}</span><div key={i} className={`tagday ${'bg'+en.TicketType}`} title={en.TicketType+" - "+en.ComplaintNo +'\n'+en.ContractName+'\n'+ en.RequestDetailsDesc} onClick={(event)=>handlePoplist(event,[en],false,'open')}><Icon className="ExeIcon">{en.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{en.TaskType+" - "+en.ContractName}</div></span> )
                 
                 }
               }
@@ -316,6 +346,12 @@ const MonthCalendar = forwardRef((props, ref) => {
         const listday = format(day,'dd');
         
         const dayfilt = FilrMon.filter(n => n.day === listday);
+        // console.log(dayfilt,"Closed")
+        if(dayfilt.length > 0){
+          // if(dayfilt[0].events.length > 0){
+            console.log(dayfilt[0].events,'ClosedSU')
+          // }
+        }
        
         if(dayfilt.length === 0){ return false}
         
@@ -323,8 +359,18 @@ const MonthCalendar = forwardRef((props, ref) => {
               if(dayfilt.length > 0){
                
                   if(dayfilt[0].events.length > 0 ){
-                    
-                    return dayfilt[0].events.slice(0,1).map((en,i) => <span key={i} className='spnclose' badge={dayfilt[0].events.length} onClick={(e)=> handlePoplist(e,dayfilt[0].events,true,'closed')}>closed</span> )
+
+                    var arr = [];
+                    var per = '';
+                    dayfilt[0].events.map(d => {
+                      arr.push(Number(d.UtilizePer));
+                      return null;
+                    })
+                    per = arr.reduce((a, b) => a + b, 0);
+                    return dayfilt[0].events.slice(0,1).map((en,i) => 
+                     
+                      <span key={i} className={`spnclose ${ per > 100 ? 'moreperc' : '' }`} badge={dayfilt[0].events.length} onClick={(e)=> handlePoplist(e,dayfilt[0].events,true,'closed')}>{per}%</span>
+                    )
                     
                   }
     
@@ -543,11 +589,11 @@ const MonthCalendar = forwardRef((props, ref) => {
         <div style={{padding:'0.6rem'}}>
           <div>
             <div style={{textAlign:'center'}}>
-              <span className='headerday'>{secPoP.length > 0 &&  format(new Date(reverse(secPoP[0].DeliveryDate)), 'eee')  }</span>
+              <span className='headerday'>{secPoP.length > 0 &&  format(new Date(reverse(PopStatus === 'open' ? secPoP[0].DeliveryDate : secPoP[0].LogDate)), 'eee')  }</span>
               <div style={{float:'right'}}><CloseIcon style={{width:'17px'}} onClick={handleClosepop}/></div>
             </div>
 
-            <div className='subTitpopDate'> {secPoP.length > 0 && secPoP[0].DeliveryDate.split('-')[0] }</div>
+            <div className='subTitpopDate'> {secPoP.length > 0 && (PopStatus === 'open' ? secPoP[0].DeliveryDate.split('-')[0] : secPoP[0].LogDate.split('-')[0]) }</div>
 
           </div>
           
@@ -557,7 +603,7 @@ const MonthCalendar = forwardRef((props, ref) => {
                   secPoP.length > 0 &&
                   
                   secPoP.map((ev, i) => { 
-                    return (<div key={i} className={`tagday ${'bg'+ev.TicketType}`} title={ev.ComplaintNo +'\n'+ ev.RequestDetailsDesc} onClick={(e)=> handlePoplist(e,[ev],false)}>{ev.TicketType+" - "+ev.ContractName}</div> )  
+                    return (<div key={i} className={`tagday ${'bg'+ev.TicketType}`} title={ev.TicketType+" - "+ev.ComplaintNo +'\n'+ev.ContractName+'\n'+ ev.RequestDetailsDesc} onClick={(e)=> handlePoplist(e,[ev],false)}><Icon className="ExeIcon">{ev.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{ev.TaskType+" - "+ev.ContractName}</div> )  
                     /* <span className='fright'>{ev.ManMin}</span>    */
                   
                   })
@@ -725,6 +771,7 @@ const MonthCalendar = forwardRef((props, ref) => {
     </StyledMenu>
 
     <MenuContext.Provider value={{ 
+          value:'monthview',
           dialogClose: () => setDialogOpen(false),
           refresh: () => {monthviewApi(currentMonth,'MONTH');monthviewApi(currentMonth,'CLOSE')},
         }}>

@@ -17,7 +17,8 @@ import {config} from '../../config'
 import Notification from '../../components/_helperComponents/Notification'
 import { MenuContext } from '../Calendar/MonthNew';
 // import moment from 'moment';
-import { differenceInMinutes, format } from 'date-fns'
+import { differenceInMinutes, format } from 'date-fns';
+import {SimpleMenuContext } from '../../components/SimpleCard';
 
 
 export default function CustomizedDialogs(props) {
@@ -33,15 +34,23 @@ export default function CustomizedDialogs(props) {
   const [staffData,setStaffData] = useState([]);
   const [staff, setStaff] = useState({ Id: '', Name: ''})
   const monthContext = useContext(MenuContext);
-
+  const SimpleContext = useContext(SimpleMenuContext);
   
   useEffect(() => {
     EmployeeList()
   }, []);
 
   const handleClose = () => {
-    monthContext.dialogClose()
-  };
+     
+    if(monthContext){
+      monthContext.dialogClose();
+    }
+    if(SimpleContext){
+      SimpleContext.dialogClose();
+    }
+   
+    
+  }; 
 
  
   const EmployeeList = () => {
@@ -143,7 +152,13 @@ export default function CustomizedDialogs(props) {
     .then(data => {
         if(data === 1){
           setMessage({ open:true,color:'success',message: 'successfully' })
-          monthContext.refresh()
+          
+          if(monthContext){
+            monthContext.refresh();
+          }
+          if(SimpleContext){
+            SimpleContext.refresh();
+          }
           handleClose();
           clear();
           return false;
@@ -171,7 +186,12 @@ export default function CustomizedDialogs(props) {
     .then(data => {
         if(data === 1){
           setMessage({ open:true,color:'success',message: 'successfully' })
-          monthContext.refresh()
+          if(monthContext){
+            monthContext.refresh();
+          }
+          if(SimpleContext){
+            SimpleContext.refresh();
+          }
           handleClose();
           clear();
           return false;
@@ -200,7 +220,12 @@ export default function CustomizedDialogs(props) {
     .then(data => {
         if(data === 1){
           setMessage({ open:true,color:'success',message: 'successfully' })
-          monthContext.refresh()
+          if(monthContext){
+            monthContext.refresh();
+          }
+          if(SimpleContext){
+            SimpleContext.refresh();
+          }
           handleClose();
           clear();
           return false;
@@ -243,7 +268,7 @@ export default function CustomizedDialogs(props) {
               <div style={{margin: '0px 17px',color: '#3f95fc',float: 'right'}}>
                 <CloseIcon  onClick={handleClose} />
               </div>
-              <p className='tagpadd'>ANALYSIS CLOSE</p>
+              <p className='tagpadd'>EXECUTION CLOSE</p>
           </div>
 
           <div >
@@ -370,7 +395,7 @@ export default function CustomizedDialogs(props) {
               <Autocomplete
                 id="combo-box-demo"
                 options={staffData}
-                onChange={(e)=>setStaff({ Id:e.NSEEMPID , Name:e.EmpName }) }
+                onChange={(e,newValue)=>setStaff({ Id:newValue.NSEEMPID , Name:newValue.EmpName }) }
                 getOptionLabel={(option) => option.EmpName}
                 style={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Select Staff" variant="outlined" />}

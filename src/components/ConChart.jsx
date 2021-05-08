@@ -53,6 +53,13 @@ class ColumnChart extends Component {
     if(this.props.Headprop === 'RR'){
       type = 36;
     }
+    if(this.props.Headprop === 'PYM'){
+      type = 39;
+    } if(this.props.Headprop === 'ER'){
+      type = 40;
+    } if(this.props.Headprop === 'TR'){
+      type = 41;
+    }
 
     var contype = '';
     if(name === 'Implementation'){
@@ -222,7 +229,7 @@ class ColumnChart extends Component {
 		return (
 		<div className="chartbuild">
 				{(() => {
-					if (value) {
+					if (value.length > 0  || value2.length > 0 || value3.length > 0 || value4.length > 0) {
 					return (
 						<CanvasJSChart options = {options}
 						onRef={ref => this.chart = ref}

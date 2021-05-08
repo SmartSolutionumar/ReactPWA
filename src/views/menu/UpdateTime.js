@@ -15,8 +15,10 @@ import DateFnsUtils from '@date-io/date-fns';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {config} from '../../config'
 import Notification from '../../components/_helperComponents/Notification'
+import { differenceInMinutes,format } from 'date-fns';
+import {SimpleMenuContext } from '../../components/SimpleCard';
 import { MenuContext } from '../Calendar/MonthNew';
-import { differenceInMinutes,format } from 'date-fns'
+
 
 
 export default function CustomizedDialogs(props) {
@@ -29,10 +31,12 @@ export default function CustomizedDialogs(props) {
   const [taskReasonData,setTaskReasonData] = useState([]);
   const [reason, setReason] = useState({ Id: '', Name: ''})
   const monthContext = useContext(MenuContext);
+  const SimpleContext = useContext(SimpleMenuContext);
 
   useEffect(() => {
     clear()
     TaskReasonList()
+
   }, []);
 
 
@@ -48,10 +52,15 @@ export default function CustomizedDialogs(props) {
         }
           
 			});
-  }
+  }   
 
-  const handleClose = () => {
-    monthContext.dialogClose()
+  const handleClose = () => { 
+    if(monthContext){
+        monthContext.dialogClose()
+    }
+    if(SimpleContext){
+      SimpleContext.dialogClose()
+    }
   };
 
  
@@ -121,7 +130,13 @@ export default function CustomizedDialogs(props) {
     .then(data => {
         if(data  === 'Updated Successfully'){
           setMessage({ open:true,color:'success',message: 'Updated Successfully' })
-          monthContext.refresh()
+          
+          if(monthContext){
+            monthContext.refresh();
+          }
+          if(SimpleContext){
+            SimpleContext.refresh();
+          }
           handleClose();
           clear();
           return false;

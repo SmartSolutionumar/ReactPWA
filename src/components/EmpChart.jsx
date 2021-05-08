@@ -185,7 +185,7 @@ class ColumnChart extends Component {
 		return (
 		<div className="chartbuild">
 				{(() => {
-					if (value) {
+					if (value.length > 0  || value2.length > 0 || value3.length > 0 || value4.length > 0) {
 					return (
 						<CanvasJSChart options = {options}
 						onRef={ref => this.chart = ref}

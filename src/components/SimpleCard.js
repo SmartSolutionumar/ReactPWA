@@ -13,8 +13,10 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import 'date-fns';
 import MultipleDatePicker from 'react-multiple-datepicker';
-import DateFnsUtils from '@date-io/date-fns';
-import Popover from '@material-ui/core/Popover';
+import DateFnsUtils from '@date-io/date-fns'; 
+import InboxIcon from '@material-ui/icons/MoveToInbox'; 
+import SendIcon from '@material-ui/icons/Send';
+import PaymentIcon from '@material-ui/icons/Payment';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker, 
@@ -35,7 +37,7 @@ import '../../src/App.css';
 import {config} from '../../src/config.js';
 // import {Grid item} from "@material-ui/core/Grid item";
 // import {Grid container} from "@material-ui/core/Grid container";
-import CanvasJSReact from '../assets/canvasjs.react';
+// import CanvasJSReact from '../assets/canvasjs.react';
 import { makeStyles } from '@material-ui/core/styles';
 // import Smartfm from '../assets/img/smartfm.png';
 import Nanosoft from '../assets/img/nanosoft .png';
@@ -63,22 +65,37 @@ import MonthlyChartOTH from './MonthlyChartOTH';
 import EmpTaskchart from './EmpTaskchart';
 import Holdchart from './Holdchart';
 import NewCalendar from '../views/Calendar/Calendar';
-// import Menu from '@material-ui/core/Menu'; 
-// import ListItemIcon from '@material-ui/core/ListItemIcon';
-// import ListItemText from '@material-ui/core/ListItemText';
+import Menu from '@material-ui/core/Menu'; 
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
+import ETAHoldUpdate from '../views/menu/ETA&HoldUpdate'
+import ETAReworkRemarks from '../views/menu/ETA&ReworkRemarks'
+import ReasonforPending from '../views/menu/ReasonForPending'
+import Status from '../views/menu/Status'
+import StartWork from '../views/menu/StartWork'
+import AddCheckPoint from '../views/menu/AddCheckPoint'
+import StandBy from '../views/menu/StandBy'
+import ETAProductionDate from '../views/menu/ETA&ProductionDate'
+import Analysis from '../views/menu/AnalysisClose';
+import Execution from '../views/menu/ExecutionClose';
+import UpdateTime from '../views/menu/UpdateTime';
+import UpdatePayment from '../views/menu/UpdatePayment';
+import StaffAssign from '../views/menu/StaffAssign';
+
 import GridView from '../views/Task/Tableview'
+
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 
+export const SimpleMenuContext = createContext();
 export const SimpleContext = createContext();
 
-// var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-var CanvasJS = CanvasJSReact.CanvasJS;
+// var CanvasJSChart = CanvasJSReact.CanvasJSChart; 
 // import Chart from "react-apexcharts";
 
 
@@ -186,6 +203,41 @@ values : {
 },
 };
 
+
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+    boxShadow: '0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12)',
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
+
+
+
 function SimpleCard(props) {
   var UserID = localStorage.getItem('userid');
 
@@ -197,52 +249,15 @@ function SimpleCard(props) {
   const [Formtitle,setFormtitle] = useState('');
   const [Filtertitle,setFiltertitle] = useState('');
   const [chartchange,setchartchange] = useState(true);
-  const [Headval,setHeadval] = useState('DR');
-  const [Colorline,setColorline] = useState('#F86C6B');
-  const [refresh,setrefresh] = useState(true);
+  const [Headval,setHeadval] = useState('DR'); 
+  const [refresh,setrefresh] = useState(false);
 
 
   const [ContChartLive,setContChartLive] = useState([]);
   const [ContChartAMC,setContChartAMC] = useState([]);
   const [ContChartIMP,setContChartIMP] = useState([]);
   const [ContChartOther,setContChartOther] = useState([]);
-  const [ContChartLiveDR,setContChartLiveDR] = useState([]);
-  const [ContChartAMCDR,setContChartAMCDR] = useState([]);
-  const [ContChartIMPDR,setContChartIMPDR] = useState([]);
-  const [ContChartOtherDR,setContChartOtherDR] = useState([]);
-  const [ContChartLiveCR,setContChartLiveCR] = useState([]);
-  const [ContChartAMCCR,setContChartAMCCR] = useState([]);
-  const [ContChartIMPCR,setContChartIMPCR] = useState([]);
-  const [ContChartOtherCR,setContChartOtherCR] = useState([]);
-  const [ContChartLiveNR,setContChartLiveNR] = useState([]);
-  const [ContChartAMCNR,setContChartAMCNR] = useState([]);
-  const [ContChartIMPNR,setContChartIMPNR] = useState([]);
-  const [ContChartOtherNR,setContChartOtherNR] = useState([]);
-  const [ContChartLiveOTH,setContChartLiveOTH] = useState([]);
-  const [ContChartAMCOTH,setContChartAMCOTH] = useState([]);
-  const [ContChartIMPOTH,setContChartIMPOTH] = useState([]);
-  const [ContChartOtherOTH,setContChartOtherOTH] = useState([]);
-  const [ContChartLiveMR,setContChartLiveMR] = useState([]);
-  const [ContChartAMCMR,setContChartAMCMR] = useState([]);
-  const [ContChartIMPMR,setContChartIMPMR] = useState([]);
-  const [ContChartOtherMR,setContChartOtherMR] = useState([]);
-  const [ContChartLiveFR,setContChartLiveFR] = useState([]);
-  const [ContChartAMCFR,setContChartAMCFR] = useState([]);
-  const [ContChartIMPFR,setContChartIMPFR] = useState([]);
-  const [ContChartOtherFR,setContChartOtherFR] = useState([]);
-  const [ContChartLiveRR,setContChartLiveRR] = useState([]);
-  const [ContChartAMCRR,setContChartAMCRR] = useState([]);
-  const [ContChartIMPRR,setContChartIMPRR] = useState([]);
-  const [ContChartOtherRR,setContChartOtherRR] = useState([]);
-
-  const [ContChartLiveSNA,setContChartLiveSNA] = useState([]);
-  const [ContChartAMCSNA,setContChartAMCSNA] = useState([]);
-  const [ContChartIMPSNA,setContChartIMPSNA] = useState([]);
-  const [ContChartOtherSNA,setContChartOtherSNA] = useState([]);
-  const [ContChartLiveNoEta,setContChartLiveNoEta] = useState([]);
-  const [ContChartAMCNoEta,setContChartAMCNoEta] = useState([]);
-  const [ContChartIMPNoEta,setContChartIMPNoEta] = useState([]);
-  const [ContChartOtherNoEta,setContChartOtherNoEta] = useState([]);
+ 
   const [ContChartDRHold,setContChartDRHold] = useState([]);
   const [ContChartCRHold,setContChartCRHold] = useState([]);
   const [ContChartNRHold,setContChartNRHold] = useState([]);
@@ -269,23 +284,7 @@ function SimpleCard(props) {
   const [EmpChartAMC,setEmpChartAMC] = useState([]);
   const [EmpChartIMP,setEmpChartIMP] = useState([]);
   const [EmpChartOther,setEmpChartOther] = useState([]);
-  const [EmpChartLiveDR,setEmpChartLiveDR] = useState([]);
-  const [EmpChartAMCDR,setEmpChartAMCDR] = useState([]);
-  const [EmpChartIMPDR,setEmpChartIMPDR] = useState([]);
-  const [EmpChartOtherDR,setEmpChartOtherDR] = useState([]);
-  const [EmpChartLiveCR,setEmpChartLiveCR] = useState([]);
-  const [EmpChartAMCCR,setEmpChartAMCCR] = useState([]);
-  const [EmpChartIMPCR,setEmpChartIMPCR] = useState([]);
-  const [EmpChartOtherCR,setEmpChartOtherCR] = useState([]);
-  const [EmpChartLiveNR,setEmpChartLiveNR] = useState([]);
-  const [EmpChartAMCNR,setEmpChartAMCNR] = useState([]);
-  const [EmpChartIMPNR,setEmpChartIMPNR] = useState([]);
-  const [EmpChartOtherNR,setEmpChartOtherNR] = useState([]);
-  const [EmpChartLiveOTH,setEmpChartLiveOTH] = useState([]);
-  const [EmpChartAMCOTH,setEmpChartAMCOTH] = useState([]);
-  const [EmpChartIMPOTH,setEmpChartIMPOTH] = useState([]);
-  const [EmpChartOtherOTH,setEmpChartOtherOTH] = useState([]);
-
+  
   // const [ETAToday,setETAToday] = useState([]);
   // const [ETAtype,setETAtype] = useState('today');
   // const [ETACharttoday,setETACharttoday] = useState([]);
@@ -304,10 +303,11 @@ function SimpleCard(props) {
   // const[ContractWise,setContractWise] = useState([]);
   const[Countdata,setCountdata] = useState(0);
   const [Slidedata,setSlidedata] = useState([]);
+  const [Slidedataserch,setSlidedataserch] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [Message,setMessage] = useState('');
   const [msgColor,setmsgColor] = useState('');
-  const [ConTypeFil,setConTypeFil] = useState(0);
+  const [ConTypeFil,setConTypeFil] = useState(2);
   // const [EmpWorkhrs,setEmpWorkhrs] = useState([]);
   // const [EmpEtt,setEmpEtt] = useState([]);
   // const [EmpETA,setEmpETA] = useState([]);
@@ -335,7 +335,7 @@ function SimpleCard(props) {
 
   const [btnopen, setbtnOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(2);
 
   const [Ovropen, setOvrOpen] = React.useState(false);
   const OvrallRef = React.useRef(null); 
@@ -386,7 +386,24 @@ function SimpleCard(props) {
   const [tastView, setTastView] = useState(true);
   const [Calendarview, setCalendarview] = useState(false);
 
-  const [anchMenuEl, setAnchMenuEl] = React.useState(null); 
+  const [SuperUser,setSuperUser] = useState(false);
+
+  // menu
+  const [anchMenuEl, setAnchMenuEl] = React.useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [MenuState, setMenuState] = useState(null);
+  const [PaymentRow, setPaymentRow] = useState('');
+
+  const handleCloseMenu = (val) => {
+
+    if(val){
+      setDialogOpen(true)
+    }
+    setAnchMenuEl(null);
+    setMenuState(val)
+    
+  };
+
   
   const handleChange = (event,index) => { 
     // evt.currentTarget.getAttribute("data-name")
@@ -461,10 +478,10 @@ function SimpleCard(props) {
     setSelectedIndex(0);
     setConTypeFil(0);
     if(index === 0){
-      setContChartLive(ContChartLiveDR)
-      setContChartAMC(ContChartAMCDR)
-      setContChartIMP(ContChartIMPDR)
-      setContChartOther(ContChartOtherDR)
+      setContChartLive(ContChartLive)
+      setContChartAMC(ContChartAMC)
+      setContChartIMP(ContChartIMP)
+      setContChartOther(ContChartOther)
     }else{
       if(Headval === 'DR'){
         setContChartLive(AllconChartLiveDR)
@@ -595,14 +612,6 @@ function SimpleCard(props) {
   //     ]
   // }
 
-   
-
-  CanvasJS.addColorSet("ConShades",
-                [//colorSet Array
-                  Colorline,
-                  '#4DBD74',
-                ]);
- 
 
   // const ETAModal = (e) =>{
   //   var id = e.dataPoint.data;
@@ -740,7 +749,7 @@ useEffect(( ) => {
   getData();
    // 1 
    // eslint-disable-next-line
-},[ConTypeFil]);
+},[ConTypeFil,SuperUser]);
 
 useEffect(( ) => {
   Emplist();
@@ -812,7 +821,7 @@ function Emplist(){
 
    
 function Conchange(type){
-  for(let i=0;i<14;i++){
+  for(let i=0;i<16;i++){
     let addcls = document.getElementsByClassName('borderradius')[i];
     addcls.classList.remove('activereq')
   }
@@ -821,6 +830,28 @@ function Conchange(type){
   setTimeout(() => {
     setchartchange(true)
   }, 100); 
+
+  const url = 'https://smartfm.in/NSEIPLSERVICE/DashboardService/VwAPINSEIPL/';
+  const params2 = {
+    "data":
+    {
+    "QryType_int": type,
+    "ProType_int": ConTypeFil,
+    "EmpID_int": null,
+    "ConID_int": EmpID ? EmpID : SuperUser ? null : localStorage.getItem('Employeeid')
+    }
+    } 
+    // localStorage.getItem('Employeeid')
+
+  const params3 = {
+    "data":
+    {
+    "QryType_int": "EMP"+type,
+    "ProType_int": ConTypeFil,
+    "EmpID_int": null,
+    "ConID_int": EmpID ? EmpID : null
+    }
+    } 
 
   setHeadval(type)
   if(type === 'Total'){
@@ -955,174 +986,167 @@ function Conchange(type){
     addcls.classList.add('activereq')
 
   }
-  if(type === 'CR'){
+  if(type === 'CR' || type === 'DR' || type === 'NR' || type === 'OTH' || type === 'MR' || type === 'FR' || type === 'RR'
+  || type === 'ER' || type === 'TR' || type === 'OVD' || type === 'PYM' || type === 'SNA' || type === 'NOETA'){
     if(OvrallIndex === 0){
-      setContChartLive(ContChartLiveCR)
-      setContChartAMC(ContChartAMCCR)
-      setContChartIMP(ContChartIMPCR)
-      setContChartOther(ContChartOtherCR)
+      fetch(url,{
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          
+        },
+        body: JSON.stringify(params2)
+      })
+      .then((res)=>res.json())
+      .then((data)=>{
+        const result = data.Output.data;
+        let ConLiveDR = [];
+        let ConAMCDR = [];
+        let ConIMPDR = [];
+        let ConOtherDR = [];
+        if(result.length > 0) {
+          result.map((val) => {
+            ConLiveDR.push({
+              'label':val.Descriptions1,
+              'y':Number(val.LIVE),
+              'text':val.Descriptions,
+              'data': val.WorkOrderID
+            })
+            ConAMCDR.push({
+              'label':val.Descriptions1,
+              'y':Number(val.AMC),
+              'text':val.Descriptions,
+              'data': val.WorkOrderID
+            })
+            ConIMPDR.push({
+              'label':val.Descriptions1,
+              'y':Number(val.IMP),
+              'text':val.Descriptions,
+              'data': val.WorkOrderID
+            })
+            ConOtherDR.push({
+              'label':val.Descriptions1,
+              'y':Number(val.Other),
+              'text':val.Descriptions,
+              'data': val.WorkOrderID
+            })  
+               
+              return null;
+          })  
+          setContChartLive(ConLiveDR);
+          setContChartAMC(ConAMCDR);
+          setContChartIMP(ConIMPDR);
+          setContChartOther(ConOtherDR);
+    
+        }else { 
+            setContChartLive([]);
+            setContChartAMC([]);
+            setContChartIMP([]);
+            setContChartOther([]);  
+        }
+      })
     }else{
       setContChartLive(AllconChartLiveCR)
       setContChartAMC(AllconChartAMCCR)
       setContChartIMP(AllconChartIMPCR)
       setContChartOther(AllconChartOtherCR)
     }
-    setEmpChartLive(EmpChartLiveCR)
-    setEmpChartAMC(EmpChartAMCCR)
-    setEmpChartIMP(EmpChartIMPCR)
-    setEmpChartOther(EmpChartOtherCR)
-    setColorline('#4DBD74')
-    let addcls = document.getElementsByClassName('borderradius')[3];
-    addcls.classList.add('activereq')
+    fetch(url,{
+      method: "POST",
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        
+      },
+      body: JSON.stringify(params3)
+    })
+    .then((res)=>res.json())
+    .then((data)=>{
+      const result = data.Output.data;
+      let EmpLiveDR = [];
+      let EmpAMCDR = [];
+      let EmpIMPDR = [];
+      let EmpOtherDR = [];
+      if(result.length > 0) {
+        result.map((val) => {
+          EmpLiveDR.push({
+            'label':val.Descriptions,
+            'y':Number(val.LIVE),
+            'data': val.WorkOrderID
+          })
+          EmpAMCDR.push({
+            'label':val.Descriptions,
+            'y':Number(val.AMC),
+            'data': val.WorkOrderID
+          })
+          EmpIMPDR.push({
+            'label':val.Descriptions,
+            'y':Number(val.IMP),
+            'data': val.WorkOrderID
+          })
+          EmpOtherDR.push({
+            'label':val.Descriptions,
+            'y':Number(val.Other),
+            'data': val.WorkOrderID
+          }) 
+          return null;
+        })  
+          setEmpChartLive(EmpLiveDR);
+          setEmpChartAMC(EmpAMCDR);
+          setEmpChartIMP(EmpIMPDR);
+          setEmpChartOther(EmpOtherDR);
+      }else{ 
+          setEmpChartLive([]);
+          setEmpChartAMC([]);
+          setEmpChartIMP([]);
+          setEmpChartOther([]);
+        
+      }
+    })
+    if(type === 'CR'){
+      let addcls = document.getElementsByClassName('borderradius')[3];
+      addcls.classList.add('activereq')
+    }if(type === 'DR'){
+      let addcls = document.getElementsByClassName('borderradius')[1];
+      addcls.classList.add('activereq')
+    }if(type === 'NR'){
+      let addcls = document.getElementsByClassName('borderradius')[4];
+      addcls.classList.add('activereq')
+    }if(type === 'OTH'){
+      let addcls = document.getElementsByClassName('borderradius')[5];
+      addcls.classList.add('activereq')
+    }if(type === 'MR'){
+      let addcls = document.getElementsByClassName('borderradius')[6];
+      addcls.classList.add('activereq')
+    }if(type === 'FR'){
+      let addcls = document.getElementsByClassName('borderradius')[7];
+      addcls.classList.add('activereq')
+    }if(type === 'RR'){
+      let addcls = document.getElementsByClassName('borderradius')[8];
+      addcls.classList.add('activereq')
+    }if(type === 'ER'){
+      let addcls = document.getElementsByClassName('borderradius')[9];
+      addcls.classList.add('activereq')
+    }if(type === 'TR'){
+      let addcls = document.getElementsByClassName('borderradius')[10];
+      addcls.classList.add('activereq')
+    }if(type === 'OVD'){
+      let addcls = document.getElementsByClassName('borderradius')[11];
+      addcls.classList.add('activereq')
+    }if(type === 'PYM'){
+      let addcls = document.getElementsByClassName('borderradius')[12];
+      addcls.classList.add('activereq')
+    }if(type === 'SNA'){
+      let addcls = document.getElementsByClassName('borderradius')[14];
+      addcls.classList.add('activereq')
+    }if(type === 'NOETA'){
+      let addcls = document.getElementsByClassName('borderradius')[15];
+      addcls.classList.add('activereq')
+    } 
+    
   }
-  if(type === 'DR'){
-    if(OvrallIndex === 0){
-      setContChartLive(ContChartLiveDR)
-      setContChartAMC(ContChartAMCDR)
-      setContChartIMP(ContChartIMPDR)
-      setContChartOther(ContChartOtherDR)
-    }else{
-      setContChartLive(AllconChartLiveDR)
-      setContChartAMC(AllconChartAMCDR)
-      setContChartIMP(AllconChartIMPDR)
-      setContChartOther(AllconChartOtherDR)
-    }
-    setEmpChartLive(EmpChartLiveDR)
-    setEmpChartAMC(EmpChartAMCDR)
-    setEmpChartIMP(EmpChartIMPDR)
-    setEmpChartOther(EmpChartOtherDR)
-    setColorline('#F86C6B')
-    let addcls = document.getElementsByClassName('borderradius')[1];
-    addcls.classList.add('activereq')
-  }
-  if(type === 'NR'){
-    if(OvrallIndex === 0){
-      setContChartLive(ContChartLiveNR)
-      setContChartAMC(ContChartAMCNR)
-      setContChartIMP(ContChartIMPNR)
-      setContChartOther(ContChartOtherNR)
-    }else{
-      setContChartLive(AllconChartLiveNR)
-      setContChartAMC(AllconChartAMCNR)
-      setContChartIMP(AllconChartIMPNR)
-      setContChartOther(AllconChartOtherNR)
-    }
-    setEmpChartLive(EmpChartLiveNR)
-    setEmpChartAMC(EmpChartAMCNR)
-    setEmpChartIMP(EmpChartIMPNR)
-    setEmpChartOther(EmpChartOtherNR)
-    setColorline('#4DBD74')
-    let addcls = document.getElementsByClassName('borderradius')[4];
-    addcls.classList.add('activereq')
-  
-  }
-  if(type === 'OTH'){
-    if(OvrallIndex === 0){
-      setContChartLive(ContChartLiveOTH)
-      setContChartAMC(ContChartAMCOTH)
-      setContChartIMP(ContChartIMPOTH)
-      setContChartOther(ContChartOtherOTH)
-    }else{
-      setContChartLive(AllconChartLiveOTH)
-      setContChartAMC(AllconChartAMCOTH)
-      setContChartIMP(AllconChartIMPOTH)
-      setContChartOther(AllconChartOtherOTH)
-    }
-    setEmpChartLive(EmpChartLiveOTH)
-    setEmpChartAMC(EmpChartAMCOTH)
-    setEmpChartIMP(EmpChartIMPOTH)
-    setEmpChartOther(EmpChartOtherOTH)
-    setColorline('#FFC23D')
-    let addcls = document.getElementsByClassName('borderradius')[5];
-    addcls.classList.add('activereq')
-  }
-  if(type === 'MR'){
-    if(OvrallIndex === 0){
-      setContChartLive(ContChartLiveMR)
-      setContChartAMC(ContChartAMCMR)
-      setContChartIMP(ContChartIMPMR)
-      setContChartOther(ContChartOtherMR)
-    }else{
-      setContChartLive(AllconChartLiveDR)
-      setContChartAMC(AllconChartAMCDR)
-      setContChartIMP(AllconChartIMPDR)
-      setContChartOther(AllconChartOtherDR)
-    }
-    let addcls = document.getElementsByClassName('borderradius')[6];
-    addcls.classList.add('activereq')
-  }
-  if(type === 'FR'){
-    if(OvrallIndex === 0){
-      setContChartLive(ContChartLiveFR)
-      setContChartAMC(ContChartAMCFR)
-      setContChartIMP(ContChartIMPFR)
-      setContChartOther(ContChartOtherFR)
-    }else{
-      setContChartLive(AllconChartLiveDR)
-      setContChartAMC(AllconChartAMCDR)
-      setContChartIMP(AllconChartIMPDR)
-      setContChartOther(AllconChartOtherDR)
-    }
-    let addcls = document.getElementsByClassName('borderradius')[7];
-    addcls.classList.add('activereq')
-  }
-  if(type === 'PYM'){
-    if(OvrallIndex === 0){
-      setContChartLive(ContChartLiveRR)
-      setContChartAMC(ContChartAMCRR)
-      setContChartIMP(ContChartIMPRR)
-      setContChartOther(ContChartOtherRR)
-    }else{
-      setContChartLive(AllconChartLiveDR)
-      setContChartAMC(AllconChartAMCDR)
-      setContChartIMP(AllconChartIMPDR)
-      setContChartOther(AllconChartOtherDR)
-    }
-    setColorline('#4DBD74')
-    let addcls = document.getElementsByClassName('borderradius')[10];
-    addcls.classList.add('activereq')
-  }
-  if(type === 'OVD'){
-    // setContChart(ContChartOD)
-    setColorline('#FFC23D')
-    let addcls = document.getElementsByClassName('borderradius')[9];
-    addcls.classList.add('activereq')
-  }
-  
-  
-  if(type === 'SNA'){
-    if(OvrallIndex === 0){
-      setContChartLive(ContChartLiveSNA)
-      setContChartAMC(ContChartAMCSNA)
-      setContChartIMP(ContChartIMPSNA)
-      setContChartOther(ContChartOtherSNA)
-    }else{
-      setContChartLive(AllconChartLiveDR)
-      setContChartAMC(AllconChartAMCDR)
-      setContChartIMP(AllconChartIMPDR)
-      setContChartOther(AllconChartOtherDR)
-    }
-    let addcls = document.getElementsByClassName('borderradius')[12];
-    addcls.classList.add('activereq')
-  }
-  if(type === 'NOETA'){
-    if(OvrallIndex === 0){
-      setContChartLive(ContChartLiveNoEta)
-      setContChartAMC(ContChartAMCNoEta)
-      setContChartIMP(ContChartIMPNoEta)
-      setContChartOther(ContChartOtherNoEta)
-    }else{
-      setContChartLive(AllconChartLiveDR)
-      setContChartAMC(AllconChartAMCDR)
-      setContChartIMP(AllconChartIMPDR)
-      setContChartOther(AllconChartOtherDR)
-    }
-    let addcls = document.getElementsByClassName('borderradius')[13];
-    addcls.classList.add('activereq')
-  }
-  
-  
-  
+   
 }
 
 function MonthChange(type,empname){
@@ -1141,7 +1165,7 @@ function MonthChange(type,empname){
         {
         "QryType_int": 7,
         "ProType_int": ConTypeFil,
-        "EmpID_int": null,
+        "EmpID_int": EmpID ? EmpID :  SuperUser ? null : localStorage.getItem('Employeeid'),
         "ConID_int": null,
         "month_int": null,
         "year_int": 2021,
@@ -1601,8 +1625,70 @@ function MonthChange(type,empname){
       })
     }
     if(type === 'HOLD'){
-      
-      setFiltertitle(type)
+      const url2 = 'https://smartfm.in/NSEIPLSERVICE/DashboardService/VwAPINSEIPL/';
+      const params2 = {
+        "data":
+        {
+        "QryType_int": type,
+        "ProType_int": ConTypeFil,
+        "EmpID_int": null,
+        "ConID_int": EmpID ? EmpID :  SuperUser ? null : localStorage.getItem('Employeeid')
+        }
+        } 
+        fetch(url2,{
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            
+          },
+          body: JSON.stringify(params2)
+        })
+        .then((res)=>res.json())
+        .then((data)=>{
+          const result = data.Output.data;
+          let ConDRHold = [];
+          let ConCRHold = [];
+          let ConNRHold = [];
+          let ConOtherHold = [];
+          if(result.length > 0){
+            result.map((val) => {
+              ConDRHold.push({
+                'label':val.Descriptions1,
+                'y':Number(val.DR),
+                'text':val.Descriptions,
+                'data': val.WorkOrderID
+              })
+              ConCRHold.push({
+                'label':val.Descriptions1,
+                'y':Number(val.CR),
+                'text':val.Descriptions,
+                'data': val.WorkOrderID
+              })
+              ConNRHold.push({
+                'label':val.Descriptions1,
+                'y':Number(val.NR),
+                'text':val.Descriptions,
+                'data': val.WorkOrderID
+              })
+              ConOtherHold.push({
+                'label':val.Descriptions1,
+                'y':Number(val.oths),
+                'text':val.Descriptions,
+                'data': val.WorkOrderID
+              }) 
+              return null;
+            })
+            
+          }
+          setContChartDRHold(ConDRHold);
+          setContChartCRHold(ConCRHold);
+          setContChartNRHold(ConNRHold);
+          setContChartOtherHold(ConOtherHold);
+          setFiltertitle(type)
+          
+        })
+        
     }
     if(type === 'WStatus'){
       if(!EmpID){
@@ -2007,6 +2093,7 @@ function MonthChange(type,empname){
 
 }
 
+
 // ********************************** API Section *************************************************** //
 
 const getData = ( ) => {
@@ -2015,10 +2102,10 @@ const getData = ( ) => {
   const params = {
     "data":
     {
-    "QryType_int": null,
+    "QryType_int": 'ALL',
     "ProType_int": ConTypeFil,
     "EmpID_int": null,
-    "ConID_int": null
+    "ConID_int": EmpID ? EmpID :  SuperUser ? null : localStorage.getItem('Employeeid')
     }
     } 
   fetch(url,{
@@ -2047,62 +2134,7 @@ const getData = ( ) => {
     // let Constasum = [];
     // let Constatuswise = [];
     // let ConOverdue = [];
-    let ConLiveDR = [];
-    let ConAMCDR = [];
-    let ConIMPDR = [];
-    let ConOtherDR = [];
-    let ConLiveCR = [];
-    let ConAMCCR = [];
-    let ConIMPCR = [];
-    let ConOtherCR = [];
-    let ConLiveNR = [];
-    let ConAMCNR = [];
-    let ConIMPNR = [];
-    let ConOtherNR = [];
-    let ConLiveOTH = [];
-    let ConAMCOTH = [];
-    let ConIMPOTH = [];
-    let ConOtherOTH = [];
-    let ConLiveMR = [];
-    let ConAMCMR = [];
-    let ConIMPMR = [];
-    let ConOtherMR = [];
-    let ConLiveFR = [];
-    let ConAMCFR = [];
-    let ConIMPFR = [];
-    let ConOtherFR = [];
-    let ConLiveRR = [];
-    let ConAMCRR = [];
-    let ConIMPRR = [];
-    let ConOtherRR = [];
-    let ConLiveSNA = [];
-    let ConAMCSNA = [];
-    let ConIMPSNA = [];
-    let ConOtherSNA = [];
-    let ConLiveNoEta = [];
-    let ConAMCNoEta = [];
-    let ConIMPNoEta = [];
-    let ConOtherNoEta = [];
-    let ConDRHold = [];
-    let ConCRHold = [];
-    let ConNRHold = [];
-    let ConOtherHold = [];
-    let EmpLiveDR = [];
-    let EmpAMCDR = [];
-    let EmpIMPDR = [];
-    let EmpOtherDR = [];
-    let EmpLiveCR = [];
-    let EmpAMCCR = [];
-    let EmpIMPCR = [];
-    let EmpOtherCR = [];
-    let EmpLiveNR = [];
-    let EmpAMCNR = [];
-    let EmpIMPNR = [];
-    let EmpOtherNR = [];
-    let EmpLiveOTH = [];
-    let EmpAMCOTH = [];
-    let EmpIMPOTH = [];
-    let EmpOtherOTH = [];
+    
     let Todayeta = [];
     let ETAnext = [];
     let ConOVD = [];
@@ -2128,6 +2160,117 @@ const getData = ( ) => {
     let EmployeeTodaywork = [];
 
     result.map((val)=> {
+      
+     if(val.Header === '23') {
+      if(val.Descriptions){
+        AllConDRLive.push({
+          'label':val.Descriptions,
+          'y':Number(val.LIVE),
+          'data': val.WorkOrderID
+        })
+        AllConDRAMC.push({
+          'label':val.Descriptions,
+          'y':Number(val.AMC),
+          'data': val.WorkOrderID
+        })
+        AllConDRIMP.push({
+          'label':val.Descriptions,
+          'y':Number(val.IMP),
+          'data': val.WorkOrderID
+        })
+        AllConDROther.push({
+          'label':val.Descriptions,
+          'y':Number(val.Other),
+          'data': val.WorkOrderID
+        }) 
+      }
+      setAllconChartLiveDR(AllConDRLive);
+      setAllconChartAMCDR(AllConDRAMC);
+      setAllconChartIMPDR(AllConDRIMP);
+      setAllconChartOtherDR(AllConDROther);
+    }else if(val.Header === '24') {
+      if(val.Descriptions){
+        AllConCRLive.push({
+          'label':val.Descriptions,
+          'y':Number(val.LIVE),
+          'data': val.WorkOrderID
+        })
+        AllConCRAMC.push({
+          'label':val.Descriptions,
+          'y':Number(val.AMC),
+          'data': val.WorkOrderID
+        })
+        AllConCRIMP.push({
+          'label':val.Descriptions,
+          'y':Number(val.IMP),
+          'data': val.WorkOrderID
+        })
+        AllConCROther.push({
+          'label':val.Descriptions,
+          'y':Number(val.Other),
+          'data': val.WorkOrderID
+        }) 
+      }
+      setAllconChartLiveCR(AllConCRLive);
+      setAllconChartAMCCR(AllConCRAMC);
+      setAllconChartIMPCR(AllConCRIMP);
+      setAllconChartOtherCR(AllConCROther);
+    }else if(val.Header === '25') {
+      if(val.Descriptions){
+        AllConNRLive.push({
+          'label':val.Descriptions,
+          'y':Number(val.LIVE),
+          'data': val.WorkOrderID
+        })
+        AllConNRAMC.push({
+          'label':val.Descriptions,
+          'y':Number(val.AMC),
+          'data': val.WorkOrderID
+        })
+        AllConNRIMP.push({
+          'label':val.Descriptions,
+          'y':Number(val.IMP),
+          'data': val.WorkOrderID
+        })
+        AllConNROther.push({
+          'label':val.Descriptions,
+          'y':Number(val.Other),
+          'data': val.WorkOrderID
+        }) 
+      }
+      setAllconChartLiveNR(AllConNRLive);
+      setAllconChartAMCNR(AllConNRAMC);
+      setAllconChartIMPNR(AllConNRIMP);
+      setAllconChartOtherNR(AllConNROther);
+    }else if(val.Header === '26') {
+      if(val.Descriptions){
+        AllConOTHLive.push({
+          'label':val.Descriptions,
+          'y':Number(val.LIVE),
+          'data': val.WorkOrderID
+        })
+        AllConOTHAMC.push({
+          'label':val.Descriptions,
+          'y':Number(val.AMC),
+          'data': val.WorkOrderID
+        })
+        AllConOTHIMP.push({
+          'label':val.Descriptions,
+          'y':Number(val.IMP),
+          'data': val.WorkOrderID
+        })
+        AllConOTHOther.push({
+          'label':val.Descriptions,
+          'y':Number(val.Other),
+          'data': val.WorkOrderID
+        }) 
+      }
+      setAllconChartLiveOTH(AllConOTHLive);
+      setAllconChartAMCOTH(AllConOTHAMC);
+      setAllconChartIMPOTH(AllConOTHIMP);
+      setAllconChartOtherOTH(AllConOTHOther);
+    }
+
       if(val.Header === '5'){
         // let sumtot = (Number(val.CR) + Number(val.NR) + Number(val.DR) + Number(val.NOETA));
         // setSumtot(sumtot);
@@ -2153,388 +2296,6 @@ const getData = ( ) => {
                           'oths': val.oths,
                           "WorkOrderID": val.WorkOrderID})
                           // setContractWise(contractWise);
-      }else if(val.Header === '15') {
-        
-          ConLiveDR.push({
-            'label':val.Descriptions1,
-            'y':Number(val.LIVE),
-            'text':val.Descriptions,
-            'data': val.WorkOrderID
-          })
-          ConAMCDR.push({
-            'label':val.Descriptions1,
-            'y':Number(val.AMC),
-            'text':val.Descriptions,
-            'data': val.WorkOrderID
-          })
-          ConIMPDR.push({
-            'label':val.Descriptions1,
-            'y':Number(val.IMP),
-            'text':val.Descriptions,
-            'data': val.WorkOrderID
-          })
-          ConOtherDR.push({
-            'label':val.Descriptions1,
-            'y':Number(val.Other),
-            'text':val.Descriptions,
-            'data': val.WorkOrderID
-          }) 
-          if(Headval === 'DR'){
-            setContChartLive(ConLiveDR);
-            setContChartAMC(ConAMCDR);
-            setContChartIMP(ConIMPDR);
-            setContChartOther(ConOtherDR);
-          }
-          setContChartLiveDR(ConLiveDR);
-          setContChartAMCDR(ConAMCDR);
-          setContChartIMPDR(ConIMPDR);
-          setContChartOtherDR(ConOtherDR);
-        
-      }else if(val.Header === '16') {
-        
-        ConLiveCR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.LIVE),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConAMCCR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.AMC),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConIMPCR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.IMP),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConOtherCR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.Other),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        }) 
-        if(Headval === 'CR'){
-            setContChartLive(ConLiveCR);
-            setContChartAMC(ConAMCCR);
-            setContChartIMP(ConIMPCR);
-            setContChartOther(ConOtherCR);
-        }
-        setContChartLiveCR(ConLiveCR);
-        setContChartAMCCR(ConAMCCR);
-        setContChartIMPCR(ConIMPCR);
-        setContChartOtherCR(ConOtherCR);
-      }else if(val.Header === '17') {
-        
-        ConLiveNR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.LIVE),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConAMCNR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.AMC),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConIMPNR.push({
-          'label':val.descriptions1,
-          'y':Number(val.IMP),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConOtherNR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.Other),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        }) 
-        if(Headval === 'NR'){
-          setContChartLive(ConLiveNR);
-          setContChartAMC(ConAMCNR);
-          setContChartIMP(ConIMPNR);
-          setContChartOther(ConOtherNR);
-        }
-        setContChartLiveNR(ConLiveNR);
-        setContChartAMCNR(ConAMCNR);
-        setContChartIMPNR(ConIMPNR);
-        setContChartOtherNR(ConOtherNR);
-      }else if(val.Header === '18') {
-        
-        ConLiveOTH.push({
-          'label':val.descriptions1,
-          'y':Number(val.LIVE),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConAMCOTH.push({
-          'label':val.Descriptions1,
-          'y':Number(val.AMC),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConIMPOTH.push({
-          'label':val.Descriptions1,
-          'y':Number(val.IMP),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConOtherOTH.push({
-          'label':val.Descriptions1,
-          'y':Number(val.Other),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        }) 
-        if(Headval === 'OTH'){
-          setContChartLive(ConLiveOTH);
-          setContChartAMC(ConAMCOTH);
-          setContChartIMP(ConIMPOTH);
-          setContChartOther(ConOtherOTH);
-        }
-        setContChartLiveOTH(ConLiveOTH);
-        setContChartAMCOTH(ConAMCOTH);
-        setContChartIMPOTH(ConIMPOTH);
-        setContChartOtherOTH(ConOtherOTH);
-      }else if(val.Header === '19') {
-        
-        EmpLiveDR.push({
-          'label':val.Descriptions,
-          'y':Number(val.LIVE),
-          'data': val.WorkOrderID
-        })
-        EmpAMCDR.push({
-          'label':val.Descriptions,
-          'y':Number(val.AMC),
-          'data': val.WorkOrderID
-        })
-        EmpIMPDR.push({
-          'label':val.Descriptions,
-          'y':Number(val.IMP),
-          'data': val.WorkOrderID
-        })
-        EmpOtherDR.push({
-          'label':val.Descriptions,
-          'y':Number(val.Other),
-          'data': val.WorkOrderID
-        }) 
-        if(Headval === 'DR'){
-          
-          setEmpChartLive(EmpLiveDR);
-          setEmpChartLiveDR(EmpLiveDR);
-          setEmpChartAMC(EmpAMCDR);
-          setEmpChartAMCDR(EmpAMCDR);
-          setEmpChartIMP(EmpIMPDR);
-          setEmpChartIMPDR(EmpIMPDR);
-          setEmpChartOther(EmpOtherDR);
-          setEmpChartOtherDR(EmpOtherDR);
-        }
-      }else if(val.Header === '20') {
-        
-        EmpLiveCR.push({
-          'label':val.Descriptions,
-          'y':Number(val.LIVE),
-          'data': val.WorkOrderID
-        })
-        EmpAMCCR.push({
-          'label':val.Descriptions,
-          'y':Number(val.AMC),
-          'data': val.WorkOrderID
-        })
-        EmpIMPCR.push({
-          'label':val.Descriptions,
-          'y':Number(val.IMP),
-          'data': val.WorkOrderID
-        })
-        EmpOtherCR.push({
-          'label':val.Descriptions,
-          'y':Number(val.Other),
-          'data': val.WorkOrderID
-        }) 
-        if(Headval === 'CR'){
-          setEmpChartLive(EmpLiveCR);
-          setEmpChartAMC(EmpAMCCR);
-          setEmpChartIMP(EmpIMPCR);
-          setEmpChartOther(EmpOtherCR);
-        }
-        setEmpChartLiveCR(EmpLiveCR);
-        setEmpChartAMCCR(EmpAMCCR);
-        setEmpChartIMPCR(EmpIMPCR);
-        setEmpChartOtherCR(EmpOtherCR);
-      }else if(val.Header === '21') {
-        
-        EmpLiveNR.push({
-          'label':val.Descriptions,
-          'y':Number(val.LIVE),
-          'data': val.WorkOrderID
-        })
-        EmpAMCNR.push({
-          'label':val.Descriptions,
-          'y':Number(val.AMC),
-          'data': val.WorkOrderID
-        })
-        EmpIMPNR.push({
-          'label':val.Descriptions,
-          'y':Number(val.IMP),
-          'data': val.WorkOrderID
-        })
-        EmpOtherNR.push({
-          'label':val.Descriptions,
-          'y':Number(val.Other),
-          'data': val.WorkOrderID
-        }) 
-        if(Headval === 'NR'){
-          setEmpChartLive(EmpLiveNR);
-          setEmpChartAMC(EmpAMCNR);
-          setEmpChartIMP(EmpIMPNR);
-          setEmpChartOther(EmpOtherNR);
-        }
-        setEmpChartLiveNR(EmpLiveNR);
-        setEmpChartAMCNR(EmpAMCNR);
-        setEmpChartIMPNR(EmpIMPNR);
-        setEmpChartOtherNR(EmpOtherNR);
-      }else if(val.Header === '22') {
-        
-        EmpLiveOTH.push({
-          'label':val.Descriptions,
-          'y':Number(val.LIVE),
-          'data': val.WorkOrderID
-        })
-        EmpAMCOTH.push({
-          'label':val.Descriptions,
-          'y':Number(val.AMC),
-          'data': val.WorkOrderID
-        })
-        EmpIMPOTH.push({
-          'label':val.Descriptions,
-          'y':Number(val.IMP),
-          'data': val.WorkOrderID
-        })
-        EmpOtherOTH.push({
-          'label':val.Descriptions,
-          'y':Number(val.Other),
-          'data': val.WorkOrderID
-        }) 
-        if(Headval === 'OTH'){
-          setEmpChartLive(EmpLiveOTH);
-          setEmpChartAMC(EmpAMCOTH);
-          setEmpChartIMP(EmpIMPOTH);
-          setEmpChartOther(EmpOtherOTH);
-        }
-        setEmpChartLiveOTH(EmpLiveOTH);
-        setEmpChartAMCOTH(EmpAMCOTH);
-        setEmpChartIMPOTH(EmpIMPOTH);
-        setEmpChartOtherOTH(EmpOtherOTH);
-      }else if(val.Header === '23') {
-        if(val.Descriptions){
-          AllConDRLive.push({
-            'label':val.Descriptions,
-            'y':Number(val.LIVE),
-            'data': val.WorkOrderID
-          })
-          AllConDRAMC.push({
-            'label':val.Descriptions,
-            'y':Number(val.AMC),
-            'data': val.WorkOrderID
-          })
-          AllConDRIMP.push({
-            'label':val.Descriptions,
-            'y':Number(val.IMP),
-            'data': val.WorkOrderID
-          })
-          AllConDROther.push({
-            'label':val.Descriptions,
-            'y':Number(val.Other),
-            'data': val.WorkOrderID
-          }) 
-        }
-        setAllconChartLiveDR(AllConDRLive);
-        setAllconChartAMCDR(AllConDRAMC);
-        setAllconChartIMPDR(AllConDRIMP);
-        setAllconChartOtherDR(AllConDROther);
-      }else if(val.Header === '24') {
-        if(val.Descriptions){
-          AllConCRLive.push({
-            'label':val.Descriptions,
-            'y':Number(val.LIVE),
-            'data': val.WorkOrderID
-          })
-          AllConCRAMC.push({
-            'label':val.Descriptions,
-            'y':Number(val.AMC),
-            'data': val.WorkOrderID
-          })
-          AllConCRIMP.push({
-            'label':val.Descriptions,
-            'y':Number(val.IMP),
-            'data': val.WorkOrderID
-          })
-          AllConCROther.push({
-            'label':val.Descriptions,
-            'y':Number(val.Other),
-            'data': val.WorkOrderID
-          }) 
-        }
-        setAllconChartLiveCR(AllConCRLive);
-        setAllconChartAMCCR(AllConCRAMC);
-        setAllconChartIMPCR(AllConCRIMP);
-        setAllconChartOtherCR(AllConCROther);
-      }else if(val.Header === '25') {
-        if(val.Descriptions){
-          AllConNRLive.push({
-            'label':val.Descriptions,
-            'y':Number(val.LIVE),
-            'data': val.WorkOrderID
-          })
-          AllConNRAMC.push({
-            'label':val.Descriptions,
-            'y':Number(val.AMC),
-            'data': val.WorkOrderID
-          })
-          AllConNRIMP.push({
-            'label':val.Descriptions,
-            'y':Number(val.IMP),
-            'data': val.WorkOrderID
-          })
-          AllConNROther.push({
-            'label':val.Descriptions,
-            'y':Number(val.Other),
-            'data': val.WorkOrderID
-          }) 
-        }
-        setAllconChartLiveNR(AllConNRLive);
-        setAllconChartAMCNR(AllConNRAMC);
-        setAllconChartIMPNR(AllConNRIMP);
-        setAllconChartOtherNR(AllConNROther);
-      }else if(val.Header === '26') {
-        if(val.Descriptions){
-          AllConOTHLive.push({
-            'label':val.Descriptions,
-            'y':Number(val.LIVE),
-            'data': val.WorkOrderID
-          })
-          AllConOTHAMC.push({
-            'label':val.Descriptions,
-            'y':Number(val.AMC),
-            'data': val.WorkOrderID
-          })
-          AllConOTHIMP.push({
-            'label':val.Descriptions,
-            'y':Number(val.IMP),
-            'data': val.WorkOrderID
-          })
-          AllConOTHOther.push({
-            'label':val.Descriptions,
-            'y':Number(val.Other),
-            'data': val.WorkOrderID
-          }) 
-        }
-        setAllconChartLiveOTH(AllConOTHLive);
-        setAllconChartAMCOTH(AllConOTHAMC);
-        setAllconChartIMPOTH(AllConOTHIMP);
-        setAllconChartOtherOTH(AllConOTHOther);
       }else if(val.Header === '27') {
         Empwork.push({'Comno':val.Descriptions,
                     'Descriptions1':val.Descriptions1,
@@ -2682,223 +2443,7 @@ const getData = ( ) => {
         // setETAChartnext(ETAnext);
 
       }
-      else if(val.Header === '32') {
-        
-        ConLiveSNA.push({
-          'label':val.Descriptions1,
-          'y':Number(val.LIVE),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConAMCSNA.push({
-          'label':val.Descriptions1,
-          'y':Number(val.AMC),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConIMPSNA.push({
-          'label':val.Descriptions1,
-          'y':Number(val.IMP),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConOtherSNA.push({
-          'label':val.Descriptions1,
-          'y':Number(val.Other),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        }) 
-        if(Headval === 'SNA'){
-          setContChartLive(ConLiveSNA);
-          setContChartAMC(ConAMCSNA);
-          setContChartIMP(ConIMPSNA);
-          setContChartOther(ConOtherSNA);
-        }
-        setContChartLiveSNA(ConLiveSNA);
-        setContChartAMCSNA(ConAMCSNA);
-        setContChartIMPSNA(ConIMPSNA);
-        setContChartOtherSNA(ConOtherSNA);
       
-      }else if(val.Header === '33') {
-        
-        ConLiveNoEta.push({
-          'label':val.Descriptions1,
-          'y':Number(val.LIVE),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConAMCNoEta.push({
-          'label':val.Descriptions1,
-          'y':Number(val.AMC),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConIMPNoEta.push({
-          'label':val.Descriptions1,
-          'y':Number(val.IMP),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConOtherNoEta.push({
-          'label':val.Descriptions1,
-          'y':Number(val.Other),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        }) 
-        if(Headval === 'NOETA'){
-          setContChartLive(ConLiveNoEta);
-          setContChartAMC(ConAMCNoEta);
-          setContChartIMP(ConIMPNoEta);
-          setContChartOther(ConOtherNoEta);
-        }
-        setContChartLiveNoEta(ConLiveNoEta);
-        setContChartAMCNoEta(ConAMCNoEta);
-        setContChartIMPNoEta(ConIMPNoEta);
-        setContChartOtherNoEta(ConOtherNoEta);
-      
-      }else if(val.Header === '34') {
-        
-        ConDRHold.push({
-          'label':val.Descriptions1,
-          'y':Number(val.DR),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConCRHold.push({
-          'label':val.Descriptions1,
-          'y':Number(val.CR),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConNRHold.push({
-          'label':val.Descriptions1,
-          'y':Number(val.NR),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConOtherHold.push({
-          'label':val.Descriptions1,
-          'y':Number(val.oths),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        }) 
-        setContChartDRHold(ConDRHold);
-        setContChartCRHold(ConCRHold);
-        setContChartNRHold(ConNRHold);
-        setContChartOtherHold(ConOtherHold);
-      
-      }else if(val.Header === '35') {
-        
-        ConLiveMR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.LIVE),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConAMCMR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.AMC),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConIMPMR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.IMP),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConOtherMR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.Other),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        }) 
-        if(Headval === 'MR'){
-          setContChartLive(ConLiveMR);
-          setContChartAMC(ConAMCMR);
-          setContChartIMP(ConIMPMR);
-          setContChartOther(ConOtherMR);
-        }
-        setContChartLiveMR(ConLiveMR);
-        setContChartAMCMR(ConAMCMR);
-        setContChartIMPMR(ConIMPMR);
-        setContChartOtherMR(ConOtherMR);
-      
-      }else if(val.Header === '36') {
-        
-        ConLiveFR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.LIVE),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConAMCFR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.AMC),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConIMPFR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.IMP),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConOtherFR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.Other),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        }) 
-        if(Headval === 'FR'){
-          setContChartLive(ConLiveFR);
-          setContChartAMC(ConAMCFR);
-          setContChartIMP(ConIMPFR);
-          setContChartOther(ConOtherFR);
-        }
-        setContChartLiveFR(ConLiveFR);
-        setContChartAMCFR(ConAMCFR);
-        setContChartIMPFR(ConIMPFR);
-        setContChartOtherFR(ConOtherFR);
-      
-      }else if(val.Header === '37') {
-        
-        ConLiveRR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.LIVE),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConAMCRR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.AMC),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConIMPRR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.IMP),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        })
-        ConOtherRR.push({
-          'label':val.Descriptions1,
-          'y':Number(val.Other),
-          'text':val.Descriptions,
-          'data': val.WorkOrderID
-        }) 
-        if(Headval === 'RR'){
-          setContChartLive(ConLiveRR);
-          setContChartAMC(ConAMCRR);
-          setContChartIMP(ConIMPRR);
-          setContChartOther(ConOtherRR);
-        }
-        setContChartLiveRR(ConLiveRR);
-        setContChartAMCRR(ConAMCRR);
-        setContChartIMPRR(ConIMPRR);
-        setContChartOtherRR(ConOtherRR);
-      
-      }
       
       return null;
     })
@@ -2909,11 +2454,149 @@ const getData = ( ) => {
 
    setSumdet(summary);
       setLoading(false);
+      if(SuperUser){
+        document.getElementById('appbarbg').style.backgroundColor='#48730f';
+      }else{
+        document.getElementById('appbarbg').style.backgroundColor='#2183B0';
+      }
+      
+      
   }); 
 
+  // Contract Wise
+  const params2 = {
+    "data":
+    {
+    "QryType_int": Headval,
+    "ProType_int": ConTypeFil,
+    "EmpID_int": null,
+    "ConID_int": EmpID ? EmpID :  SuperUser ? null : localStorage.getItem('Employeeid')
+    }
+    } 
+  fetch(url,{
+    method: "POST",
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      
+    },
+    body: JSON.stringify(params2)
+  })
+  .then((res)=>res.json())
+  .then((data)=>{
+    const result = data.Output.data;
+    let ConLiveDR = [];
+    let ConAMCDR = [];
+    let ConIMPDR = [];
+    let ConOtherDR = [];
+    if(result.length > 0) {
+      result.map((val) => {
+        ConLiveDR.push({
+          'label':val.Descriptions1,
+          'y':Number(val.LIVE),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })
+        ConAMCDR.push({
+          'label':val.Descriptions1,
+          'y':Number(val.AMC),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })
+        ConIMPDR.push({
+          'label':val.Descriptions1,
+          'y':Number(val.IMP),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })
+        ConOtherDR.push({
+          'label':val.Descriptions1,
+          'y':Number(val.Other),
+          'text':val.Descriptions,
+          'data': val.WorkOrderID
+        })  
+          return null;
+      })  
+      setContChartLive(ConLiveDR);
+      setContChartAMC(ConAMCDR);
+      setContChartIMP(ConIMPDR);
+      setContChartOther(ConOtherDR); 
+
+    }else { 
+        setContChartLive([]);
+        setContChartAMC([]);
+        setContChartIMP([]);
+        setContChartOther([]);
+       
+    }
+  })
+
+  // Employee WIse
+  const params3 = {
+    "data":
+    {
+    "QryType_int": "EMP"+Headval,
+    "ProType_int": ConTypeFil,
+    "EmpID_int": null,
+    "ConID_int": EmpID ? EmpID :  SuperUser ? null : localStorage.getItem('Employeeid')
+    }
+    } 
+  fetch(url,{
+    method: "POST",
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      
+    },
+    body: JSON.stringify(params3)
+  })
+  .then((res)=>res.json())
+  .then((data)=>{
+    const result = data.Output.data;
+    let EmpLiveDR = [];
+    let EmpAMCDR = [];
+    let EmpIMPDR = [];
+    let EmpOtherDR = [];
+    if(result.length > 0) {
+      result.map((val) => {
+        EmpLiveDR.push({
+          'label':val.Descriptions,
+          'y':Number(val.LIVE),
+          'data': val.WorkOrderID
+        })
+        EmpAMCDR.push({
+          'label':val.Descriptions,
+          'y':Number(val.AMC),
+          'data': val.WorkOrderID
+        })
+        EmpIMPDR.push({
+          'label':val.Descriptions,
+          'y':Number(val.IMP),
+          'data': val.WorkOrderID
+        })
+        EmpOtherDR.push({
+          'label':val.Descriptions,
+          'y':Number(val.Other),
+          'data': val.WorkOrderID
+        }) 
+        return null;
+      })  
+        setEmpChartLive(EmpLiveDR);
+        setEmpChartAMC(EmpAMCDR);
+        setEmpChartIMP(EmpIMPDR);
+        setEmpChartOther(EmpOtherDR);
+    }else{ 
+        setEmpChartLive([]);
+        setEmpChartAMC([]);
+        setEmpChartIMP([]);
+        setEmpChartOther([]);
+      
+    }
+  })
  }
 
  function OverlaySlide(type,id,empid,title,conname,Fdate,Tdate){
+   var locEMp = localStorage.getItem('Employeeid');
   setFormtitle(title);
   const url = 'https://smartfm.in/NSEIPLSERVICE/DashboardService/VwAPINSEIPLDetails/';
   const params = {
@@ -2921,7 +2604,7 @@ const getData = ( ) => {
     {
     "p1_int": type,
     "p2_int": 0,
-    "p3_int": empid,
+    "p3_int": empid ? empid : (EmpID ? EmpID : (SuperUser ? null : locEMp)),
     "p4_int": id,
     "p5_int": conname,
     "p6_int": ConTypeFil,
@@ -2962,6 +2645,7 @@ const getData = ( ) => {
       
       setexportItem(exportarry);
       setSlidedata(res);
+      setSlidedataserch(res);
     }else{
       setOpen(true);
       setMessage('No Record Found!');
@@ -2970,7 +2654,6 @@ const getData = ( ) => {
     
   }); 
   
-
  }
 
  function tablepopClose(){
@@ -3054,11 +2737,7 @@ function contractlist(e){
                 select.options[i] = null;
             } 
           if(e){
-            let select = document.getElementById("contractval");
-            let length = select.options.length;
-            for (let i = length-1; i >= 0; i--) {
-                select.options[i] = null;
-            } 
+            
             res.map(val => {
               var description = val.ContractName.toLowerCase();
               // var titleMatch = title.includes("smart");
@@ -3149,35 +2828,11 @@ function GetBuilding(locid,conid){
 
 function WOChange(e){
   setWOtypeID(e.target.value);
-  var select = document.getElementById("nature");
-  var length = select.options.length;
-  for (let i = length-1; i >= 0; i--) {
-      select.options[i] = null;
-  }
-  contractlist();
   setProDate([]);
   setEndDate(null);
   setmultiEmp('');
   setPersonName([]);
-  document.getElementById("continput").value = '';
-  // var select = document.getElementById("division");
-  // var length = select.options.length;
-  // for (let i = length-1; i >= 0; i--) {
-  //     select.options[i] = null;
-  // } 
-  // let url = config.submiturl + "WebPortalLocDetailsNew.php?TypeID=8&WoTypeID="+CatID;
-  // fetch(url)
-  //       .then(res=>res.json())
-  //       .then(res=>{
-
-  //       var Divisionview = res;
-  //       var ele = document.getElementById('division');
-  //       for (var i = 0; i < Divisionview.length; i++) {
-  //           // POPULATE SELECT ELEMENT WITH JSON.
-  //           ele.innerHTML = ele.innerHTML +
-  //               '<option value="' + Divisionview[i]['DivisionIDPK'] + '">' + Divisionview[i]['DivisionName'] + '</option>';
-  //       }            
-  // }) 
+  
 }
 
 function DivChange(divid){
@@ -3241,7 +2896,7 @@ var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Descr
       if(WOtypeID === '2'){
         if (Startdate === '' || Todate === ''){
           setOpen(true);
-          setMessage("Please fill all mandatory fields");
+          setMessage("Please select Date fields");
           setmsgColor("error"); 
           return false;
         }
@@ -3285,7 +2940,11 @@ var dataString ="NatureOfComplaint="+natureval+"&UserID="+EID+"&Email=null&Descr
               // document.getElementById("filterslide").style.width = "0vw";
           }else{
               setOpen(true);
-              setMessage("Problem during submission");
+              if(res.data === 'Failed'){
+                setMessage("Contract Expired");  
+              }else{
+                setMessage("Problem During Submission");
+              }
               setmsgColor("error");
               setformLoading(false);
               //contractlist();
@@ -3348,13 +3007,47 @@ function Connectmsg(Empname, Taskno, Cont , ComDate ,type,nature,Desc,Prior,devd
 
 }
 
-function Tablecontext(e,id){ 
+function Tablecontext(e,id,row){  
+  setPaymentRow(row);
+  localStorage.setItem('ComplaintIDPK',id); 
+  localStorage.setItem('ComplaintNo',row.ComplaintNo);
   setAnchMenuEl(e.currentTarget);
 }
 
-const handleCloseMenu = (val) => {
-  setAnchMenuEl(null); 
-};
+function TableSearch(e){
+  var tabarr = [];
+  Slidedata.map(val => {
+      let descComplaintNo =  val.ComplaintNo.toLowerCase();  
+      let descComplainedDate = val.ComplainedDate.toLowerCase();  
+      let descComplainerName = val.ComplainerName.toLowerCase();  
+      let descRequestDetailsDesc = val.RequestDetailsDesc.toLowerCase(); 
+    
+    // var titleMatch = title.includes("smart");
+    let ComplaintNoMatch = descComplaintNo.includes(e.toLowerCase());
+    let ComplainedDateMatch = descComplainedDate.includes(e.toLowerCase());
+    let ComplainerNameMatch = descComplainerName.includes(e.toLowerCase());
+    let RequestDetailsDescMatch = descRequestDetailsDesc.includes(e.toLowerCase());
+    
+    if(ComplaintNoMatch || ComplainedDateMatch || ComplainerNameMatch || RequestDetailsDescMatch){ 
+      tabarr.push(val) ;
+    }
+    return null;
+   });
+   setSlidedataserch(tabarr) 
+}
+
+// const handleCloseMenu = (val) => {
+//   setAnchMenuEl(null); 
+// };
+
+function SuperClick(){
+  
+  if(SuperUser){
+    setSuperUser(false)
+  }else{
+    setSuperUser(true)
+  }
+}
 
 // var logofm = Smartfm;
 
@@ -3370,7 +3063,7 @@ return (
   <Grid container justify="center"style={{  background: '#ebeef1',minHeight:'100vh',minWidth:'100%',padding: '5px'}} >
           
           <Grid item xs={12} sm={12} md={12}>
-            <AppBar className={classes.appbar} style={{padding:'4px' }}>
+            <AppBar id="appbarbg" className={classes.appbar} style={{padding:'4px' }}>
               <Grid container>
                 <Grid item xs={3} sm={2} md={2} style={{ textAlign:'left' }}>
                   <img alt="logo1" src={Nanosoft} className='logo1'></img>
@@ -3451,12 +3144,13 @@ return (
                         <IconButton aria-label="delete" className={classes.marginleft} onClick={()=>openCalendar()} >
                         <Icon title="Calender" className="sendbtn">date_range</Icon>
                         </IconButton>
-                       
+                         
                        
                         {/* <button className="btnsubmit" onClick={()=>{MonthChange('Complaint')}}>Submit</button>
                         <button className="btnsubmit" onClick={()=>openCalendar()}>Calendar</button> */}
-                        <Icon style={{float:'right',margin:'0.7rem'}} title={refresh ? 'Disable Autorefresh' : 'Enable Autorefresh'} onClick={autorefresh}>{refresh ? 'update_disabled': 'refresh'}</Icon>
-                        <button style={{float:'right',margin:'0.7rem 2px'}} className="btnCss" onClick={()=>{filterchange()}}><Icon className="filcss">filter_alt</Icon>Filter</button>
+                        <Icon style={{float:'right',margin:'0.7rem 2px'}} title={refresh ? 'Disable Autorefresh' : 'Enable Autorefresh'} onClick={autorefresh}>{refresh ? 'update_disabled': 'refresh'}</Icon>
+                        {localStorage.getItem('SuperUser') === '1' && <Icon style={{float:'right',margin:'0.7rem 2px'}} title={SuperUser ? 'Disable SuperUser' : 'Enable SuperUser'} onClick={SuperClick}>{SuperUser ? 'person_off' : 'supervised_user_circle'}</Icon>}
+                        <button style={{float:'right',margin:'0.7rem 2px'}} className="btnCss" onClick={()=>{filterchange()}}><Icon className="filcss">filter_alt</Icon></button>
                         <div id="filDiv">
                             <Grid container style={{padding:'6px'}}>
                               <Grid item xs={6} sm={4} md={2}>
@@ -3497,23 +3191,28 @@ return (
                                 </MuiPickersUtilsProvider>
                               </Grid>
                               <Grid item xs={8} sm={8} md={2} style={{padding: '3px 10px'}}>
-                                <Autocomplete
-                                  style={{width:'100%'}}
-                                  size="small"
-                                  {...defaultProps}
-                                  id="Emp-select"
-                                  value={Empvalue}
-                                  onChange={(event, newValue) => {
-                                    setEmpValue(newValue);
-                                    if(newValue){
-                                      setEmpID(newValue.NSEEMPID);
-                                    }else{
-                                      setEmpID(null);
-                                    }
-                                    
-                                  }}
-                                  renderInput={(params) => <TextField {...params} label="Select Employee" margin="normal" fullWidth/>}
-                                />
+                                <div style={{display:'flex',alignItems: 'center',justifyContent: 'center'}}>
+                                  <Autocomplete
+                                    style={{width:'100%'}}
+                                    size="small"
+                                    {...defaultProps}
+                                    id="Emp-select"
+                                    value={Empvalue}
+                                    disabled={localStorage.getItem('SuperUser') === '1' ? false : true}
+                                    onChange={(event, newValue) => {
+                                      setEmpValue(newValue);
+                                      if(newValue){
+                                        setEmpID(newValue.NSEEMPID);
+                                      }else{
+                                        setEmpID(null);
+                                      }
+                                      
+                                    }}
+                                    renderInput={(params) => <TextField {...params} label="Select Employee" margin="normal" fullWidth/>}
+                                  />
+                                  
+                                  <button className="btnCss btnpad" onClick={()=>{getData()}}><Icon className="searchicon" >search</Icon></button>
+                                </div>
                               </Grid>
                               <Grid item xs={4} sm={4} md={2} className="searchdiv">
                                 <button className="btnCss btnpad" onClick={()=>{OverlaySlide(38,null,EmpID,'Open Employee List')}}>Open Employee</button>
@@ -3606,7 +3305,7 @@ return (
                           return (
                         <CardContent key={i} className="cardcontent">
                           <Grid container>
-                            <Grid item xs={12} sm={12} md={5}>
+                            <Grid item xs={12} sm={12} md={4}>
                               <Grid container style={{width:'100%',margin:'0'}}>
                                 <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{'borderLeft': '4px solid #63c2de'}}>
                                     <p className="Headlabel">Total</p>
@@ -3617,8 +3316,8 @@ return (
 
                                 </Grid>
 
-                                <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #f86c6b'}} >
-                                  <p className="Headlabel " style={{'color':'#f50057'}}>DR</p>
+                                <Grid item xs={6} sm={6} md={4} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #f86c6b',background: 'rgb(8, 147, 245)'}} >
+                                  <p className="Headlabel " style={{'color':'#000'}}>DR</p>
 
                                     <h3 className="Headval" onClick={()=>{Conchange('DR')}}>
 
@@ -3634,6 +3333,7 @@ return (
                                     </h3>
 
                                 </Grid>
+                                
                                 <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #337ab7'}}>
                                   <p className="Headlabel " style={{'color':'#337ab7'}}>CR</p>
                                   <h3  className="Headval" onClick={()=>{Conchange('CR')}}>
@@ -3643,6 +3343,7 @@ return (
                                   </h3>
                           
                                 </Grid>
+
                                 <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #337ab7'}}>
                                   <p  className="Headlabel " style={{'color':'#337ab7'}}>NR</p>
 
@@ -3652,7 +3353,12 @@ return (
                                     
                                   </h3>
                                 </Grid>
-
+                              </Grid>
+                            </Grid>  
+                            
+                            <Grid item xs={12} sm={12} md={4}>
+                              <Grid container style={{width:'100%',margin:'0'}}>
+                                
                                 <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #ffc107'}}>
                                   <p  className="Headlabel">GR</p>
 
@@ -3662,12 +3368,6 @@ return (
                                     
                                   </h3>
                                 </Grid>
-
-                              </Grid>
-                            </Grid>  
-                            
-                            <Grid item xs={12} sm={12} md={5}>
-                              <Grid container style={{width:'100%',margin:'0'}}>
 
                                 <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #4dbd74'}}>
                                   <p  className="Headlabel " style={{'color':'#4dbd74'}}>MR</p>
@@ -3690,52 +3390,72 @@ return (
                                 </Grid>
 
                                 <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #4dbd74'}}>
-                                    <p  className="Headlabel " style={{'color':'#4dbd74'}} >RR</p>
+                                      <p  className="Headlabel " style={{'color':'#4dbd74'}} >RR</p>
 
-                                      <h3 className="Headval" onClick={()=>{Conchange('RR')}}>
+                                        <h3 className="Headval" onClick={()=>{Conchange('RR')}}>
 
-                                        {val.val.RR}
+                                          {val.val.RR}
+                                        
+                                        </h3>
+                                  </Grid>
+
+                                <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid rgb(245, 152, 9)'}}>
+                                    <p  className="Headlabel " style={{'color':'rgb(245, 152, 9)'}} >ER</p>
+
+                                      <h3 className="Headval" onClick={()=>{Conchange('ER')}}>
+
+                                        {val.val.ER}
                                       
                                       </h3>
                                 </Grid>
-                                
-                                <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #ffc107'}}>
-                                  <p  className="Headlabel">OD</p>
+                              
+                                <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid rgb(245, 152, 9)'}}>
+                                      <p  className="Headlabel " style={{'color':'rgb(245, 152, 9)'}} >TR</p>
 
-                                  <h3   className="Headval" onClick={()=>{Conchange('OVD')}}>
+                                        <h3 className="Headval" onClick={()=>{Conchange('TR')}}>
 
-                                      {val.val.OVD}
-                                    
-                                  </h3>
+                                          {val.val.TR}
+                                        
+                                        </h3>
                                 </Grid>
+                              </Grid>  
+                            </Grid>
 
-                                <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #f0e68c'}}>
-                                  <p  className="Headlabel" style={{'color':'#864c99'}}>PYM</p>
+                            <Grid item xs={12} sm={12} md={4}>
+                              <Grid container style={{width:'100%',margin:'0'}}>
 
-                                  <h3 className="Headval" onClick={()=>{Conchange('PYM')}}>
+                                  <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #ffc107'}}>
+                                    <p  className="Headlabel">OD</p>
 
-                                    {val.val.PYM}
-                                    
+                                    <h3   className="Headval" onClick={()=>{Conchange('OVD')}}>
+
+                                        {val.val.OVD}
+                                      
                                     </h3>
-                                </Grid>
-                                <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #05ffb0'}}>
-                                    <p  className="Headlabel">Failed</p>
+                                  </Grid>
 
-                                      <h3 
-                                      className="Headval">
+                                  <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #f0e68c','background': '#7fff007a'}}>
+                                    <p  className="Headlabel" style={{'color':'#864c99'}}>PYM</p>
 
-                                        {val.val.FaildCount}
+                                    <h3 className="Headval" onClick={()=>{Conchange('PYM')}}>
+
+                                      {val.val.PYM}
                                       
                                       </h3>
                                   </Grid>
                                   
-                              </Grid>  
-                            </Grid>
+                                  <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #05ffb0'}}>
+                                      <p  className="Headlabel">Failed</p>
 
-                            <Grid item xs={12} sm={12} md={2}>
-                              <Grid container style={{width:'100%',margin:'0'}}>
-                                  
-                                  <Grid item xs={6} sm={6} md={4} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
+                                        <h3 
+                                        className="Headval">
+
+                                          {val.val.FaildCount}
+                                        
+                                        </h3>
+                                  </Grid>
+
+                                  <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
                                     <p  className="Headlabel">SNA</p>
 
                                       <h3 className="Headval  " onClick={()=>{Conchange('SNA')}}>
@@ -3745,7 +3465,7 @@ return (
                                       </h3>
                                   </Grid>
                                   
-                                  <Grid item xs={6} sm={6} md={4} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
+                                  <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
                                     <p  className="Headlabel">NOETA</p>
 
                                       <h3 className="Headval" onClick={()=>{Conchange('NOETA')}}>
@@ -3755,7 +3475,7 @@ return (
                                       </h3>
                                   </Grid>
                                   
-                                  <Grid item xs={6} sm={6} md={4} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
+                                  <Grid item xs={6} sm={6} md={2} className="borderradius mbmargin" style={{ 'borderLeft':'4px solid #008b8b'}}>
                                     <p  className="Headlabel">HOLD</p>
 
                                       <h3 className="Headval" onClick={()=>{MonthChange('HOLD')}}>
@@ -3764,11 +3484,8 @@ return (
                                       
                                       </h3>
                                   </Grid>
-                                  
-
                               </Grid>
                             </Grid>
-
 
                           </Grid>
                         </CardContent>)
@@ -4107,11 +3824,30 @@ return (
       </div>
       <div className="formslide"> 
           <span className="slidetitle">{Formtitle +" -("+Slidedata.length+") "}{(Formtitle === 'Log Sheet') && "("+Fromdate +" - "+ Todate+")"}</span>
-          <div style={{float:'right'}}>
-                <ExcelFile filename="TaskSummary"  element={<Icon title="Excel Export">present_to_all</Icon>}>
-                    <ExcelSheet dataSet={exportData} name="TaskSummary"/>
-                </ExcelFile>
-          </div>
+          <Grid container>
+            <Grid item xs={8} sm={8} md={8} >
+              <form noValidate autoComplete="off">
+                <TextField 
+                    placeholder="Search"
+                    id="Tablesearch"
+                    style={{width: '100%'}} 
+                    onChange={(e)=>{TableSearch(e.target.value) }}
+                    // value={Contname}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    />
+              </form>               
+            </Grid> 
+            <Grid item xs={4} sm={4} md={4} >
+              <div style={{float:'right'}}>
+                  <ExcelFile filename="TaskSummary"  element={<Icon title="Excel Export">present_to_all</Icon>}>
+                      <ExcelSheet dataSet={exportData} name="TaskSummary"/>
+                  </ExcelFile>
+              </div>
+            </Grid> 
+          </Grid>
+          
           <TableContainer component={Paper} style={{height: '80vh'}}>
             <Table stickyHeader className={classes.table} aria-label="simple table">
               <TableHead>
@@ -4128,14 +3864,16 @@ return (
                   </StyledTableRow>
                   :
                   <StyledTableRow>
+                    <TableCell className={classuse.tablecell} style={{width:'95px'}}>DelvDate</TableCell>
+                    <TableCell className={classuse.tablecell} style={{width:'70px'}}>Type</TableCell>
                     <TableCell className={classuse.tablecell} style={{width:'95px'}}>ComplaintNo</TableCell>
-                    <TableCell className={classuse.tablecell} style={{width:'70px'}}>Date</TableCell>
-                    <TableCell className={classuse.tablecell} style={{width:'80px'}}>ETA Date</TableCell>
-                    <TableCell className={classuse.tablecell} style={{width:'80px'}}>ETA Time</TableCell>
-                    <TableCell className={classuse.tablecell} style={{width:'70px'}}>Ageing</TableCell>
+                    <TableCell className={classuse.tablecell} style={{width:'120px'}}>Date</TableCell>
                     <TableCell className={classuse.tablecell} style={{width:'120px'}}>ContractName</TableCell>
                     <TableCell className={classuse.tablecell} style={{width:'80px'}}>RegisteredBy</TableCell>
                     <TableCell className={classuse.tablecell} style={{width:'300px'}}>Description</TableCell>
+                    <TableCell className={classuse.tablecell} style={{width:'120px'}}>ETA Date</TableCell>
+                    <TableCell className={classuse.tablecell} style={{width:'80px'}}>ETA Time</TableCell>
+                    <TableCell className={classuse.tablecell} style={{width:'70px'}}>Ageing</TableCell>
                     <TableCell className={classuse.tablecell} style={{width:'70px'}}>Priority</TableCell>
                     <TableCell className={classuse.tablecell} style={{width:'80px'}}>ANAName</TableCell>
                     <TableCell className={classuse.tablecell} style={{width:'80px'}}>EXEName</TableCell>
@@ -4147,7 +3885,7 @@ return (
               </TableHead>
               
               <TableBody>
-                {Slidedata.map((row,i) => (
+                {Slidedataserch.map((row,i) => (
                   (Formtitle === 'Log Sheet') ?
                   <StyledTableRow key={i} >
                     <TableCell className={classuse.cellbody}>{row.ContractName}</TableCell>
@@ -4159,15 +3897,17 @@ return (
                     <TableCell className={classuse.cellbody}>{row.TotalHrs}</TableCell>
                   </StyledTableRow>
                   :
-                  <StyledTableRow key={i} onClick={(e) => {Tablecontext(e,row.ContractIDPK)}}>
+                  <StyledTableRow key={i} onClick={(e) => {Tablecontext(e,row.ComplaintIDPK,row)}}>
+                    <TableCell className={classuse.cellbody}>{row.DeliveryDate}</TableCell>
+                    <TableCell className={classuse.cellbody}>{row.TicketType}</TableCell>
                     <TableCell className={classuse.cellbody}>{row.ComplaintNo}</TableCell>
                     <TableCell className={classuse.cellbody}>{row.ComplainedDate}</TableCell>
-                    <TableCell className={classuse.cellbody}>{row.ETADate}</TableCell>
-                    <TableCell className={classuse.cellbody}>{row.ETATime}</TableCell>
-                    <TableCell className={classuse.cellbody}>{row.AgeingInDays}</TableCell>
                     <TableCell className={classuse.cellbody}>{row.ContractName}</TableCell>
                     <TableCell className={classuse.cellbody}>{row.ComplainerName}</TableCell>
                     <TableCell className={classuse.cellbody}>{row.RequestDetailsDesc}</TableCell>
+                    <TableCell className={classuse.cellbody}>{row.ETADate}</TableCell>
+                    <TableCell className={classuse.cellbody}>{row.ETATime}</TableCell>
+                    <TableCell className={classuse.cellbody}>{row.AgeingInDays}</TableCell>
                     <TableCell className={classuse.cellbody}>{row.PriorityName}</TableCell>
                     <TableCell className={classuse.cellbody}>{row.TechName}</TableCell>
                     <TableCell className={classuse.cellbody}>{row.bdmempname}</TableCell>
@@ -4178,36 +3918,154 @@ return (
               </TableBody>
             </Table>
           </TableContainer>
-          {/* <StyledMenu
-            id="customized-menu"
-            anchorEl={anchMenuEl}
-            keepMounted
-            open={Boolean(anchMenuEl)}
-            onClose={handleCloseMenu}
-          >
-                <StyledMenuItem onClick={()=>handleCloseMenu('Update Payment')}>
-                  <ListItemIcon>
-                    <Icon >update</Icon>
-                  </ListItemIcon>
-                  <ListItemText primary="Update Payment" />
-                </StyledMenuItem>
-          </StyledMenu> */}
-          <Popover 
-          open={Boolean(anchMenuEl)}
-          anchorEl={anchMenuEl}
-          onClose={handleCloseMenu}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-        >
-          <Icon style={{padding:'3px'}}>update</Icon>
-          <span className="paylabel">Update Payment</span>
-        </Popover>
+
+          <div>
+          <StyledMenu
+              id="customized-menu"
+              anchorEl={anchMenuEl}
+              keepMounted
+              open={Boolean(anchMenuEl)}
+              onClose={handleCloseMenu}
+            >
+              <StyledMenuItem onClick={()=>handleCloseMenu('Staff Assign')}>
+                <ListItemIcon>
+                  <Icon fontSize="small" >how_to_reg</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Staff Assign" />
+              </StyledMenuItem>
+              <StyledMenuItem onClick={()=>handleCloseMenu('Hold Remarks')}>
+                <ListItemIcon>
+                  <SendIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Hold Remarks" />
+              </StyledMenuItem>
+              <StyledMenuItem onClick={()=>handleCloseMenu('Rework Remarks') }>
+                <ListItemIcon>
+                  <SendIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Rework Remarks" />
+              </StyledMenuItem>
+              <StyledMenuItem onClick={()=>handleCloseMenu('ETA & Production Date') }>
+                <ListItemIcon>
+                  <SendIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="ETA & Production Date" />
+              </StyledMenuItem>
+              <StyledMenuItem onClick={()=>handleCloseMenu('Analysis Close') }>
+                <ListItemIcon>
+                  <Icon fontSize="small" >share</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Analysis Close" />
+              </StyledMenuItem>
+              <StyledMenuItem onClick={()=>handleCloseMenu('Reason for Pending')}>
+                <ListItemIcon>
+                  <Icon fontSize="small" >note_add</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Reason for Pending" />
+              </StyledMenuItem>
+
+              <StyledMenuItem onClick={()=>handleCloseMenu('Status')}>
+                <ListItemIcon>
+                  <Icon fontSize="small" >info</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Status" />
+              </StyledMenuItem>
+              <StyledMenuItem onClick={()=>handleCloseMenu('Update Time')}>
+                <ListItemIcon>
+                  <Icon fontSize="small" >schedule</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Update Time" />
+              </StyledMenuItem>
+              <StyledMenuItem onClick={()=>handleCloseMenu('Add CheckPoints')}>
+                <ListItemIcon>
+                  <InboxIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Add CheckPoints" />
+              </StyledMenuItem>
+            
+
+            <StyledMenuItem onClick={()=>handleCloseMenu('Execution Close')}>
+                <ListItemIcon>
+                  <Icon fontSize="small" >autorenew</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Execution Close" />
+              </StyledMenuItem>
+              <StyledMenuItem onClick={()=>handleCloseMenu('Start Work')}>
+                <ListItemIcon>
+                  <Icon fontSize="small" >schedule_send</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Start Work" />
+              </StyledMenuItem>
+              <StyledMenuItem onClick={()=>handleCloseMenu('StandBy')}>
+                <ListItemIcon>
+                  <Icon fontSize="small" >pan_tool</Icon>
+                </ListItemIcon>
+                <ListItemText primary="StandBy" />
+              </StyledMenuItem>
+
+              <StyledMenuItem onClick={()=>handleCloseMenu('Payment Update')}>
+                <ListItemIcon>
+                  <PaymentIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Payment Update" />
+              </StyledMenuItem>
+
+          </StyledMenu>
+
+
+          <SimpleMenuContext.Provider value={{ 
+          value:'simplecard',
+          paymentrow : PaymentRow,
+          dialogClose: () => setDialogOpen(false),
+          refresh: () => {tablepopClose()},
+          }}>
+    
+            {
+              MenuState === 'Hold Remarks' && <ETAHoldUpdate open={dialogOpen}/>
+            }
+            {
+              MenuState === 'Rework Remarks' && <ETAReworkRemarks open={dialogOpen} />
+            }
+            {
+              MenuState === 'ETA & Production Date' && <ETAProductionDate open={dialogOpen}/>
+            }
+            {
+              MenuState === 'Reason for Pending' && <ReasonforPending open={dialogOpen} />
+            }
+            {
+              MenuState === 'Status' && <Status open={dialogOpen}/>
+            }
+            {
+              MenuState === 'Add CheckPoints' && <AddCheckPoint open={dialogOpen}/>
+            }
+            {
+              MenuState === 'Start Work' && <StartWork open={dialogOpen}/>
+            }
+            {
+              MenuState === 'StandBy' && <StandBy open={dialogOpen}/>
+            }
+            {
+              MenuState === 'Analysis Close' && <Analysis open={dialogOpen}/>
+            }
+            {
+              MenuState === 'Execution Close' && <Execution open={dialogOpen}/>
+            }
+            {
+              MenuState === 'Update Time' && <UpdateTime open={dialogOpen}/>
+            }
+            {
+              MenuState === 'Payment Update' && <UpdatePayment open={dialogOpen}/>
+            }
+            {
+              MenuState === 'Staff Assign' && <StaffAssign open={dialogOpen}/>
+            }
+
+
+            </SimpleMenuContext.Provider>
+          </div>
+
+         
+         
       </div>
       
   </div>
@@ -4348,15 +4206,18 @@ return (
               <Grid container>
               <Grid item xs={12} sm={12} md={4} >
                     <div className="selcontain">
-                      <TextField label="Contract"
-                          id="continput"
-                          style={{width: '100%'}} 
-                          onChange={(e)=>{contractlist(e.target.value) }}
-                          // value={Contname}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          />
+                      <form noValidate autoComplete="off">
+                        <TextField label="Contract"
+                            placeholder="Search Contract"
+                            id="continput"
+                            style={{width: '100%'}} 
+                            onChange={(e)=>{contractlist(e.target.value) }}
+                            // value={Contname}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            />
+                      </form>
                       <select className="selectcss" size="11" id="contractval" onChange={(e)=>{ContChange(e.target.value) }}>
                         <option value="">-----Select-----</option>
                       </select>
@@ -4404,14 +4265,7 @@ return (
                           </RadioGroup>
                         </div>
                       </Grid>
-                      {/* <Grid item xs={12} sm={12} md={12}>
-                        <div className="selcontain">
-                          <label className="labelcompln">Priority<span className="red1">*</span></label>
-                          <select className="selectcss" size="4" id="priority" onChange={(e)=>{setpriorID(e.target.value)}}>
-                            
-                          </select>
-                        </div>
-                      </Grid> */}
+                     
                     </Grid>
 
                   </Grid>
@@ -4440,7 +4294,7 @@ return (
                   <TextField
                     style={{width: '100%'}}
                     id="standard-multiline-flexible"
-                    label="Description"
+                    label="Description*"
                     multiline
                     rowsMax={4}
                     value={Descval}
@@ -4546,6 +4400,7 @@ return (
     </div>
         {Calendarview && 
         <SimpleContext.Provider value={{ 
+              value:'calender',
               togglePage: (val) => {setTastView(val)}
             }}>
               

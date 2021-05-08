@@ -153,7 +153,7 @@ p.Headlabel::first-letter{
 }
 
 .activereq{
-  background: #FFFF99 ;
+  background: #FFFF99 !important;
 }
 
 .HeadlabelDR{
@@ -370,8 +370,8 @@ p.Headlabel::first-letter{
 .btnCss{
     background: #267871;
     color: #fff;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 600;
     border-radius: 5px;
     border: 1px solid #337ab7;
     margin: 0px 4px;
@@ -389,7 +389,7 @@ p.Headlabel::first-letter{
     font-size: 14px;
     color: #fff;
     border-radius: 5px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .multibtn > div{
@@ -599,4 +599,9 @@ select[aria-selected=true] {
   .Loadingimg{
     width: 250px;
   }
+}
+
+.searchicon{ 
+    color: #fff; 
+    font-size: 15px !important;
 }
