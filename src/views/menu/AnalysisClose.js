@@ -8,6 +8,8 @@ import TextField from '@material-ui/core/TextField';
 import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
 import Radio from '@material-ui/core/Radio';
+import LoadingOverlay from 'react-loading-overlay';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -26,7 +28,7 @@ import {SimpleMenuContext } from '../../components/SimpleCard';
 // ]
 
 export default function CustomizedDialogs(props) {
-  
+  const [Formload, setFormload] = useState(false);
   const [value, setValue] = React.useState('1');
   const [Message, setMessage] = useState({ open: false,color: '',message: ''});
   const [fromDate, handleFromChange] = useState(new Date());
@@ -230,7 +232,7 @@ export default function CustomizedDialogs(props) {
   }
 
   const save = () => {
-
+    setFormload(true);
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
     let EmpID =  localStorage.getItem('Employeeid')
     let fromdate = format(fromDate, 'yyyy/MM/dd hh:mm a')
@@ -258,9 +260,11 @@ export default function CustomizedDialogs(props) {
           }
           handleClose();
           clear();
+          setFormload(false);
           return false;
         }else{
-          setMessage({ open:true,color:'error',message: data })
+          setMessage({ open:true,color:'error',message: data });
+          setFormload(false);
           return false;
         }
         
@@ -299,8 +303,13 @@ export default function CustomizedDialogs(props) {
               </div>
               <p className='tagpadd'>ANALYSIS CLOSE</p>
           </div>
+          <LoadingOverlay
 
-          <div >
+            active={Formload}
+            spinner={<ScaleLoader />}
+            text='Processing Your Request...'
+            > 
+              <div >
 
           <div className="myrow">
             <div className="column70" >
@@ -479,8 +488,8 @@ export default function CustomizedDialogs(props) {
          
 
           </div>
-
-          
+            </LoadingOverlay>
+            
         </div>
      
       </Dialog>

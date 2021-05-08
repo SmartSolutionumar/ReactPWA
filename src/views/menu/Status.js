@@ -9,6 +9,8 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
+import LoadingOverlay from 'react-loading-overlay';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 // import FormLabel from '@material-ui/core/FormLabel';
 import {config} from '../../config'
 // import Notification from '../../components/_helperComponents/Notification'
@@ -20,6 +22,7 @@ export default function CustomizedDialogs(props) {
   const [failed, setFailed] = useState('');
   const [repeated, setRepeated] = useState('');
   const [value, setValue] = React.useState('');
+  const [Formload, setFormload] = useState(false);
 
   // const [Message, setMessage] = useState({ open: false,color: '',message: ''});
 
@@ -40,7 +43,7 @@ export default function CustomizedDialogs(props) {
   };
 
   const SaveSubmit = () => {
-
+    setFormload(true); 
     
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
 
@@ -80,10 +83,12 @@ export default function CustomizedDialogs(props) {
               SimpleContext.refresh();
             }
             handleClose();
-            clear()
+            clear();
+            setFormload(false); 
             return false;
           }else{
             // setMessage({ open:true,color:'error',message: data.message })
+            setFormload(false); 
             return false;
           }
           
@@ -114,8 +119,13 @@ export default function CustomizedDialogs(props) {
               </div>
               <p className='tagpadd'>Status</p>
           </div>
+          <LoadingOverlay
 
-          <div style={{padding:'1rem',marginTop:'-2rem'}}>
+            active={Formload}
+            spinner={<ScaleLoader />}
+            text='Processing Your Request...'
+            > 
+               <div style={{padding:'1rem',marginTop:'-2rem'}}>
 
         <FormControl component="fieldset" className='width100'>
       <RadioGroup aria-label="Status" name="Status" value={value} onChange={handleChange}>
@@ -182,7 +192,7 @@ export default function CustomizedDialogs(props) {
 
             
 
-
+            </LoadingOverlay>
         </div>
      
       </Dialog>

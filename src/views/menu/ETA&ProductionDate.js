@@ -7,13 +7,16 @@ import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
-import {config} from '../../config'
+import {config} from '../../config';
+import LoadingOverlay from 'react-loading-overlay';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 import Notification from '../../components/_helperComponents/Notification'
 import { MenuContext } from '../Calendar/MonthNew';
 import moment from 'moment';
 import {SimpleMenuContext } from '../../components/SimpleCard';
 
 export default function CustomizedDialogs(props) {
+  const [Formload, setFormload] = useState(false);
   const [text, setText] = useState('')
   const [productionDate, handleChangeproductionD] = useState(new Date());
   const [deliveryDate, handleChangedeliveryD] = useState(new Date());
@@ -35,7 +38,7 @@ export default function CustomizedDialogs(props) {
   }; 
 
   const SaveSubmit = val => {
-
+     
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
 
     var param = '';
@@ -73,7 +76,7 @@ export default function CustomizedDialogs(props) {
       }
        param =  config.configurl+`/HoldETA.php?ComplaintType=9&MaintenanceRemarks=${text}&ETADate=null&ComplaintIDPK=${ComplaintID}`
     }
-
+    setFormload(true); 
       fetch(param)
 			.then(response => response.json())
 			.then(data => {
@@ -87,10 +90,12 @@ export default function CustomizedDialogs(props) {
               SimpleContext.refresh();
             }
             handleClose();
-            clear()
+            clear();
+            setFormload(false); 
             return false;
           }else{
-            setMessage({ open:true,color:'error',message: data.message })
+            setMessage({ open:true,color:'error',message: data.message });
+            setFormload(false);
             return false;
           }
           
@@ -123,58 +128,63 @@ export default function CustomizedDialogs(props) {
               </div>
               <p className='tagpadd'>ETA & Production Date</p>
           </div>
+          <LoadingOverlay
 
-          <div style={{padding:'1rem'}}>
+            active={Formload}
+            spinner={<ScaleLoader />}
+            text='Processing Your Request...'
+            > 
+              <div style={{padding:'1rem'}}>
 
-          <div className='flex'>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            autoOk
-            variant="inline"
-            inputVariant="outlined"
-            label="Production ETA"
-            format="dd-MM-yyyy"
-            value={productionDate}
-            InputAdornmentProps={{ position: "start" }}
-            onChange={date => handleChangeproductionD(date)}
-          />
-          </MuiPickersUtilsProvider>
+              <div className='flex'>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                autoOk
+                variant="inline"
+                inputVariant="outlined"
+                label="Production ETA"
+                format="dd-MM-yyyy"
+                value={productionDate}
+                InputAdornmentProps={{ position: "start" }}
+                onChange={date => handleChangeproductionD(date)}
+              />
+              </MuiPickersUtilsProvider>
 
-          <div style={{padding:'1rem'}} align='right'>
-          <Button variant="outlined" color="primary" onClick={()=>SaveSubmit('productionDate')}>
-          Update
-          </Button>
-          </div>
+              <div style={{padding:'1rem'}} align='right'>
+              <Button variant="outlined" color="primary" onClick={()=>SaveSubmit('productionDate')}>
+              Update
+              </Button>
+              </div>
 
-          </div>
-          </div>
+              </div>
+              </div>
 
-          <div style={{padding:'1rem'}}>
+              <div style={{padding:'1rem'}}>
 
-          <div className='flex'>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            autoOk
-            variant="inline"
-            inputVariant="outlined"
-            label="Delivery ETA"
-            format="dd-MM-yyyy"
-            value={deliveryDate}
-            InputAdornmentProps={{ position: "start" }}
-            onChange={date => handleChangedeliveryD(date)}
-          />
-          </MuiPickersUtilsProvider>
+              <div className='flex'>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                autoOk
+                variant="inline"
+                inputVariant="outlined"
+                label="Delivery ETA"
+                format="dd-MM-yyyy"
+                value={deliveryDate}
+                InputAdornmentProps={{ position: "start" }}
+                onChange={date => handleChangedeliveryD(date)}
+              />
+              </MuiPickersUtilsProvider>
 
-          <div style={{padding:'1rem'}} align='right'>
-          <Button variant="outlined" color="primary" onClick={()=>SaveSubmit('deliveryDate')}>
-          Update
-          </Button>
-          </div>
+              <div style={{padding:'1rem'}} align='right'>
+              <Button variant="outlined" color="primary" onClick={()=>SaveSubmit('deliveryDate')}>
+              Update
+              </Button>
+              </div>
 
-          </div>
-          </div>
+              </div>
+              </div>
 
-          <div style={{padding:'1rem'}}>
+              <div style={{padding:'1rem'}}>
 
           <div className='flex'>
             <div style={{width:'50%'}}>
@@ -198,7 +208,7 @@ export default function CustomizedDialogs(props) {
           </div>
           </div>
 
-          
+            </LoadingOverlay>
 
           </div>
 

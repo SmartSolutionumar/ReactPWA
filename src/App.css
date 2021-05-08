@@ -605,3 +605,7 @@ select[aria-selected=true] {
     color: #fff; 
     font-size: 15px !important;
 }
+
+.css-42igfv > span{
+  display: block
+}

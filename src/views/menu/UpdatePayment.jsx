@@ -8,13 +8,15 @@ import CloseIcon from '@material-ui/icons/Close';
 import {config} from '../../config'
 import Notification from '../../components/_helperComponents/Notification'
 import { MenuContext } from '../Calendar/MonthNew'; 
+import LoadingOverlay from 'react-loading-overlay';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 import '../../assets/css/calendar.css';
 import {SimpleMenuContext } from '../../components/SimpleCard';
 
 
 export default function CustomizedDialogs(props) {
   const [Message, setMessage] = useState({ open: false,color: '',message: ''});
-
+  const [Formload, setFormload] = useState(false);
   const monthContext = useContext(MenuContext);
   const SimpleContext = useContext(SimpleMenuContext);
 
@@ -31,7 +33,7 @@ export default function CustomizedDialogs(props) {
 
 
   const SaveSubmit = val => {
-
+    setFormload(true); 
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
 
       const param =  config.configurl+`/HoldETA.php?ComplaintType=${13}&ComplaintIDPK=${ComplaintID}`
@@ -42,9 +44,11 @@ export default function CustomizedDialogs(props) {
           if(data.success === '1'){
             setMessage({ open:true,color:'success',message: data.message })
             handleClose();
+            setFormload(false); 
             return false;
           }else{
             setMessage({ open:true,color:'error',message: data.message })
+            setFormload(false); 
             return false;
           }
           
@@ -96,8 +100,13 @@ export default function CustomizedDialogs(props) {
               </div>
               <p className='tagpadd'>Payment Update</p>
           </div>
+          <LoadingOverlay
 
-          <div style={{padding:'10px 1rem'}}>
+            active={Formload}
+            spinner={<ScaleLoader />}
+            text='Processing Your Request...'
+            > 
+            <div style={{padding:'10px 1rem'}}>
             <div  className='flex'>
               <p className='poplistlf'>ComplainedNo</p> 
               <p className='poplistlr'>{TableRow.ComplaintNo} </p>
@@ -112,20 +121,20 @@ export default function CustomizedDialogs(props) {
               <p className='poplistlr'>{TableRow.RequestDetailsDesc} </p>
             </div> 
 
-          <div style={{paddingTop:'1rem'}} align='right'>
+            <div style={{paddingTop:'1rem'}} align='right'>
 
-          <Button variant="outlined" color="primary" style={{margin:'0 1rem'}} onClick={()=>SaveSubmit()}>
-          Update
-          </Button>
-          <Button variant="outlined" color="primary" onClick={()=>releaseSubmit()}>
-          Release
-          </Button>
-         
+            <Button variant="outlined" color="primary" style={{margin:'0 1rem'}} onClick={()=>SaveSubmit()}>
+            Update
+            </Button>
+            <Button variant="outlined" color="primary" onClick={()=>releaseSubmit()}>
+            Release
+            </Button>
+          
+            </div>
+
           </div>
 
-          </div>
-
-
+          </LoadingOverlay>
         </div>
      
       </Dialog>

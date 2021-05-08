@@ -319,7 +319,7 @@ const MonthCalendar = forwardRef((props, ref) => {
                   
                 return dayfilt[0].events.slice(0,4).map((en,i) => {
                   if(i < 2){
-                    return(<span key={i}><span className="openperc">{per ? per+"%" : "?"}</span><div className={`tagday ${'bg'+en.TicketType}`} title={en.TicketType+" - "+en.ComplaintNo +'\n'+en.ContractName+'\n'+ en.RequestDetailsDesc} onClick={(event)=>handlePoplist(event,[en],false,'open')} ><Icon className="ExeIcon">{en.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{en.TaskType+" - "+en.ContractName} </div></span> )  
+                    return(<span key={i}><span className="openperc">{per ? per+"%" : "?"}</span><div className={`tagday ${'bg'+en.TicketType}`} title={en.TicketType+" - "+en.ComplaintNo +'\n'+en.ContractName+'\n'+ en.RequestDetailsDesc} onClick={(event)=>handlePoplist(event,[en],false,'open')} ><Icon className="ExeIcon">{en.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{en.TaskType+" - "+en.RequestDetailsDesc} </div></span> )  
                                    
                   }
                    
@@ -331,7 +331,7 @@ const MonthCalendar = forwardRef((props, ref) => {
 
                 }else{
                 
-                return dayfilt[0].events.slice(0,4).map((en,i) => <span key={i}><span className="openperc">{en.ManMinPer ? en.ManMinPer+"%" : "?"}</span><div key={i} className={`tagday ${'bg'+en.TicketType}`} title={en.TicketType+" - "+en.ComplaintNo +'\n'+en.ContractName+'\n'+ en.RequestDetailsDesc} onClick={(event)=>handlePoplist(event,[en],false,'open')}><Icon className="ExeIcon">{en.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{en.TaskType+" - "+en.ContractName}</div></span> )
+                return dayfilt[0].events.slice(0,4).map((en,i) => <span key={i}><span className="openperc">{en.ManMinPer ? en.ManMinPer+"%" : "?"}</span><div key={i} className={`tagday ${'bg'+en.TicketType}`} title={en.TicketType+" - "+en.ComplaintNo +'\n'+en.ContractName+'\n'+ en.RequestDetailsDesc} onClick={(event)=>handlePoplist(event,[en],false,'open')}><Icon className="ExeIcon">{en.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{en.TaskType+" - "+en.RequestDetailsDesc}</div></span> )
                 
                 }
               }
@@ -603,7 +603,7 @@ const MonthCalendar = forwardRef((props, ref) => {
                   secPoP.length > 0 &&
                   
                   secPoP.map((ev, i) => { 
-                    return (<div key={i} className={`tagday ${'bg'+ev.TicketType}`} title={ev.TicketType+" - "+ev.ComplaintNo +'\n'+ev.ContractName+'\n'+ ev.RequestDetailsDesc} onClick={(e)=> handlePoplist(e,[ev],false)}><Icon className="ExeIcon">{ev.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{ev.TaskType+" - "+ev.ContractName}</div> )  
+                    return (<div key={i} className={`tagday ${'bg'+ev.TicketType}`} title={ev.TicketType+" - "+ev.ComplaintNo +'\n'+ev.ContractName+'\n'+ ev.RequestDetailsDesc} onClick={(e)=> handlePoplist(e,[ev],false)}><Icon className="ExeIcon">{ev.CCMStage === '1' ? 'timeline' : 'autorenew'}</Icon>{ev.TaskType+" - "+ev.RequestDetailsDesc}</div> )  
                     /* <span className='fright'>{ev.ManMin}</span>    */
                   
                   })

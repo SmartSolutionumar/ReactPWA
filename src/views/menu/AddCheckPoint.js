@@ -4,6 +4,8 @@ import Dialog from '@material-ui/core/Dialog';
 
 // import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+// import LoadingOverlay from 'react-loading-overlay';
+// import ScaleLoader from 'react-spinners/ScaleLoader';
 import TextField from '@material-ui/core/TextField';
 // import {config} from '../../config'
 import Notification from '../../components/_helperComponents/Notification'
@@ -12,7 +14,8 @@ import {SimpleMenuContext } from '../../components/SimpleCard';
 
 
 export default function CustomizedDialogs(props) {
-  const [text, setText] = useState('')
+  const [text, setText] = useState('');
+  // const [Formload, setFormload] = useState(false);
   const [Message, setMessage] = useState({ open: false,color: '',message: ''});
 
   const monthContext = useContext(MenuContext);

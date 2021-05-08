@@ -7,6 +7,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
 import { KeyboardDateTimePicker,MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
+import LoadingOverlay from 'react-loading-overlay';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 // import Radio from '@material-ui/core/Radio';
 // import RadioGroup from '@material-ui/core/RadioGroup';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -24,6 +26,7 @@ import { MenuContext } from '../Calendar/MonthNew';
 export default function CustomizedDialogs(props) {
   
   const [Message, setMessage] = useState({ open: false,color: '',message: ''});
+  const [Formload, setFormload] = useState(false);
   const [fromDate, handleFromChange] = useState(new Date());
   const [toDate, handleToChange] = useState(new Date());
   const [observation, setObservation] = useState('');
@@ -89,9 +92,7 @@ export default function CustomizedDialogs(props) {
     }
   }
 
-  const SaveSubmit = (val) => {
-
-    
+  const SaveSubmit = (val) => { 
     if(!fromDate){
       setMessage({ open:true,color:'error',message: 'Please Select From Date' })
       return false;
@@ -117,7 +118,7 @@ export default function CustomizedDialogs(props) {
 
  
   const save = () => {
-
+    setFormload(true); 
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
     let EmpID =  localStorage.getItem('Employeeid')
     let ComplaintNo =  localStorage.getItem('ComplaintNo')
@@ -139,9 +140,11 @@ export default function CustomizedDialogs(props) {
           }
           handleClose();
           clear();
+          setFormload(false);
           return false;
         }else{
           setMessage({ open:true,color:'error',message: data })
+          setFormload(false);
           return false;
         }
         
@@ -179,92 +182,92 @@ export default function CustomizedDialogs(props) {
               </div>
               <p className='tagpadd'>Update Time</p>
           </div>
+          <LoadingOverlay
 
-          <div style={{padding:'1rem'}}>
+            active={Formload}
+            spinner={<ScaleLoader />}
+            text='Processing Your Request...'
+            > 
 
-            <div className='upper'>
+            <div style={{padding:'1rem'}}>
+
+                  <div className='upper'>
+                            <div >
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <KeyboardDateTimePicker
+                                  autoOk
+                                  variant="inline"
+                                  inputVariant="outlined"
+                                  label="From"
+                                  
+                                  format="dd-MM-yyyy hh:mm a"
+                                  value={fromDate}
+                                  InputAdornmentProps={{ position: "start" }}
+                                  onChange={date => fromDatecalc(date)}
+                                />
+                            </MuiPickersUtilsProvider>
+                          </div>
+                          <div >
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <KeyboardDateTimePicker
+                                  autoOk
+                                  variant="inline"
+                                  inputVariant="outlined"
+                                  label="To"
+                                  
+                                  format="dd-MM-yyyy hh:mm a"
+                                  value={toDate}
+                                  minDate={fromDate}
+                                  InputAdornmentProps={{ position: "start" }}
+                                  onChange={date => toDatecalc(date)}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </div>
                         <div >
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <KeyboardDateTimePicker
-                              autoOk
-                              variant="inline"
-                              inputVariant="outlined"
-                              label="From"
-                              
-                              format="dd-MM-yyyy hh:mm a"
-                              value={fromDate}
-                              InputAdornmentProps={{ position: "start" }}
-                              onChange={date => fromDatecalc(date)}
-                            />
-                        </MuiPickersUtilsProvider>
-                      </div>
-                      <div >
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <KeyboardDateTimePicker
-                              autoOk
-                              variant="inline"
-                              inputVariant="outlined"
-                              label="To"
-                              
-                              format="dd-MM-yyyy hh:mm a"
-                              value={toDate}
-                              minDate={fromDate}
-                              InputAdornmentProps={{ position: "start" }}
-                              onChange={date => toDatecalc(date)}
-                            />
-                        </MuiPickersUtilsProvider>
+                            <TextField
+                                id="TotalMinutes"
+                                label="Total Min"                    
+                                disabled={true}
+                                value={totalMin}
+                                onChange={(e)=>setTotalMin(e.target.value)}
+                                variant="outlined"
+                              />
+                        </div>
+            </div>
+
+                  <div style={{paddingTop:'1rem'}} className='marginright2'>
+                        <Autocomplete
+                          id="combo-box-demo"
+                          fullWidth
+                          options={taskReasonData}
+                          onChange={(e,a)=>{console.log(e,a);setReason({ Id:a.TaskResonIDPK , Name:a.TaskResonName }) }}
+                          getOptionLabel={(option) => option.TaskResonName}
+                          
+                          renderInput={(params) => <TextField {...params} label="Task Reason" variant="outlined" />}
+                        />
+                    </div>  
+                  <div style={{paddingTop:'1rem'}} className='marginright2'>
+                      <TextField
+                          id="Observation"
+                          label="Observation"
+                          multiline
+                          fullWidth
+                          rows={4}
+                          value={observation}
+                          onChange={(e)=>setObservation(e.target.value)}
+                          variant="outlined"
+                        />
                     </div>
-                     <div >
-                        <TextField
-                            id="TotalMinutes"
-                            label="Total Min"                    
-                            disabled={true}
-                            value={totalMin}
-                            onChange={(e)=>setTotalMin(e.target.value)}
-                            variant="outlined"
-                          />
-                    </div>
-        </div>
 
-              <div style={{paddingTop:'1rem'}} className='marginright2'>
-                    <Autocomplete
-                      id="combo-box-demo"
-                      fullWidth
-                      options={taskReasonData}
-                      onChange={(e,a)=>{console.log(e,a);setReason({ Id:a.TaskResonIDPK , Name:a.TaskResonName }) }}
-                      getOptionLabel={(option) => option.TaskResonName}
-                      
-                      renderInput={(params) => <TextField {...params} label="Task Reason" variant="outlined" />}
-                    />
-                </div>  
-              <div style={{paddingTop:'1rem'}} className='marginright2'>
-                  <TextField
-                      id="Observation"
-                      label="Observation"
-                      multiline
-                      fullWidth
-                      rows={4}
-                      value={observation}
-                      onChange={(e)=>setObservation(e.target.value)}
-                      variant="outlined"
-                    />
-                </div>
+                  <div style={{paddingTop:'1rem'}} align='right' className='marginright2'>
 
-                <div style={{paddingTop:'1rem'}} align='right' className='marginright2'>
+                    <Button variant="outlined" color="primary" onClick={SaveSubmit}>
+                      Update
+                    </Button>
+                  </div> 
 
-          <Button variant="outlined" color="primary" onClick={SaveSubmit}>
-            Update
-          </Button>
-
-         
-          </div>
-
-
-
-
-
-        </div>
-
+            </div>
+          </LoadingOverlay>
         </div>
      
       </Dialog>

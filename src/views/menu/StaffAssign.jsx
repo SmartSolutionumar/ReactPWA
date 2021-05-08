@@ -5,7 +5,9 @@ import Dialog from '@material-ui/core/Dialog';
 // import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 // import TextField from '@material-ui/core/TextField';
-import {config} from '../../config'
+import {config} from '../../config';
+import LoadingOverlay from 'react-loading-overlay';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 import Notification from '../../components/_helperComponents/Notification'
 import { MenuContext } from '../Calendar/MonthNew';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -20,6 +22,7 @@ export default function CustomizedDialogs(props) {
     const [Empoption, setEmpoption] = React.useState([]);
     const [Empvalue, setEmpValue] = React.useState(null);
     const [EmpID, setEmpID] = React.useState(null);
+    const [Formload, setFormload] = useState(false);
 
   const monthContext = useContext(MenuContext);
   const SimpleContext = useContext(SimpleMenuContext);
@@ -78,7 +81,7 @@ function Emplist(){
 
 
   const SaveSubmit = val => {
-
+    setFormload(true); 
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
 
     if(!EmpID){
@@ -91,7 +94,8 @@ function Emplist(){
       .then(res => {
         console.log(res,"Staff");
         if(res.data === '0'){
-            setMessage({ open:true,color:'error',message: 'Kindly Update DIvision ID' })
+            setMessage({ open:true,color:'error',message: 'Kindly Update DIvision ID' });
+            setFormload(false); 
             return false;
           }else{
             setMessage({ open:true,color:'success',message: 'Staff Assigned Successfully' })
@@ -102,6 +106,7 @@ function Emplist(){
               SimpleContext.refresh();
             }
             handleClose();
+            setFormload(false); 
             return false;
           }
       })
@@ -130,8 +135,13 @@ function Emplist(){
               </div>
               <p className='tagpadd'>Staff Assign</p>
           </div>
+          <LoadingOverlay
 
-          <div style={{padding:'10px 1rem'}}>
+            active={Formload}
+            spinner={<ScaleLoader />}
+            text='Processing Your Request...'
+            > 
+              <div style={{padding:'10px 1rem'}}>
             
           <Autocomplete
                 style={{width:'100%'}}
@@ -159,7 +169,7 @@ function Emplist(){
 
           </div>
 
-
+            </LoadingOverlay>
         </div>
      
       </Dialog>

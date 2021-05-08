@@ -5,7 +5,9 @@ import Dialog from '@material-ui/core/Dialog';
 // import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
-import {config} from '../../config'
+import {config} from '../../config';
+import LoadingOverlay from 'react-loading-overlay';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 import Notification from '../../components/_helperComponents/Notification'
 import { MenuContext } from '../Calendar/MonthNew';
 import {SimpleMenuContext } from '../../components/SimpleCard';
@@ -13,6 +15,7 @@ import {SimpleMenuContext } from '../../components/SimpleCard';
 
 export default function CustomizedDialogs(props) {
   // const [open, setOpen] = React.useState(true);
+  const [Formload, setFormload] = useState(false);
   const [text, setText] = useState('')
   const [Message, setMessage] = useState({ open: false,color: '',message: ''});
 
@@ -32,14 +35,14 @@ export default function CustomizedDialogs(props) {
   }; 
 
   const SaveSubmit = () => {
-
+    
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
 
     if(!text){
       setMessage({ open:true,color:'error',message: 'Rework Remarks is empty' })
       return false;
     }
-
+    setFormload(true); 
     const param =  config.configurl+`/HoldETA.php?ComplaintType=${8}&MaintenanceRemarks=${text}&ETADate=2019-11-03&ComplaintIDPK=${ComplaintID}`
 
       fetch(param)
@@ -54,10 +57,12 @@ export default function CustomizedDialogs(props) {
               SimpleContext.refresh();
             }
             handleClose();
-            setText('')
+            setText('');
+            setFormload(false); 
             return false;
           }else{
-            setMessage({ open:true,color:'error',message: data.message })
+            setMessage({ open:true,color:'error',message: data.message });
+            setFormload(false); 
             return false;
           }
           
@@ -86,8 +91,13 @@ export default function CustomizedDialogs(props) {
               </div>
               <p className='tagpadd'>ETA & Rework Remarks</p>
           </div>
+          <LoadingOverlay
 
-          <div style={{padding:'1rem'}}>
+            active={Formload}
+            spinner={<ScaleLoader />}
+            text='Processing Your Request...'
+            > 
+              <div style={{padding:'1rem'}}>
 
           <TextField
           id="Rework_Remarks"
@@ -110,7 +120,7 @@ export default function CustomizedDialogs(props) {
 
           </div>
 
-
+            </LoadingOverlay>
         </div>
      
       </Dialog>

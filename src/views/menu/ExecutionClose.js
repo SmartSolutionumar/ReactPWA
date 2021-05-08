@@ -7,6 +7,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
 import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
+import LoadingOverlay from 'react-loading-overlay';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 // import Radio from '@material-ui/core/Radio';
 // import RadioGroup from '@material-ui/core/RadioGroup';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -24,6 +26,7 @@ import {SimpleMenuContext } from '../../components/SimpleCard';
 export default function CustomizedDialogs(props) {
   
   const [Message, setMessage] = useState({ open: false,color: '',message: ''});
+  const [Formload, setFormload] = useState(false);
   const [fromDate, handleFromChange] = useState(new Date());
   const [toDate, handleToChange] = useState(new Date());
   const [observation, setObservation] = useState('');
@@ -91,8 +94,7 @@ export default function CustomizedDialogs(props) {
   }
 
   const SaveSubmit = (val) => {
-
-    
+ 
     if(!fromDate){
       setMessage({ open:true,color:'error',message: 'Please Select From Date' })
       return false;
@@ -139,7 +141,7 @@ export default function CustomizedDialogs(props) {
   }
 
   const LivePublish = () => {
-
+    setFormload(true); 
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
     let EmpID =  localStorage.getItem('Employeeid')
     let fromdate = format(fromDate, 'yyyy/MM/dd hh:mm a')
@@ -161,9 +163,11 @@ export default function CustomizedDialogs(props) {
           }
           handleClose();
           clear();
+          setFormload(false); 
           return false;
         }else{
-          setMessage({ open:true,color:'error',message: data })
+          setMessage({ open:true,color:'error',message: data });
+          setFormload(false); 
           return false;
         }
         
@@ -172,7 +176,7 @@ export default function CustomizedDialogs(props) {
   }
 
   const forward = () => {
-
+    setFormload(true); 
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
     let EmpID =  localStorage.getItem('Employeeid');
     let fromdate = format(fromDate, 'yyyy/MM/dd hh:mm a')
@@ -194,9 +198,11 @@ export default function CustomizedDialogs(props) {
           }
           handleClose();
           clear();
+          setFormload(false); 
           return false;
         }else{
-          setMessage({ open:true,color:'error',message: data })
+          setMessage({ open:true,color:'error',message: data });
+          setFormload(false); 
           return false;
         }
         
@@ -206,7 +212,7 @@ export default function CustomizedDialogs(props) {
   }
 
   const save = () => {
-
+    setFormload(true); 
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
     let EmpID =  localStorage.getItem('Employeeid')
     let fromdate = format(fromDate, 'yyyy/MM/dd hh:mm a')
@@ -228,9 +234,11 @@ export default function CustomizedDialogs(props) {
           }
           handleClose();
           clear();
+          setFormload(false); 
           return false;
         }else{
-          setMessage({ open:true,color:'error',message: data })
+          setMessage({ open:true,color:'error',message: data });
+          setFormload(false); 
           return false;
         }
         
@@ -270,8 +278,13 @@ export default function CustomizedDialogs(props) {
               </div>
               <p className='tagpadd'>EXECUTION CLOSE</p>
           </div>
+          <LoadingOverlay
 
-          <div >
+            active={Formload}
+            spinner={<ScaleLoader />}
+            text='Processing Your Request...'
+            > 
+            <div >
 
           <div className="myrow">
             <div className="column70" >
@@ -439,7 +452,7 @@ export default function CustomizedDialogs(props) {
 
           </div>
 
-          
+          </LoadingOverlay>
         </div>
      
       </Dialog>

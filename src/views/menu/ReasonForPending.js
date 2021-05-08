@@ -5,7 +5,9 @@ import Dialog from '@material-ui/core/Dialog';
 // import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
-import {config} from '../../config'
+import {config} from '../../config';
+import LoadingOverlay from 'react-loading-overlay';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 import Notification from '../../components/_helperComponents/Notification'
 import { MenuContext } from '../Calendar/MonthNew';
 import moment from 'moment';
@@ -14,6 +16,7 @@ import {SimpleMenuContext } from '../../components/SimpleCard';
 export default function CustomizedDialogs(props) {
   const [text, setText] = useState('');
   const [Message, setMessage] = useState({ open: false,color: '',message: ''});
+  const [Formload, setFormload] = useState(false);
 
   const monthContext = useContext(MenuContext);
   const SimpleContext = useContext(SimpleMenuContext)
@@ -29,7 +32,7 @@ export default function CustomizedDialogs(props) {
   };
 
   const SaveSubmit = val => {
-
+    setFormload(true); 
     let ComplaintID =  localStorage.getItem('ComplaintIDPK')
 
     if(!text){
@@ -53,10 +56,12 @@ export default function CustomizedDialogs(props) {
               SimpleContext.refresh();
             }
             handleClose();
-            setText('')
+            setText('');
+            setFormload(false); 
             return false;
           }else{
             setMessage({ open:true,color:'error',message: data.message })
+            setFormload(false); 
             return false;
           }
           
@@ -84,8 +89,13 @@ export default function CustomizedDialogs(props) {
               </div>
               <p className='tagpadd'>Reason For Pending</p>
           </div>
+          <LoadingOverlay
 
-          <div style={{padding:'1rem'}}>
+            active={Formload}
+            spinner={<ScaleLoader />}
+            text='Processing Your Request...'
+            > 
+              <div style={{padding:'1rem'}}>
 
           <TextField
           id="Reason"
@@ -111,7 +121,7 @@ export default function CustomizedDialogs(props) {
 
           
 
-            
+            </LoadingOverlay>
 
 
         </div>
